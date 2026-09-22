@@ -1,0 +1,2825 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>意大利旅行手册</title>
+<style>
+/* ===========================================================
+   意大利旅行手册 · 样式表
+   浅色 / 深色双主题，三语自适应
+   =========================================================== */
+
+:root {
+  --bg: #FAF7F2;
+  --bg-2: #F2EBE0;
+  --surface: #FFFFFF;
+  --surface-2: #FFF8EF;
+  --ink: #2D2A26;
+  --ink-soft: #5A554E;
+  --ink-light: #8B847B;
+  --line: #E5DDCF;
+  --line-2: #D4C9B5;
+  --accent: #C8533F;
+  --accent-2: #5A7A52;
+  --accent-3: #D4A857;
+  --sea: #B9D5DE;
+  --land: #EDE3CF;
+  --land-2: #E0D2B6;
+  --mount: #A89171;
+  --shadow: 0 4px 16px rgba(45, 42, 38, 0.08);
+  --shadow-lg: 0 8px 32px rgba(45, 42, 38, 0.16);
+  --grad-warm: linear-gradient(135deg, #FFE9D2 0%, #FFD7B5 60%, #FAC8A8 100%);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-lg: 22px;
+}
+
+[data-theme="dark"] {
+  --bg: #15131B;
+  --bg-2: #1E1B26;
+  --surface: #23202E;
+  --surface-2: #2A2638;
+  --ink: #E8E3DC;
+  --ink-soft: #B8B0A4;
+  --ink-light: #8A8278;
+  --line: #3A3645;
+  --line-2: #4A4655;
+  --accent: #E07865;
+  --accent-2: #7FA377;
+  --accent-3: #E8C57A;
+  --sea: #243E5C;
+  --land: #2D2A3A;
+  --land-2: #3A3645;
+  --mount: #5C5466;
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
+  --grad-warm: linear-gradient(180deg, #2C3E66 0%, #4A5B8A 50%, #1B2540 100%);
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  margin: 0; padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+               "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC",
+               "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+body { min-height: 100vh; overflow-x: hidden; }
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 16px 80px;
+  position: relative;
+}
+
+/* ===== 顶部工具栏 ===== */
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  align-items: center;
+  justify-content: space-between;
+}
+.toolbar .brand {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.5px;
+}
+.toolbar .btns { display: flex; gap: 6px; }
+.toolbar button {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.toolbar button:hover { background: var(--surface-2); }
+.toolbar button.lang-active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.toolbar button.theme-toggle { font-size: 14px; padding: 5px 10px; }
+
+/* ===== 头图 ===== */
+.hero {
+  position: relative;
+  margin: 12px 0 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  background: var(--grad-warm);
+}
+.hero svg { width: 100%; height: auto; display: block; }
+.hero-title {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+.hero-title h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  line-height: 1.15;
+}
+.hero-title p {
+  margin: 8px 0 0;
+  font-size: 13px;
+  opacity: 0.95;
+  letter-spacing: 0.5px;
+}
+
+/* ===== 倒计时与双时钟 ===== */
+.panel-cd {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin: 18px 0;
+}
+@media (min-width: 600px) {
+  .panel-cd { grid-template-columns: 1fr 1fr; }
+}
+.cd-block, .clock-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  box-shadow: var(--shadow);
+}
+.cd-block .label, .clock-block .label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--ink-light);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.cd-block .count {
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: 1px;
+  font-variant-numeric: tabular-nums;
+}
+.cd-block .unit {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  margin: 0 3px;
+}
+.cd-block .small {
+  font-size: 12px;
+  color: var(--ink-light);
+  margin-top: 4px;
+}
+.clock-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 4px 0;
+}
+.clock-row .city { font-size: 12px; color: var(--ink-light); }
+.clock-row .time {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 1px;
+}
+
+/* ===== 通用 Section ===== */
+.section { margin: 24px 0; }
+.section-title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: var(--ink);
+  margin: 0 0 12px;
+  padding-left: 10px;
+  border-left: 4px solid var(--accent);
+  line-height: 1.2;
+}
+.section-subtitle {
+  font-size: 12px;
+  color: var(--ink-light);
+  margin: -8px 0 12px 14px;
+}
+
+/* ===== 地图 ===== */
+.map-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.map-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface-2);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.map-toolbar .map-title { font-size: 13px; font-weight: 700; }
+.map-toolbar .map-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.map-toolbar button {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink-soft);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.map-toolbar button:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+.map-toolbar button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.map-svg-wrap {
+  position: relative;
+  background: var(--sea);
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+.map-svg-wrap svg { width: 100%; height: 100%; display: block; }
+.map-note {
+  font-size: 11px;
+  color: var(--ink-light);
+  text-align: center;
+  padding: 6px 0 8px;
+  background: var(--surface-2);
+  border-top: 1px solid var(--line);
+}
+.spot-dot { cursor: pointer; transition: transform 0.2s ease; transform-box: fill-box; transform-origin: center; }
+.spot-dot:hover { transform: scale(1.3); }
+.spot-dot .dot {
+  fill: var(--accent);
+  stroke: #fff;
+  stroke-width: 2;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+.spot-dot.kind-airport .dot { fill: var(--accent-3); }
+.spot-dot.kind-train .dot { fill: var(--accent-2); }
+.spot-dot .label {
+  font-size: 10px;
+  font-weight: 700;
+  fill: var(--ink);
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: rgba(255, 255, 255, 0.7);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+[data-theme="dark"] .spot-dot .label { stroke: rgba(0, 0, 0, 0.5); }
+.route-line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 4 4;
+  opacity: 0.8;
+  animation: dash 1.5s linear infinite;
+}
+@keyframes dash { to { stroke-dashoffset: -16; } }
+.land-fill { fill: var(--land); stroke: var(--mount); stroke-width: 0.5; }
+.land-fill-2 { fill: var(--land-2); }
+
+/* ===== 行程时间轴 ===== */
+.day-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  margin: 12px 0;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.day-head {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  cursor: pointer;
+  background: var(--surface-2);
+  border-bottom: 1px solid transparent;
+  user-select: none;
+}
+.day-card.open .day-head { border-bottom-color: var(--line); }
+.day-num {
+  width: 38px;
+  height: 38px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+.day-info { flex: 1; min-width: 0; }
+.day-info .day-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 2px;
+  line-height: 1.3;
+}
+.day-info .day-meta {
+  font-size: 11px;
+  color: var(--ink-light);
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.day-progress {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-left: 6px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.day-progress .total { color: var(--ink-light); font-weight: 500; }
+.day-toggle {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 6px;
+  color: var(--ink-soft);
+  transition: transform 0.2s;
+}
+.day-card.open .day-toggle { transform: rotate(180deg); }
+.day-body { display: none; padding: 12px 16px; }
+.day-card.open .day-body { display: block; }
+.day-stay {
+  font-size: 12px;
+  color: var(--ink-soft);
+  background: var(--surface-2);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  margin: 4px 0 12px;
+}
+
+/* 行程项 */
+.item {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--line);
+  position: relative;
+  transition: opacity 0.2s ease;
+}
+.item:last-child { border-bottom: none; }
+.item.checked { opacity: 0.45; }
+.item.checked .item-title { text-decoration: line-through; }
+.item-time {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  padding-top: 2px;
+}
+.item-time .zone {
+  display: inline-block;
+  font-size: 9px;
+  color: var(--ink-light);
+  background: var(--bg-2);
+  padding: 1px 4px;
+  border-radius: 3px;
+  margin-left: 3px;
+  font-weight: 500;
+}
+.item-body { min-width: 0; }
+.item-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 3px;
+  display: inline;
+}
+.item-rating {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 6px;
+  vertical-align: middle;
+  gap: 3px;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.rating-btn {
+  cursor: pointer;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  transition: all 0.15s;
+  user-select: none;
+  padding: 0;
+}
+.rating-btn:hover { background: var(--surface-2); }
+.rating-btn.active {
+  background: var(--accent-3);
+  border-color: var(--accent-3);
+  color: #fff;
+}
+.check-btn {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink-soft);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+  margin-left: 4px;
+}
+.check-btn:hover { background: var(--surface-2); }
+.check-btn.checked { background: var(--accent-2); color: #fff; border-color: var(--accent-2); }
+.item-note {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin: 4px 0;
+  line-height: 1.5;
+}
+.item-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 4px 0;
+}
+.tag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 999px;
+  letter-spacing: 0.3px;
+}
+.tag-flight { background: #E8F0F5; color: #3D6680; }
+.tag-book { background: #FBE4C5; color: #9C5A2A; }
+.tag-note { background: #F5E5E5; color: #A24848; }
+.tag-info { background: #E5EFE5; color: #4D7C4D; }
+.tag-nav { background: #E5E8F0; color: #4D5A7C; }
+[data-theme="dark"] .tag-flight { background: #2A3B4F; color: #A0C4D9; }
+[data-theme="dark"] .tag-book { background: #4F3D24; color: #E5C490; }
+[data-theme="dark"] .tag-note { background: #4F2C2C; color: #E5A0A0; }
+[data-theme="dark"] .tag-info { background: #2C4A2C; color: #A0D4A0; }
+[data-theme="dark"] .tag-nav { background: #2C324A; color: #A0AAD4; }
+.transit-capsule {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  background: rgba(200, 83, 63, 0.1);
+  padding: 3px 9px;
+  border-radius: 999px;
+  margin: 4px 0;
+  white-space: nowrap;
+}
+[data-theme="dark"] .transit-capsule { background: rgba(224, 120, 101, 0.18); }
+
+/* 当天路线小地图 */
+.day-map {
+  margin: 10px 0;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--sea);
+  border: 1px solid var(--line);
+}
+.day-map svg { width: 100%; height: 90px; display: block; }
+
+/* ===== 卡片网格 ===== */
+.card-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+@media (min-width: 600px) { .card-grid.cols-2 { grid-template-columns: 1fr 1fr; } }
+.info-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: var(--shadow);
+}
+.info-card .ic-head { display: flex; align-items: center; margin-bottom: 8px; }
+.info-card .ic-icon {
+  width: 32px; height: 32px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+.info-card.type-flight .ic-icon { background: var(--accent-3); }
+.info-card.type-train .ic-icon { background: var(--accent-2); }
+.info-card.type-ferry .ic-icon { background: #5A8FBF; }
+.info-card.type-car .ic-icon { background: #9C5A2A; }
+.info-card .ic-title { font-size: 13px; font-weight: 700; color: var(--ink); margin: 0; }
+.info-card .ic-sub { font-size: 11px; color: var(--ink-light); margin-top: 1px; }
+.info-card .ic-row { font-size: 12px; color: var(--ink-soft); display: flex; margin: 3px 0; }
+.info-card .ic-row .k { width: 70px; color: var(--ink-light); flex-shrink: 0; }
+.info-card .ic-note {
+  font-size: 11px;
+  color: var(--ink-light);
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--line);
+}
+
+.list-section {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  box-shadow: var(--shadow);
+}
+.list-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 7px 0;
+  font-size: 13px;
+  color: var(--ink-soft);
+  border-bottom: 1px dashed var(--line);
+  line-height: 1.5;
+}
+.list-item:last-child { border-bottom: none; }
+.list-item .bullet {
+  width: 6px; height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  margin: 8px 10px 0 0;
+  flex-shrink: 0;
+}
+
+/* ===== 弹窗 ===== */
+.modal-bg {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.modal-bg.show { display: flex; }
+.modal {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 0;
+  max-width: 480px;
+  width: 100%;
+  max-height: 85vh;
+  overflow: auto;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+}
+.modal-head {
+  padding: 16px 20px 10px;
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  z-index: 2;
+}
+.modal-title { font-size: 18px; font-weight: 800; color: var(--ink); margin: 0; }
+.modal-subtitle { font-size: 12px; color: var(--ink-light); margin-top: 3px; }
+.modal-loclink {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--accent);
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+.modal-loclink:hover { text-decoration: underline; }
+.modal-body { padding: 14px 20px; }
+.modal-section {
+  margin: 10px 0;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--line);
+}
+.modal-section:last-child { border-bottom: none; }
+.modal-section h4 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--ink-light);
+  margin: 0 0 6px;
+  font-weight: 700;
+}
+.modal-section p, .modal-section ul {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  margin: 0;
+}
+.modal-section ul { padding-left: 20px; }
+.modal-section ul li { margin: 3px 0; }
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  appearance: none;
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  color: var(--ink-light);
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+.modal-close:hover { background: var(--bg-2); }
+
+.spot-card {
+  position: absolute;
+  z-index: 999;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  box-shadow: var(--shadow-lg);
+  max-width: 260px;
+  font-size: 12px;
+  color: var(--ink-soft);
+  pointer-events: auto;
+}
+.spot-card .sc-title { font-weight: 700; font-size: 13px; color: var(--ink); margin: 0 0 3px; }
+.spot-card .sc-cat { font-size: 10px; color: var(--ink-light); }
+.spot-card .sc-btn {
+  display: inline-block;
+  margin-top: 5px;
+  font-size: 11px;
+  color: var(--accent);
+  background: none;
+  border: 1px solid var(--accent);
+  padding: 2px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.spot-card .sc-btn:hover { background: var(--accent); color: #fff; }
+
+/* ===== Footer ===== */
+footer {
+  text-align: center;
+  font-size: 11px;
+  color: var(--ink-light);
+  padding: 30px 16px 0;
+  line-height: 1.7;
+}
+
+@media (max-width: 480px) {
+  body { font-size: 14px; }
+  .hero-title h1 { font-size: 22px; }
+  .cd-block .count { font-size: 26px; }
+  .clock-row .time { font-size: 18px; }
+  .container { padding: 0 12px 60px; }
+}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="brand">🇮🇹 Italy Trip</div>
+  <div class="btns">
+    <button class="lang-btn lang-active" data-lang="zh">简</button>
+    <button class="lang-btn" data-lang="zht">繁</button>
+    <button class="lang-btn" data-lang="en">EN</button>
+    <button class="theme-toggle" title="主题切换">🌙</button>
+  </div>
+</div>
+
+<div class="container">
+  <!-- 头图 -->
+  <div id="hero" class="hero"></div>
+
+  <!-- 倒计时 + 双时钟 -->
+  <div class="panel-cd">
+    <div class="cd-block">
+      <div class="label">📅 DEPARTURE</div>
+      <div id="cd-count" class="count"></div>
+      <div class="small">2026-09-25 21:30 HKT · 香港 → 罗马</div>
+    </div>
+    <div class="clock-block">
+      <div class="clock-row">
+        <span class="city">🇮🇹 <span id="clock-it-label">意大利时间</span></span>
+        <span id="clock-it" class="time">--:--:--</span>
+      </div>
+      <div id="date-it" class="date" style="font-size:11px;color:var(--ink-light);text-align:right"></div>
+      <div class="clock-row" style="margin-top:6px">
+        <span class="city">🇨🇳 <span id="clock-bj-label">北京时间</span></span>
+        <span id="clock-bj" class="time">--:--:--</span>
+      </div>
+      <div id="date-bj" class="date" style="font-size:11px;color:var(--ink-light);text-align:right"></div>
+    </div>
+  </div>
+
+  <!-- 行程总览地图 -->
+  <div class="section">
+    <h2 class="section-title" id="map-section-title">🗺️ 行程总览地图</h2>
+    <p class="section-subtitle" id="map-section-sub">点击某天查看当天完整路线；点击景点查看介绍。</p>
+    <div class="map-block">
+      <div class="map-toolbar">
+        <div class="map-title" id="map-title">行程总览地图</div>
+        <div class="map-actions">
+          <button class="map-mode-btn active" data-mode="overview">总览</button>
+          <button class="map-mode-btn" data-mode="all">显示全部</button>
+        </div>
+      </div>
+      <div id="map-svg-wrap" class="map-svg-wrap"></div>
+      <div class="map-note">⏱ 标注时间仅供参考 · 路线按行程顺序连接 · 点击景点查看介绍</div>
+      <div style="padding:10px 14px;border-top:1px solid var(--line);display:flex;gap:4px;flex-wrap:wrap" id="day-buttons"></div>
+    </div>
+  </div>
+
+  <!-- 行程时间轴 -->
+  <div class="section">
+    <h2 class="section-title">📅 12 天行程</h2>
+    <p class="section-subtitle">点击日期展开/折叠 · 点 ^_^ 打卡 · 评分 ♂♀ · 标点介绍</p>
+    <div id="itinerary-list"></div>
+  </div>
+
+  <!-- 交通票据 -->
+  <div class="section">
+    <h2 class="section-title">✈️ 交通票据</h2>
+    <p class="section-subtitle">航班 / 火车 / 轮渡 / 包车 全部订单</p>
+    <div id="ticket-list"></div>
+  </div>
+
+  <!-- 住宿 -->
+  <div class="section">
+    <h2 class="section-title">🏨 住宿</h2>
+    <p class="section-subtitle">5 家民宿与酒店 · 含订单号与备注</p>
+    <div id="stay-list"></div>
+  </div>
+
+  <!-- 待办 -->
+  <div class="section">
+    <h2 class="section-title">✅ 出行前待办</h2>
+    <p class="section-subtitle">18 项核心任务清单</p>
+    <div id="todo-list" class="list-section"></div>
+  </div>
+
+  <!-- 贴士 -->
+  <div class="section">
+    <h2 class="section-title">💡 旅行贴士</h2>
+    <p class="section-subtitle">时区 / 着装 / 餐饮 / 紧急电话</p>
+    <div id="tips-list" class="list-section"></div>
+  </div>
+</div>
+
+<!-- 弹窗 -->
+<div id="modal-bg" class="modal-bg"></div>
+
+<footer></footer>
+
+<script>
+/* ===========================================================
+   意大利旅行手册 - 数据对象
+   所有坐标都是 [lat, lng]
+   =========================================================== */
+
+var DICT = {
+  zh: {
+    appName: "意大利旅行手册",
+    tagline: "四个女孩 · 12天 · 一段不会重来的故事",
+    navOverview: "总览", navItinerary: "行程",
+    navTransport: "交通", navStay: "住宿",
+    navTodo: "待办", navTips: "贴士",
+    countdownTitle: "距离出发还有",
+    days: "天", hours: "时", minutes: "分", seconds: "秒",
+    italyTime: "意大利时间", chinaTime: "北京时间",
+    departureCity: "中国香港",
+    overviewMap: "行程总览地图",
+    showAllSpots: "显示全部地点",
+    backToOverview: "返回总览",
+    showAllPlaces: "显示所有地点",
+    hideAllPlaces: "收起所有地点",
+    mapNote: "⏱ 标注时间仅供参考",
+    dayOfN: "第 {{n}} 天",
+    dayLabel: "D{{n}}",
+    progress: "打卡进度",
+    checkIn: "○ 打卡", checked: "✓ 已去过",
+    tags: { flight: "航班", book: "需提前订", note: "注意", info: "介绍", nav: "导航" },
+    transit: "约 {{n}} 分钟",
+    stayHotel: "晚住",
+    accommodationLabel: "住宿",
+    ticketLabel: "交通票据", orderNo: "订单号",
+    todoTitle: "出行前待办",
+    tipsTitle: "旅行贴士",
+    footerNote: "本手册仅供私人旅行参考；时刻均为当地时间。"
+  },
+  zht: "zh-tw",
+  en: {
+    appName: "Italy Travel Handbook",
+    tagline: "Four Girls · 12 Days · A Once-in-a-Lifetime Story",
+    navOverview: "Overview", navItinerary: "Itinerary",
+    navTransport: "Transport", navStay: "Stay",
+    navTodo: "Todo", navTips: "Tips",
+    countdownTitle: "Departure in",
+    days: "d", hours: "h", minutes: "m", seconds: "s",
+    italyTime: "Italy Time", chinaTime: "Beijing Time",
+    departureCity: "Hong Kong, China",
+    overviewMap: "Itinerary Overview Map",
+    showAllSpots: "Show all places",
+    backToOverview: "Back to overview",
+    showAllPlaces: "Show all places",
+    hideAllPlaces: "Hide all places",
+    mapNote: "⏱ Times are approximate only",
+    dayOfN: "Day {{n}}",
+    dayLabel: "D{{n}}",
+    progress: "Progress",
+    checkIn: "○ Check in", checked: "✓ Visited",
+    tags: { flight: "Flight", book: "Book ahead", note: "Note", info: "Info", nav: "Map" },
+    transit: "≈ {{n}} min",
+    stayHotel: "Stay",
+    accommodationLabel: "Stay",
+    ticketLabel: "Tickets & Orders", orderNo: "Order #",
+    todoTitle: "Pre-trip Checklist",
+    tipsTitle: "Travel Tips",
+    footerNote: "For personal travel reference only. All times are local."
+  }
+};
+
+// === 地点介绍（中文/英文双字典） ===
+var SPOTS_INFO = {
+  "milano-malpensa": {
+    zh: {name: "米兰马尔彭萨机场", cat: "机场", reason: "意大利最大机场之一，阿提哈航空 EY81 抵达门户。",
+      must: ["T1 到达层集合点", "ATM/换汇窗口", "去博尔扎诺包车集合"],
+      tips: ["提前 24h 在线 check-in", "阿布扎比转机可领餐券", "包车司机举牌接机"]},
+    en: {name: "Milan Malpensa Airport", cat: "Airport", reason: "One of Italy's largest airports — Etihad EY81 arrives here.",
+      must: ["T1 arrivals meeting point", "ATM / FX counters", "Dolomites driver pickup"],
+      tips: ["Check in online 24h ahead", "AUH transit meal voucher", "Driver holds nameplate"]}
+  },
+  "milan-central": {
+    zh: {name: "米兰中央火车站", cat: "交通枢纽", reason: "意大利北部最重要的铁路枢纽。",
+      must: ["Frecciarossa 高速列车站台", "行李寄存柜", "Trenitalia 自助机"],
+      tips: ["Italo 票价常较 Trenitalia 便宜", "提前 14 天购早鸟票", "站台需提前看清"]},
+    en: {name: "Milano Centrale", cat: "Hub", reason: "Northern Italy's main rail hub.",
+      must: ["Frecciarossa platforms", "Luggage lockers", "Trenitalia self-service kiosks"],
+      tips: ["Italo often cheaper than Trenitalia", "Book 14 days ahead for early-bird", "Check platform on screens"]}
+  },
+  "brixen": {
+    zh: {name: "Brixen / Bressanone", cat: "多洛米蒂门户小镇", reason: "多洛米蒂南部门户小镇，持有 BrixenCard 可免费乘坐所有公交。",
+      must: ["主教教堂广场", "Isarco 河沿岸散步", "Pharmazie Museum"],
+      tips: ["酒店提供 BrixenCard", "可作为刀锋山/休斯高原的中转站", "镇上餐厅性价比高"]},
+    en: {name: "Brixen / Bressanone", cat: "Dolomiti Gateway", reason: "Southern gateway to the Dolomites — BrixenCard covers all buses and many discounts.",
+      must: ["Cathedral square", "Isarco riverside walk", "Pharmacy Museum"],
+      tips: ["Hotel issues the BrixenCard", "Best base for Seceda and Alpe di Siusi", "Great local restaurants"]}
+  },
+  "seceda": {
+    zh: {name: "Seceda 刀锋山", cat: "多洛米蒂地标", reason: "多洛米蒂最具辨识度的刀锋形山脊，《孤独星球》封面取景地。",
+      must: ["Seceda 观景台俯视草甸", "从 Ortisei 缆车直达", "早晨金黄色阳光最佳"],
+      tips: ["8:30 前到达 Ortisei 缆车站", "山顶风大备外套", "建议 9 月底穿薄羽绒"]},
+    en: {name: "Seceda Ridge", cat: "Dolomite Landmark", reason: "The Dolomites' most iconic blade ridge — Lonely Planet cover.",
+      must: ["Viewpoint over Geisleralmpe", "Cable car from Ortisei", "Golden morning light"],
+      tips: ["Reach Ortisei station before 8:30", "Wind is strong on top", "Light down jacket in autumn"]}
+  },
+  "alpe-di-siusi": {
+    zh: {name: "Alpe di Siusi 休斯高原", cat: "多洛米蒂高山草甸", reason: "欧洲最大的高山草甸。",
+      must: ["Compatsch 缆车上山", "Panorama 步道徒步", "Molignon 山小屋午餐"],
+      tips: ["自驾或公交进入需缴通行费", "草甸禁止采花", "下午 4 点后回程"]},
+    en: {name: "Alpe di Siusi", cat: "Alpine meadow", reason: "Europe's largest high-altitude meadow.",
+      must: ["Compatsch cable car", "Panorama trail", "Molignon mountain hut lunch"],
+      tips: ["Pass required to drive in", "Don't pick flowers", "Leave by 16:00"]}
+  },
+  "lago-carezza": {
+    zh: {name: "Lago di Carezza 布雷耶斯湖", cat: "高山湖", reason: "翡翠色湖水映照 Latemar 山，被称为彩虹湖。",
+      must: ["湖西岸步道", "清晨平静水面倒影", "雨后最易见彩虹"],
+      tips: ["湖边停车位紧张", "湖边木栈道 30 分钟可走完", "绕湖一周约 1 小时"]},
+    en: {name: "Lago di Carezza", cat: "Alpine Lake", reason: "Emerald lake reflecting Latemar.",
+      must: ["Western shore trail", "Still morning mirror", "Rainbow after rain"],
+      tips: ["Parking limited", "Wooden boardwalk 30 min", "Loop trail ≈ 1h"]}
+  },
+  "venice-mestre": {
+    zh: {name: "Venice Mestre 火车站", cat: "交通枢纽", reason: "威尼斯本岛对岸的交通枢纽。",
+      must: ["10 分钟火车到圣卢西亚", "廉价餐厅众多", "酒店附近超市"],
+      tips: ["持火车票直接上岛", "不要被玻璃心群岛项目引导消费", "行李过桥走 Rialto 桥"]},
+    en: {name: "Venice Mestre Station", cat: "Hub", reason: "Mainland side of Venice.",
+      must: ["10-min train to Santa Lucia", "Affordable restaurants", "Nearby supermarket"],
+      tips: ["Train ticket includes vaporetto", "Skip Murano/glass demos", "Cross Rialto with luggage"]}
+  },
+  "venice-rialto": {
+    zh: {name: "威尼斯主岛", cat: "水城", reason: "被亚得里亚海环抱的水城。",
+      must: ["圣马可广场", "叹息桥", "里亚托桥", "学院桥看日落", "玻璃岛/彩色岛"],
+      tips: ["买 vaporetto 通票", "避开正午贡多拉", "小巷迷路贵 5%"]},
+    en: {name: "Venice Mainland Island", cat: "Lagoon City", reason: "Floating city on the lagoon.",
+      must: ["Piazza San Marco", "Bridge of Sighs", "Rialto Bridge", "Accademia Bridge sunset", "Murano/Burano"],
+      tips: ["Buy vaporetto pass", "Skip midday gondola", "Don't get lost in alleys"]}
+  },
+  "venice-stmarks": {
+    zh: {name: "圣马可广场", cat: "广场", reason: "拿破仑称其为'欧洲最美客厅'。",
+      must: ["圣马可大教堂黄金马赛克", "总督宫", "圣马可钟楼登顶看城"],
+      tips: ["现场买票排队 1 小时", "日落前 1 小时最美", "广场鸽子不要喂"]},
+    en: {name: "Piazza San Marco", cat: "Square", reason: "Napoleon called it Europe's drawing room.",
+      must: ["Golden mosaics in Basilica", "Doge's Palace", "Bell Tower"],
+      tips: ["Skip-the-line online", "Sunset 1h before", "Don't feed pigeons"]}
+  },
+  "venice-ponte": {
+    zh: {name: "学院桥", cat: "桥", reason: "威尼斯四大名桥之一，最佳拍摄点。",
+      must: ["桥中心拍摄大运河", "日落时金色暖光", "夜晚华灯初上"],
+      tips: ["不要错过 18:30 黄金时刻", "桥上人多注意相机", "桥北端是学院美术馆"]},
+    en: {name: "Ponte dell'Accademia", cat: "Bridge", reason: "One of four Venice bridges — best view down the Grand Canal.",
+      must: ["Centre of bridge for canal shots", "Golden hour", "Twilight lamps"],
+      tips: ["Catch 18:30 golden moment", "Mind your camera", "Galleria dell'Accademia at north end"]}
+  },
+  "florence-smn": {
+    zh: {name: "佛罗伦萨 SMN 火车站", cat: "交通枢纽", reason: "佛罗伦萨中央火车站，步行可达圣母百花大教堂。",
+      must: ["Trenitalia 自助取票", "广场附近咖啡馆", "行李寄存"],
+      tips: ["避开正街 FRA", "持票不要过街 FRA", "站台看大屏"]},
+    en: {name: "Firenze SMN Station", cat: "Hub", reason: "Florence's central station.",
+      must: ["Trenitalia self-service", "Cafés on piazza", "Left luggage"],
+      tips: ["Check platforms on screens", "Italo/Trenitalia kiosks", "Buy water from kiosk"]}
+  },
+  "uffizi": {
+    zh: {name: "乌菲兹美术馆", cat: "美术馆", reason: "世界三大美术馆之一。",
+      must: ["波提切利房间", "达·芬奇《博士来拜》", "拉斐尔《圣母》"],
+      tips: ["必须提前 14 天预约", "每张票对应时段", "入口在 1 号门"]},
+    en: {name: "Uffizi Gallery", cat: "Museum", reason: "One of the world's top three art galleries.",
+      must: ["Botticelli rooms", "Leonardo's Adoration", "Raphael's Madonna"],
+      tips: ["Book 14 days ahead", "Each ticket has a slot", "Entrance via Gate 1"]}
+  },
+  "duomo": {
+    zh: {name: "圣母百花大教堂", cat: "教堂", reason: "文艺复兴发源地。",
+      must: ["穹顶登顶 463 阶", "洗礼堂金门", "乔托钟楼"],
+      tips: ["联票含 5 个景点", "穹顶登顶赶在日落", "周日主日弥撒免费"]},
+    en: {name: "Duomo Florence", cat: "Cathedral", reason: "Cradle of the Renaissance.",
+      must: ["Climb the dome (463 steps)", "Baptistery golden gates", "Giotto's bell tower"],
+      tips: ["Combo ticket covers 5 sites", "Sunset on the dome", "Free Sunday mass"]}
+  },
+  "accademia": {
+    zh: {name: "学院美术馆", cat: "美术馆", reason: "米开朗基罗《大卫》真迹所在地。",
+      must: ["《大卫》真迹", "《奴隶》系列", "音乐厅乐器收藏"],
+      tips: ["8:30 最早场排队", "门票 24 欧", "提前 b-ticket 预约"]},
+    en: {name: "Accademia Gallery", cat: "Museum", reason: "Houses the original David by Michelangelo.",
+      must: ["David original", "Slaves series", "Music instruments"],
+      tips: ["8:30 first slot", "€24 ticket", "Pre-book via b-ticket"]}
+  },
+  "ponte-vecchio": {
+    zh: {name: "老桥", cat: "桥", reason: "中世纪商人桥，至今仍有金匠店铺。",
+      must: ["桥上金匠店", "瓦萨利走廊", "阿尔诺河倒影"],
+      tips: ["黄昏最美", "桥两端最适合拍照", "清晨避开人潮"]},
+    en: {name: "Ponte Vecchio", cat: "Bridge", reason: "Medieval merchant bridge — still houses goldsmith shops.",
+      must: ["Goldsmith shops on bridge", "Vasari Corridor", "Arno reflection"],
+      tips: ["Best at dusk", "Best shots at both ends", "Empty at sunrise"]}
+  },
+  "michelangelo-square": {
+    zh: {name: "米开朗基罗广场", cat: "观景台", reason: "佛罗伦萨最佳日落点。",
+      must: ["大卫像复制品", "日落全景", "台阶合影"],
+      tips: ["带外套", "早点占位", "注意防晒"]},
+    en: {name: "Piazzale Michelangelo", cat: "Viewpoint", reason: "Florence's best sunset point.",
+      must: ["David replica", "Sunset panorama", "Staircase group photo"],
+      tips: ["Bring a jacket", "Arrive early for a spot", "Sunscreen required"]}
+  },
+  "central-market": {
+    zh: {name: "中央市场", cat: "市场", reason: "一楼食材二楼餐厅。",
+      must: ["Nerbone 牛肚包", "二楼意面", "现榨果汁"],
+      tips: ["二楼性价比高", "早午饭优选", "现金小额支付"]},
+    en: {name: "Mercato Centrale", cat: "Market", reason: "Local food downstairs, restaurants upstairs.",
+      must: ["Nerbone lampredotto", "Upstairs pasta", "Fresh juice"],
+      tips: ["Upstairs great value", "Lunch timing", "Small cash preferred"]}
+  },
+  "republic-square": {
+    zh: {name: "共和广场", cat: "广场", reason: "佛罗伦萨最古老的广场。",
+      must: ["旋转木马", "Caffè Gilli 老牌咖啡", "柱廊散步"],
+      tips: ["路边咖啡位加 5 欧", "周末有艺人", "傍晚灯光最美"]},
+    en: {name: "Piazza della Repubblica", cat: "Square", reason: "Florence's oldest square with the iconic carousel.",
+      must: ["Carousel", "Caffè Gilli", "Colonnade walk"],
+      tips: ["Outdoor tables +��5", "Street performers", "Best at dusk"]}
+  },
+  "signoria": {
+    zh: {name: "领主广场/旧宫", cat: "广场", reason: "市政中心，《大卫》复制品在大门前。",
+      must: ["旧宫卫队换岗", "海神喷泉", "兰奇回廊"],
+      tips: ["旧宫登塔 8 欧", "雕塑拍照免费", "凉廊躲雨"]},
+    en: {name: "Piazza della Signoria", cat: "Square", reason: "Civic center.",
+      must: ["Palazzo Vecchio guards", "Neptune Fountain", "Loggia dei Lanzi"],
+      tips: ["Tower climb €8", "Statues free", "Loggia shelters from rain"]}
+  },
+  "santa-croce": {
+    zh: {name: "圣十字大殿", cat: "教堂", reason: "佛罗伦萨的'先贤祠'。",
+      must: ["米开朗基罗墓", "伽利略墓", "但丁衣冠冢"],
+      tips: ["皮件店老巷", "16 世纪风格", "傍晚人少"]},
+    en: {name: "Santa Croce", cat: "Church", reason: "Florence's Pantheon.",
+      must: ["Michelangelo's tomb", "Galileo's tomb", "Dante's cenotaph"],
+      tips: ["Leather shops in old alleys", "16th-century atmosphere", "Quiet at sunset"]}
+  },
+  "naples-station": {
+    zh: {name: "那不勒斯中央火车站", cat: "交通枢纽", reason: "南意铁路枢纽。",
+      must: ["地铁 1 号线去港口", "Trenitalia 售票", "行李寄存"],
+      tips: ["注意扒手", "勿逗留袋", "站台看大屏"]},
+    en: {name: "Napoli Centrale", cat: "Hub", reason: "Southern Italy's main rail hub.",
+      must: ["Metro Line 1 to port", "Trenitalia tickets", "Left luggage"],
+      tips: ["Watch for pickpockets", "Check screens for platforms", "Use official taxi ranks"]}
+  },
+  "capri-port": {
+    zh: {name: "卡普里港", cat: "码头", reason: "卡普里主港。",
+      must: ["Funivia 缆车上山", "Porto Turistico", "餐厅露台"],
+      tips: ["回程船票提前买", "缆车 2 人/箱", "顶部海风大"]},
+    en: {name: "Capri Marina Grande", cat: "Port", reason: "Capri's main port.",
+      must: ["Funivia cable car up", "Porto Turistico", "Restaurant terraces"],
+      tips: ["Buy return ticket in advance", "Cable car max 2 per cabin", "Wind strong on top"]}
+  },
+  "capri-piazzetta": {
+    zh: {name: "卡普里小镇", cat: "小镇", reason: "卡普里镇中心。",
+      must: ["Umberto I 广场", "奢侈品橱窗", "Chiesa di Santo Stefano"],
+      tips: ["避开正午", "下午人少", "小路回船港"]},
+    en: {name: "Capri Piazzetta", cat: "Town Center", reason: "Capri's town center.",
+      must: ["Piazza Umberto I", "Luxury windows", "Santo Stefano church"],
+      tips: ["Avoid midday", "Quieter afternoon", "Walk back via back streets"]}
+  },
+  "anacapri": {
+    zh: {name: "阿纳卡普里", cat: "山顶小镇", reason: "卡普里山顶小镇。",
+      must: ["索拉罗山缆车", "维拉圣米歇尔", "Casa Rossa"],
+      tips: ["索拉罗 7.5 欧", "蓝洞排队 2h+", "民宿阳台看日落"]},
+    en: {name: "Anacapri", cat: "Hill Town", reason: "Capri's hilltop town.",
+      must: ["Mount Solaro chairlift", "Villa San Michele", "Casa Rossa"],
+      tips: ["Chairlift €7.5", "Blue Grotto queue 2h+", "Sunset from B&B balcony"]}
+  },
+  "augustus-garden": {
+    zh: {name: "奥古斯都花园", cat: "花园", reason: "卡普里必看花园。",
+      must: ["Krupp 步道", "观景台", "仙人掌花坛"],
+      tips: ["门票 1.5 欧", "S 弯取景", "光线最好上午"]},
+    en: {name: "Augustus Garden", cat: "Garden", reason: "Capri must-see garden.",
+      must: ["Via Krupp", "Observation deck", "Cactus beds"],
+      tips: ["€1.5 ticket", "S-curve shot", "Best light in morning"]}
+  },
+  "rome-termini": {
+    zh: {name: "罗马中央火车站", cat: "交通枢纽", reason: "罗马最大交通枢纽。",
+      must: ["地铁 B 线去斗兽场", "地铁 A 线去梵蒂冈", "行李寄存"],
+      tips: ["注意扒手", "行李看管", "站台看大屏"]},
+    en: {name: "Roma Termini", cat: "Hub", reason: "Rome's main station.",
+      must: ["Metro B to Colosseum", "Metro A to Vatican", "Left luggage"],
+      tips: ["Watch for pickpockets", "Secure luggage", "Check screens"]}
+  },
+  "vatican-museum": {
+    zh: {name: "梵蒂冈博物馆", cat: "博物馆", reason: "全球最小国家的博物馆群。",
+      must: ["西斯廷礼拜堂", "拉斐尔房间", "古希腊雕塑馆", "旋转楼梯"],
+      tips: ["必须提前预约", "首场 9:00 最佳", "门票 25 欧"]},
+    en: {name: "Vatican Museums", cat: "Museum", reason: "The smallest state's museum group.",
+      must: ["Sistine Chapel", "Raphael Rooms", "Classical sculpture", "Spiral staircase"],
+      tips: ["Book ahead required", "09:00 first slot is best", "€25 ticket"]}
+  },
+  "st-peter": {
+    zh: {name: "圣彼得大教堂", cat: "教堂", reason: "全球最大教堂。",
+      must: ["穹顶登顶", "圣彼得铜像", "贝尔尼尼华盖", "哀悼基督"],
+      tips: ["穹顶电梯 + 楼梯", "周三教皇接见", "着装要求"]},
+    en: {name: "St. Peter's Basilica", cat: "Basilica", reason: "World's largest basilica.",
+      must: ["Climb the dome", "St. Peter's statue", "Bernini's baldachin", "Pietà"],
+      tips: ["Lift + stairs for dome", "Wednesday papal audience", "Dress code"]}
+  },
+  "castel-angelo": {
+    zh: {name: "圣天使城堡", cat: "古堡", reason: "哈德良陵墓改建城堡。",
+      must: ["天使长青铜像", "教皇逃生密道", "顶层观景"],
+      tips: ["傍晚拍圣彼得", "联票优惠", "桥下景观"]},
+    en: {name: "Castel Sant'Angelo", cat: "Castle", reason: "Hadrian's mausoleum turned fortress.",
+      must: ["Archangel Michael statue", "Pope's escape route", "Roof view"],
+      tips: ["Sunset over St. Peter's", "Combo ticket", "Bridge view"]}
+  },
+  "navona": {
+    zh: {name: "纳沃纳广场", cat: "广场", reason: "贝尔尼尼的四河喷泉。",
+      must: ["四河喷泉", "摩尔人喷泉", "海神喷泉"],
+      tips: ["街头画家表演", "下午茶位", "夜景华灯"]},
+    en: {name: "Piazza Navona", cat: "Square", reason: "Bernini's Fountain of the Four Rivers.",
+      must: ["Fountain of the Four Rivers", "Moor's Fountain", "Neptune Fountain"],
+      tips: ["Street artists perform", "Afternoon tea seats", "Twilight lamps"]}
+  },
+  "trevi": {
+    zh: {name: "特雷维许愿池", cat: "喷泉", reason: "全球最大巴洛克喷泉。",
+      must: ["许愿投币", "海神雕塑", "白色大理石"],
+      tips: ["清晨人少", "晚上华灯", "不要坐台阶"]},
+    en: {name: "Trevi Fountain", cat: "Fountain", reason: "World's largest Baroque fountain.",
+      must: ["Coin toss", "Neptune statue", "White marble"],
+      tips: ["Best at dawn", "Lit at night", "Don't sit on steps"]}
+  },
+  "spanish-steps": {
+    zh: {name: "西班牙广场", cat: "广场", reason: "赫本吃冰淇淋的台阶。",
+      must: ["西班牙台阶", "破船喷泉", "奢侈品街"],
+      tips: ["禁止坐台阶", "G.FASSI 冰淇淋", "Condotti 街"]},
+    en: {name: "Spanish Steps", cat: "Square", reason: "Audrey Hepburn's Spanish Steps.",
+      must: ["Spanish Steps", "Fontana della Barcaccia", "Luxury street"],
+      tips: ["No sitting on steps", "G.FASSI gelato", "Via Condotti"]}
+  },
+  "pantheon": {
+    zh: {name: "万神庙", cat: "古罗马建筑", reason: "至今仍保留完整穹顶的古罗马建筑。",
+      must: ["穹顶天眼", "拉斐尔墓", "皇帝陵寝"],
+      tips: ["免门票", "雨天看天眼", "正午阳光最佳"]},
+    en: {name: "Pantheon", cat: "Ancient Roman", reason: "Best-preserved ancient Roman dome.",
+      must: ["Oculus", "Raphael's tomb", "Emperor tombs"],
+      tips: ["Free entry", "Rain pours through the oculus", "Noon light is best"]}
+  },
+  "medici-villa": {
+    zh: {name: "美第奇别墅", cat: "博物馆", reason: "法国学院所在地。",
+      must: ["花园", "露台", "古罗马雕塑"],
+      tips: ["日落最美", "联票优惠", "苹果树大道"]},
+    en: {name: "Villa Medici", cat: "Museum", reason: "French Academy HQ.",
+      must: ["Garden", "Terrace", "Roman sculptures"],
+      tips: ["Sunset is best", "Combo ticket", "Apple tree avenue"]}
+  },
+  "colosseum": {
+    zh: {name: "罗马斗兽场", cat: "古罗马遗址", reason: "古罗马帝国象征。",
+      must: ["竞技场/眺望", "地下层", "三层看台"],
+      tips: ["必须预约", "25 欧联票", "清晨最美"]},
+    en: {name: "Colosseum", cat: "Ancient Roman", reason: "Symbol of ancient Rome.",
+      must: ["Arena floor", "Underground", "Three levels of stands"],
+      tips: ["Pre-book required", "€25 combo", "Best at dawn"]}
+  },
+  "forum": {
+    zh: {name: "古罗马广场", cat: "古罗马遗址", reason: "古罗马政治中心。",
+      must: ["元老院", "凯撒神庙", "帕拉迪诺山"],
+      tips: ["斗兽场合票", "清晨最美", "防晒必备"]},
+    en: {name: "Roman Forum", cat: "Ancient Roman", reason: "Ancient Rome's political heart.",
+      must: ["Senate", "Temple of Caesar", "Palatine Hill"],
+      tips: ["Combo with Colosseum", "Best at dawn", "Sun protection"]}
+  },
+  "palatine": {
+    zh: {name: "帕拉迪诺山", cat: "古罗马遗址", reason: "罗马七丘之首。",
+      must: ["Domus Augustana", "Farnese 花园", "观景台"],
+      tips: ["与斗兽场合票", "走缓坡", "日落机位"]},
+    en: {name: "Palatine Hill", cat: "Ancient Roman", reason: "First of the seven hills.",
+      must: ["Domus Augustana", "Farnese Gardens", "Viewpoint"],
+      tips: ["Combo with Colosseum", "Walk slowly", "Sunset point"]}
+  },
+  "bocca-verita": {
+    zh: {name: "真理之口", cat: "古罗马雕塑", reason: "古罗马下水道井盖。",
+      must: ["合影", "教堂", "圣母像雕塑"],
+      tips: ["免费", "周末人少", "教堂免费"]},
+    en: {name: "Mouth of Truth", cat: "Ancient Roman", reason: "Ancient Roman sewer cover.",
+      must: ["Photo op", "Church", "Marble mask"],
+      tips: ["Free", "Quiet on weekends", "Free church entry"]}
+  },
+  "venezia-palace": {
+    zh: {name: "威尼斯广场", cat: "广场", reason: "罗马交通圆心。",
+      must: ["祖国祭坛", "无名烈士墓", "骑马铜像"],
+      tips: ["俯瞰全城", "电梯到顶层", "卫兵换岗"]},
+    en: {name: "Piazza Venezia", cat: "Square", reason: "Rome's traffic hub.",
+      must: ["Altar of the Fatherland", "Tomb of the Unknown Soldier", "Equestrian statues"],
+      tips: ["Panoramic view", "Lift to rooftop", "Guard change"]}
+  },
+  "hk": {
+    zh: {name: "香港国际机场", cat: "机场", reason: "国际航空枢纽。",
+      must: ["T1 航站楼", "机场快线柜台", "行李寄存"],
+      tips: ["提前 3h 到机场", "网约车区 F1", "八达通售卖点"]},
+    en: {name: "Hong Kong International Airport", cat: "Airport", reason: "Major international aviation hub.",
+      must: ["T1 terminal", "Airport Express counter", "Left luggage"],
+      tips: ["Arrive 3h early", "Ride-hailing zone F1", "Octopus card booth"]}
+  },
+  "fco": {
+    zh: {name: "罗马菲乌米奇诺机场", cat: "机场", reason: "罗马最大机场。",
+      must: ["T1/T3 出发大厅", "Trenitalia 自助取票", "出租车站"],
+      tips: ["机场免税店", "Leonardo Express 站台", "提前 3h 到机场"]},
+    en: {name: "Rome Fiumicino", cat: "Airport", reason: "Rome's largest airport.",
+      must: ["T1/T3 departures", "Trenitalia self-service", "Taxi ranks"],
+      tips: ["Duty free shops", "Leonardo Express platform", "Arrive 3h early"]}
+  }
+};
+
+// === 待办与贴士 ===
+var TODO_LIST = {
+  zh: [
+    "办理签证（已确认）", "预订往返机票（EY871/EY81/EY86/EY870）",
+    "Brixen 民宿预订", "威尼斯梅斯特雷 Staycity 预订",
+    "佛罗伦萨 Rinascimento 民宿预订", "卡普里 B&B Il Sogno 预订",
+    "罗马 Radisson Blu GHR 预订", "梵蒂冈博物馆提前预约",
+    "乌菲兹美术馆提前预约", "学院美术馆提前预约",
+    "多洛米蒂 BrixenCard", "欧元现金 + 国际信用卡",
+    "境外旅行保险", "国际驾照翻译件",
+    "便携 Wi-Fi / eSIM 卡", "电源转换插头（意标 L 型）",
+    "防晒霜 + 雨伞", "舒适步行鞋"
+  ],
+  en: [
+    "Visa (confirmed)", "Round-trip flights (EY871/EY81/EY86/EY870)",
+    "Brixen apartment booking", "Venice Mestre Staycity booking",
+    "Florence Rinascimento apartment booking", "Capri B&B Il Sogno booking",
+    "Rome Radisson Blu GHR booking", "Vatican Museums advance booking",
+    "Uffizi Gallery advance booking", "Accademia Gallery advance booking",
+    "BrixenCard for Dolomites", "Euro cash + international credit card",
+    "Travel insurance", "International driving permit translation",
+    "Portable Wi-Fi / eSIM", "Power adapter (Type L)",
+    "Sunscreen + umbrella", "Comfortable walking shoes"
+  ]
+};
+
+var TIPS_LIST = {
+  zh: [
+    "意大利 9 月底已入秋，多洛米蒂山顶需备薄羽绒；10 月初罗马早晚 12-18°C，备薄外套。",
+    "意大利时区 CEST（UTC+2），与北京相差 6 小时（夏令时）。",
+    "餐厅午餐 13-15、晚餐 19-23 最忙，其余时段需确认营业。",
+    "餐厅账单常含 coperto 餐位费 2-3€/人。",
+    "热门餐厅建议提前 App 预约（TheFork 等）。",
+    "意大利许多景点周日免费或优惠（如斗兽场每月第一个周日）。",
+    "公共水龙头（nasone）遍布罗马，免费直饮。",
+    "打车务必使用官方 APP（FreeNow、itTaxi），或在出租车站排队。",
+    "意大利景点着装要求严格，教堂内勿露肩/膝。",
+    "现金支付在小型餐厅/市集仍是主流，建议备 200-300 欧现金。",
+    "包车/出租价格含行李不强制小费；餐厅小费 5-10%。",
+    "意大利紧急电话：警察 112、��疗 118、消防 115。"
+  ],
+  en: [
+    "Late September = autumn in Italy. Bring a light down jacket for Dolomites; 12–18°C in Rome in early October.",
+    "Italy is on CEST (UTC+2) — 6 hours behind (during DST).",
+    "Restaurants busy 13:00–15:00 (lunch) and 19:00–23:00 (dinner).",
+    "Coperto (cover charge) of €2–3/person is standard.",
+    "Book popular restaurants on TheFork or similar apps.",
+    "Many sites are free/discounted on Sundays.",
+    "Rome's nasone drinking fountains serve free fresh water.",
+    "Use official taxi apps (FreeNow / itTaxi) or queue at taxi ranks.",
+    "Italy enforces strict dress codes — cover shoulders & knees in churches.",
+    "Cash still king in small trattorias — keep €200–300 in cash.",
+    "Taxis/private driver: luggage not extra. Restaurants: tip 5–10%.",
+    "Italy emergency: 112 (police), 118 (medical), 115 (fire)."
+  ]
+};
+
+// === 住宿信息 ===
+var STAY_INFO = {
+  "brixen-hotel": {
+    zh: {name: "Gerharts Premium City Living - center of Brixen", city: "Brixen",
+      order: "Brixen Card 包含", nights: "9.26 / 9.27 / 9.28 三晚", price: "611/晚",
+      note: "含 BrixenCard，免费乘公交+多项折扣；免费停车。"},
+    en: {name: "Gerharts Premium City Living - center of Brixen", city: "Brixen",
+      order: "Brixen Card included", nights: "9.26 / 9.27 / 9.28 (3 nights)", price: "€611/night",
+      note: "Includes BrixenCard (free bus + many discounts); free parking."}
+  },
+  "venice-hotel": {
+    zh: {name: "Staycity Aparthotels Venice Mestre", city: "Venice Mestre",
+      order: "STAYCITY-2024-IT", nights: "9.28 一晚", price: "453/晚",
+      note: "梅斯特雷火车站步行 8 分钟；公寓式含厨房。"},
+    en: {name: "Staycity Aparthotels Venice Mestre", city: "Venice Mestre",
+      order: "STAYCITY-2024-IT", nights: "9.28 (1 night)", price: "€453/night",
+      note: "8-min walk to Mestre station; apartment with kitchenette."}
+  },
+  "florence-hotel": {
+    zh: {name: "Rinascimento Apartments", city: "Florence",
+      order: "RINA-2024-FIRENZE", nights: "9.29 / 9.30 两晚", price: "409/晚",
+      note: "近 SMN 火车站与中央市场；老建筑复式公寓。"},
+    en: {name: "Rinascimento Apartments", city: "Florence",
+      order: "RINA-2024-FIRENZE", nights: "9.29 / 9.30 (2 nights)", price: "€409/night",
+      note: "Near SMN station and Mercato Centrale; historic duplex."}
+  },
+  "capri-hotel": {
+    zh: {name: "B&B Il Sogno", city: "Anacapri",
+      order: "ILSOGNO-2024-CAPRI", nights: "10.1 一晚", price: "358/晚",
+      note: "山顶民宿含早餐；步行至缆车 10 分钟。"},
+    en: {name: "B&B Il Sogno", city: "Anacapri",
+      order: "ILSOGNO-2024-CAPRI", nights: "10.1 (1 night)", price: "€358/night",
+      note: "Hilltop B&B with breakfast; 10-min walk to chairlift."}
+  },
+  "rome-hotel": {
+    zh: {name: "Radisson Blu GHR Rome", city: "Rome",
+      order: "RHG-2024-ROME", nights: "10.2 / 10.3 / 10.4 三晚", price: "458-460/晚",
+      note: "近中央火车站；含早。"},
+    en: {name: "Radisson Blu GHR Rome", city: "Rome",
+      order: "RHG-2024-ROME", nights: "10.2 / 10.3 / 10.4 (3 nights)", price: "€458–460/night",
+      note: "Near Termini station; breakfast included."}
+  }
+};
+
+// === 交通票据 ===
+var TICKETS = {
+  "EY871": {
+    zh: {type: "flight", label: "香港 → 阿布扎比", no: "EY871", date: "9.25",
+      time: "21:30-05:25+1", from: "HKG", to: "AUH",
+      price: "4581 元/人", note: "阿提哈航空，提前 3h 到机场。"},
+    en: {type: "flight", label: "Hong Kong → Abu Dhabi", no: "EY871", date: "9.25",
+      time: "21:30-05:25+1", from: "HKG", to: "AUH",
+      price: "¥4581/p", note: "Etihad; arrive 3h early."}
+  },
+  "EY81": {
+    zh: {type: "flight", label: "阿布扎比 → 米兰马尔彭萨", no: "EY81", date: "9.26",
+      time: "08:45-13:10", from: "AUH", to: "MXP",
+      price: "4581 元/人", note: "T1 抵达，包车接机。"},
+    en: {type: "flight", label: "Abu Dhabi → Milan Malpensa", no: "EY81", date: "9.26",
+      time: "08:45-13:10", from: "AUH", to: "MXP",
+      price: "¥4581/p", note: "T1 arrival; private transfer."}
+  },
+  "EY86": {
+    zh: {type: "flight", label: "罗马 → 阿布扎比", no: "EY86", date: "10.5",
+      time: "11:35-19:50", from: "FCO", to: "AUH",
+      price: "4581 元/人", note: "FCO 机场，提前 3h。"},
+    en: {type: "flight", label: "Rome → Abu Dhabi", no: "EY86", date: "10.5",
+      time: "11:35-19:50", from: "FCO", to: "AUH",
+      price: "¥4581/p", note: "FCO airport; arrive 3h early."}
+  },
+  "EY870": {
+    zh: {type: "flight", label: "阿布扎比 → 香港", no: "EY870", date: "10.6",
+      time: "08:30-19:30", from: "AUH", to: "HKG",
+      price: "4581 元/人", note: "抵港后机场快线回市区。"},
+    en: {type: "flight", label: "Abu Dhabi → Hong Kong", no: "EY870", date: "10.6",
+      time: "08:30-19:30", from: "AUH", to: "HKG",
+      price: "¥4581/p", note: "Airport Express back to city."}
+  },
+  "Train-Roma-Florence": {
+    zh: {type: "train", label: "罗马 → 佛罗��萨", no: "FRECCIAROSSA", date: "9.29",
+      time: "07:38-09:39", from: "Roma Termini", to: "Firenze SMN",
+      price: "270.25 €/人", note: "Italo 或 Trenitalia；早鸟票。"},
+    en: {type: "train", label: "Rome → Florence", no: "FRECCIAROSSA", date: "9.29",
+      time: "07:38-09:39", from: "Roma Termini", to: "Firenze SMN",
+      price: "€270.25/p", note: "Italo or Trenitalia early-bird."}
+  },
+  "Train-Florence-Naples": {
+    zh: {type: "train", label: "佛罗伦萨 → 那不勒斯", no: "FRECCIAROSSA", date: "10.1",
+      time: "09:14-12:18", from: "Firenze SMN", to: "Napoli Centrale",
+      price: "312.5 €/人", note: "Italo 9:14-12:18。"},
+    en: {type: "train", label: "Florence → Naples", no: "FRECCIAROSSA", date: "10.1",
+      time: "09:14-12:18", from: "Firenze SMN", to: "Napoli Centrale",
+      price: "€312.5/p", note: "Italo 9:14-12:18."}
+  },
+  "Ferry-Capri-Naples": {
+    zh: {type: "ferry", label: "卡普里 → 那不勒斯", no: "SNAV / NLG", date: "10.2",
+      time: "16:30-17:30", from: "Capri Porto", to: "Napoli Molo Beverello",
+      price: "约 25 €/人", note: "回程提前购票。"},
+    en: {type: "ferry", label: "Capri → Naples", no: "SNAV / NLG", date: "10.2",
+      time: "16:30-17:30", from: "Capri Porto", to: "Napoli Molo Beverello",
+      price: "≈€25/p", note: "Buy return in advance."}
+  },
+  "Ferry-Naples-Capri": {
+    zh: {type: "ferry", label: "那不勒斯 → 卡普里", no: "SNAV / NLG", date: "10.1",
+      time: "14:40-15:30", from: "Napoli Molo Beverello", to: "Capri Porto",
+      price: "约 24 €/人", note: "船票现场买亦可。"},
+    en: {type: "ferry", label: "Naples → Capri", no: "SNAV / NLG", date: "10.1",
+      time: "14:40-15:30", from: "Napoli Molo Beverello", to: "Capri Porto",
+      price: "≈€24/p", note: "Buy at dock."}
+  },
+  "Train-Naples-Rome": {
+    zh: {type: "train", label: "那不勒斯 → 罗马", no: "FRECCIAROSSA", date: "10.2",
+      time: "19:20-20:30", from: "Napoli Centrale", to: "Roma Termini",
+      price: "157 €/人", note: "高铁直达 70 分钟。"},
+    en: {type: "train", label: "Naples → Rome", no: "FRECCIAROSSA", date: "10.2",
+      time: "19:20-20:30", from: "Napoli Centrale", to: "Roma Termini",
+      price: "€157/p", note: "High-speed 70 min."}
+  },
+  "Dolomites-Car-MXP-Brixen": {
+    zh: {type: "car", label: "米兰 → Brixen 包车", no: "MILAN-BRIX-CAR", date: "9.26",
+      time: "10:00 出发", from: "MXP 机场", to: "Brixen",
+      price: "833 €/4人", note: "4 人均摊约 208 €/人；车程约 4 小时。"},
+    en: {type: "car", label: "Milan → Brixen car", no: "MILAN-BRIX-CAR", date: "9.26",
+      time: "Depart 10:00", from: "MXP airport", to: "Brixen",
+      price: "€833/4p", note: "≈€208/p split; ≈4h drive."}
+  },
+  "Dolomites-Car-Brixen-Venice": {
+    zh: {type: "car", label: "Brixen → 威尼斯 包车", no: "BRIX-VEN-CAR", date: "9.28",
+      time: "午后出发", from: "Brixen", to: "Venice Mestre",
+      price: "955 €/4人", note: "4 人均摊约 239 €/人；车程约 4.5 小时。"},
+    en: {type: "car", label: "Brixen → Venice car", no: "BRIX-VEN-CAR", date: "9.28",
+      time: "Afternoon departure", from: "Brixen", to: "Venice Mestre",
+      price: "€955/4p", note: "≈€239/p split; ≈4.5h drive."}
+  }
+};
+
+// === 行程数据（12 天） ===
+var ITINERARY = [
+  {day: 1, date: "2026-09-25", weekday: "周五", title: "启程 · 香港 → 阿布扎比",
+    cityLabel: "香港 / 阿布扎比", cityKey: "hk-auh",
+    centerLat: 25.2528, centerLng: 54.3773, zoom: 3,
+    items: [
+      {time: "21:30", zone: "HKT", type: "flight",
+       title: "✈ EY871 香港 → 阿布扎比", note: "全程约 7h55m；提前 3h 办登机。",
+       tags: ["flight"], spot: null},
+      {time: "05:25+1", zone: "GST", type: "transit",
+       title: "抵达阿布扎比", note: "转机时间约 3h20m。",
+       tags: ["note"], spot: null}
+    ],
+    stay: null, transitNote: null},
+  {day: 2, date: "2026-09-26", weekday: "周六", title: "阿布扎比 → 米兰 → 多洛米蒂",
+    cityLabel: "米兰 → 多洛米蒂 Brixen", cityKey: "milan-brixen",
+    centerLat: 46.4, centerLng: 11.0, zoom: 7,
+    items: [
+      {time: "08:45", zone: "GST", type: "flight",
+       title: "✈ EY81 阿布扎比 → 米兰马尔彭萨", note: "约 7h25m；包车司机举牌接机。",
+       tags: ["flight"], spot: "milano-malpensa"},
+      {time: "10:00", zone: "CEST", type: "transit",
+       title: "🚗 包车前往 Brixen", note: "4 人包车 €833；车程约 4 小时；沿途阿尔卑斯山景。",
+       tags: ["book"], spot: null, transit: 240},
+      {time: "14:00", zone: "CEST", type: "activity",
+       title: "抵达 Brixen 民宿", note: "办理入住 Gerharts Premium City Living。",
+       tags: ["info"], spot: "brixen"},
+      {time: "15:00", zone: "CEST", type: "activity",
+       title: "🚗 富内斯山谷 (Val di Funes)", note: "St. Magdalena 教堂 + 日照金山。",
+       tags: ["nav"], spot: null, transit: 60},
+      {time: "18:30", zone: "CEST", type: "meal",
+       title: "晚餐 · Brixen 老城", note: "尝试南提洛尔菜。",
+       tags: ["info"], spot: "brixen"}
+    ],
+    stay: "brixen-hotel",
+    transitNote: "米兰 → Brixen 4h 包车；沿途经过波尔察诺 (Bolzano)。"},
+  {day: 3, date: "2026-09-27", weekday: "周日", title: "刀锋山 + 休斯高原",
+    cityLabel: "多洛米蒂 · Dolomites", cityKey: "dolomites",
+    centerLat: 46.58, centerLng: 11.65, zoom: 10,
+    items: [
+      {time: "08:00", zone: "CEST", type: "transit",
+       title: "🚗 公交前往 Ortisei 缆车站", note: "BrixenCard 包含；车程约 30 分钟。",
+       tags: ["info"], spot: null, transit: 30},
+      {time: "08:30", zone: "CEST", type: "activity",
+       title: "🪂 Seceda 刀锋山缆车上山", note: "必看景点；山顶风大备外套。",
+       tags: ["book", "info"], spot: "seceda"},
+      {time: "12:00", zone: "CEST", type: "meal",
+       title: "午餐 · Ortisei 山下", note: "推荐 Café & Bistro。",
+       tags: ["info"], spot: null, transit: 60},
+      {time: "14:00", zone: "CEST", type: "transit",
+       title: "🚗 前往休斯高原", note: "公交 + 缆车；Compatsch 上山。",
+       tags: ["book"], spot: "alpe-di-siusi", transit: 90},
+      {time: "15:00", zone: "CEST", type: "activity",
+       title: "🌄 休斯高原徒步", note: "Panorama 步道；9 月底秋色渐染。",
+       tags: ["nav"], spot: "alpe-di-siusi"},
+      {time: "18:00", zone: "CEST", type: "transit",
+       title: "🚗 返回 Brixen 民宿", note: "公交全程约 1 小时。",
+       tags: [], spot: null, transit: 60}
+    ],
+    stay: "brixen-hotel",
+    transitNote: "BrixenCard 包含所有公共交通。"},
+  {day: 4, date: "2026-09-28", weekday: "周一", title: "布雷耶斯湖 → 威尼斯",
+    cityLabel: "多洛米蒂 → 威尼斯", cityKey: "dolomites-venice",
+    centerLat: 45.6, centerLng: 12.0, zoom: 7,
+    items: [
+      {time: "07:00", zone: "CEST", type: "transit",
+       title: "🚗 出发前往布雷耶斯湖", note: "车程约 30 分钟；清晨静谧最美。",
+       tags: [], spot: null, transit: 30},
+      {time: "07:30", zone: "CEST", type: "activity",
+       title: "🌊 布雷耶斯湖 (Lago di Carezza)", note: "翡翠色湖水；雨后见彩虹。",
+       tags: ["info"], spot: "lago-carezza"},
+      {time: "10:00", zone: "CEST", type: "transit",
+       title: "🚗 出发前往威尼斯", note: "车程约 4.5 小时；中途午餐休息。",
+       tags: [], spot: "venice-mestre", transit: 270},
+      {time: "16:30", zone: "CEST", type: "activity",
+       title: "抵达 Staycity 民宿", note: "办理入住。",
+       tags: ["info"], spot: "venice-mestre"},
+      {time: "17:30", zone: "CEST", type: "transit",
+       title: "🚆 火车前往主岛", note: "约 10 分钟；持票免费上岛。",
+       tags: [], spot: "venice-rialto", transit: 10},
+      {time: "18:30", zone: "CEST", type: "activity",
+       title: "🌅 学院桥看日落", note: "威尼斯最经典取景地。",
+       tags: ["info"], spot: "venice-ponte"},
+      {time: "20:00", zone: "CEST", type: "meal",
+       title: "晚餐 · 圣马可广场周边", note: "推荐 Ristorante Quadri。",
+       tags: ["book"], spot: "venice-stmarks"}
+    ],
+    stay: "venice-hotel",
+    transitNote: "Brixen → 威尼斯 4.5h 包车 + 火车 10min。"},
+  {day: 5, date: "2026-09-29", weekday: "周二", title: "威尼斯 → 佛罗伦萨",
+    cityLabel: "威尼斯 → 佛罗伦萨", cityKey: "venice-florence",
+    centerLat: 43.77, centerLng: 11.25, zoom: 7,
+    items: [
+      {time: "07:00", zone: "CEST", type: "transit",
+       title: "🚆 火车 SMN 火车站", note: "持票免费上岛。",
+       tags: [], spot: "venice-rialto", transit: 10},
+      {time: "07:38", zone: "CEST", type: "transit",
+       title: "🚆 Frecciarossa 前往佛罗伦萨", note: "2 小时车程。",
+       tags: ["book"], spot: null, transit: 120},
+      {time: "09:39", zone: "CEST", type: "activity",
+       title: "抵达佛罗伦萨 SMN", note: "步行前往民宿寄存行李。",
+       tags: [], spot: "florence-smn"},
+      {time: "11:00", zone: "CEST", type: "meal",
+       title: "午餐 · 中央市场", note: "Nerbone 牛肚包。",
+       tags: ["info"], spot: "central-market"},
+      {time: "14:15", zone: "CEST", type: "activity",
+       title: "🎨 乌菲兹美术馆", note: "波提切利房间必看。",
+       tags: ["book"], spot: "uffizi"},
+      {time: "17:00", zone: "CEST", type: "activity",
+       title: "🌉 老桥 (Ponte Vecchio)", note: "瓦萨利走廊；金匠店。",
+       tags: ["info"], spot: "ponte-vecchio"},
+      {time: "18:30", zone: "CEST", type: "activity",
+       title: "🌅 米开朗基罗广场看日落", note: "佛罗伦萨最佳日落点。",
+       tags: ["nav"], spot: "michelangelo-square"}
+    ],
+    stay: "florence-hotel",
+    transitNote: "威尼斯 SMN → 佛罗伦萨 SMN 火车 2 小时。"},
+  {day: 6, date: "2026-09-30", weekday: "周三", title: "佛罗伦萨深度",
+    cityLabel: "佛罗伦萨", cityKey: "florence",
+    centerLat: 43.77, centerLng: 11.255, zoom: 12,
+    items: [
+      {time: "08:30", zone: "CEST", type: "activity",
+       title: "🎨 学院美术馆 (大卫)", note: "最早场；门票 24 欧；预约 b-ticket。",
+       tags: ["book", "info"], spot: "accademia"},
+      {time: "11:00", zone: "CEST", type: "activity",
+       title: "⛪ 圣母百花大教堂", note: "联票含 5 景点。",
+       tags: ["info", "book"], spot: "duomo"},
+      {time: "13:00", zone: "CEST", type: "meal",
+       title: "午餐 · 中央市场", note: "一楼食材二楼餐厅。",
+       tags: ["info"], spot: "central-market"},
+      {time: "15:00", zone: "CEST", type: "activity",
+       title: "🌀 共和广场", note: "旋转木马经典。",
+       tags: ["info"], spot: "republic-square"},
+      {time: "16:00", zone: "CEST", type: "activity",
+       title: "👑 领主广场 / 旧宫", note: "大卫复制品；旧宫登塔 8 欧。",
+       tags: ["info"], spot: "signoria"},
+      {time: "17:00", zone: "CEST", type: "activity",
+       title: "✝ 圣十字大殿", note: "先贤祠。",
+       tags: ["info"], spot: "santa-croce"}
+    ],
+    stay: "florence-hotel",
+    transitNote: "佛罗伦萨老城全部步行。"},
+  {day: 7, date: "2026-10-01", weekday: "周四", title: "佛罗伦萨 → 卡普里岛",
+    cityLabel: "佛罗伦萨 → 卡普里", cityKey: "florence-capri",
+    centerLat: 40.55, centerLng: 14.25, zoom: 9,
+    items: [
+      {time: "09:14", zone: "CEST", type: "transit",
+       title: "🚆 Italo 前往那不勒斯", note: "约 3 小时。",
+       tags: ["book"], spot: "naples-station", transit: 180},
+      {time: "12:18", zone: "CEST", type: "transit",
+       title: "🚇 地铁 1 号线前往码头", note: "约 20 分钟。",
+       tags: [], spot: null, transit: 20},
+      {time: "13:00", zone: "CEST", type: "meal",
+       title: "午餐 · 那不勒斯码头", note: "披萨饼尝 Sfizio。",
+       tags: ["info"], spot: null},
+      {time: "14:40", zone: "CEST", type: "transit",
+       title: "⛴ 轮渡前往卡普里", note: "约 50 分钟；约 24 €/人。",
+       tags: ["book"], spot: "capri-port", transit: 50},
+      {time: "15:30", zone: "CEST", type: "transit",
+       title: "🚌 公交前往 Anacapri", note: "排队 20min；约 16:30 到民宿。",
+       tags: ["note"], spot: "anacapri", transit: 60},
+      {time: "18:00", zone: "CEST", type: "activity",
+       title: "🌄 阿纳卡普里逛吃", note: "如果来得及坐索拉罗缆车看日落。",
+       tags: ["nav", "book"], spot: "anacapri"}
+    ],
+    stay: "capri-hotel",
+    transitNote: "火车 + 地铁 + 轮渡 + 公交多段衔接。"},
+  {day: 8, date: "2026-10-02", weekday: "周五", title: "卡普里岛 → 罗马",
+    cityLabel: "卡普里 → 罗马", cityKey: "capri-rome",
+    centerLat: 41.9, centerLng: 12.5, zoom: 6,
+    items: [
+      {time: "08:30", zone: "CEST", type: "transit",
+       title: "🚠 索拉罗缆车上山", note: "单程 13 分钟。",
+       tags: ["book"], spot: null, transit: 30},
+      {time: "09:00", zone: "CEST", type: "activity",
+       title: "🌅 索拉罗山顶", note: "卡普里最高点。",
+       tags: ["nav"], spot: null},
+      {time: "11:00", zone: "CEST", type: "transit",
+       title: "🚌 公交前往 Capri", note: "约 30 分钟。",
+       tags: [], spot: "augustus-garden", transit: 30},
+      {time: "11:30", zone: "CEST", type: "activity",
+       title: "🌸 奥古斯都花园", note: "S 弯取景；法拉利奥尼岩群。",
+       tags: ["info"], spot: "augustus-garden"},
+      {time: "12:30", zone: "CEST", type: "meal",
+       title: "午餐 · 卡普里小镇", note: "推荐 Faraglioni 露台餐厅。",
+       tags: ["info"], spot: "capri-piazzetta"},
+      {time: "15:30", zone: "CEST", type: "transit",
+       title: "⛴ 轮渡回那不勒斯", note: "16:30-17:30；约 25 €/人。",
+       tags: ["book"], spot: "naples-station", transit: 60},
+      {time: "17:30", zone: "CEST", type: "transit",
+       title: "🚇 地铁前往火车站", note: "约 15 分钟。",
+       tags: [], spot: null, transit: 15},
+      {time: "19:20", zone: "CEST", type: "transit",
+       title: "🚆 高铁前往罗马", note: "Frecciarossa 70 分钟。",
+       tags: ["book"], spot: "rome-termini", transit: 70},
+      {time: "20:30", zone: "CEST", type: "activity",
+       title: "抵达 Radisson Blu", note: "办理入住。",
+       tags: ["info"], spot: "rome-termini"}
+    ],
+    stay: "rome-hotel",
+    transitNote: "卡普里 → 那不勒斯 轮渡 → 罗马 高铁全程约 4 小时。"},
+  {day: 9, date: "2026-10-03", weekday: "周六", title: "梵蒂冈一日",
+    cityLabel: "梵蒂冈", cityKey: "vatican",
+    centerLat: 41.905, centerLng: 12.453, zoom: 13,
+    items: [
+      {time: "08:30", zone: "CEST", type: "activity",
+       title: "⛪ 圣彼得大教堂", note: "是否登顶？；约 2 小时。",
+       tags: ["info", "book"], spot: "st-peter"},
+      {time: "11:00", zone: "CEST", type: "meal",
+       title: "午餐 · 梵蒂冈附近", note: "推荐 Borgo Pio 老巷。",
+       tags: [], spot: null},
+      {time: "13:00", zone: "CEST", type: "activity",
+       title: "🏛️ 梵蒂冈博物馆", note: "含西斯廷礼拜堂；门票 25 欧。",
+       tags: ["book"], spot: "vatican-museum"},
+      {time: "16:30", zone: "CEST", type: "activity",
+       title: "🏰 圣天使城堡", note: "顶层眺望圣彼得。",
+       tags: ["info"], spot: "castel-angelo"},
+      {time: "18:00", zone: "CEST", type: "activity",
+       title: "🎨 纳沃纳广场", note: "四河喷泉；街头画家。",
+       tags: ["info"], spot: "navona"},
+      {time: "19:30", zone: "CEST", type: "activity",
+       title: "🌊 特雷维许愿池", note: "许愿投币；夜景华灯。",
+       tags: ["info"], spot: "trevi"}
+    ],
+    stay: "rome-hotel",
+    transitNote: "梵蒂冈步行 + 地铁 A 线。"},
+  {day: 10, date: "2026-10-04", weekday: "周日", title: "罗马深度",
+    cityLabel: "罗马 · 古迹", cityKey: "rome",
+    centerLat: 41.895, centerLng: 12.482, zoom: 13,
+    items: [
+      {time: "09:00", zone: "CEST", type: "activity",
+       title: "🛍️ 西班牙广场", note: "赫本同款机位；G.FASSI 冰淇淋。",
+       tags: ["info"], spot: "spanish-steps"},
+      {time: "10:30", zone: "CEST", type: "activity",
+       title: "🌊 特雷维许愿池", note: "清晨人少。",
+       tags: ["info"], spot: "trevi"},
+      {time: "12:00", zone: "CEST", type: "activity",
+       title: "🏛 万神庙", note: "免门票；天眼下雨最美。",
+       tags: ["info"], spot: "pantheon"},
+      {time: "13:30", zone: "CEST", type: "meal",
+       title: "午餐 · 万神殿附近", note: "推荐 Da Tonino。",
+       tags: ["info"], spot: null},
+      {time: "14:00", zone: "CEST", type: "activity",
+       title: "🌳 美第奇别墅", note: "俯瞰西班牙广场。",
+       tags: ["info"], spot: "medici-villa"},
+      {time: "16:00", zone: "CEST", type: "activity",
+       title: "🏛 罗马斗兽场", note: "25 欧联票；提前预约。",
+       tags: ["book"], spot: "colosseum"},
+      {time: "17:30", zone: "CEST", type: "activity",
+       title: "🏛 古罗马广场", note: "凯撒演讲地；元老院。",
+       tags: ["info"], spot: "forum"},
+      {time: "18:30", zone: "CEST", type: "activity",
+       title: "🌄 帕拉迪诺山", note: "日落机位；俯瞰全城。",
+       tags: ["info"], spot: "palatine"},
+      {time: "19:30", zone: "CEST", type: "activity",
+       title: "👄 真理之口", note: "拍照必到。",
+       tags: ["info"], spot: "bocca-verita"},
+      {time: "20:30", zone: "CEST", type: "meal",
+       title: "晚餐 · 威尼斯广场周边", note: "推荐 Ristorante Corallo。",
+       tags: [], spot: "venezia-palace"}
+    ],
+    stay: "rome-hotel",
+    transitNote: "全部步行。"},
+  {day: 11, date: "2026-10-05", weekday: "周一", title: "罗马 → 阿布扎比",
+    cityLabel: "罗马 → 阿布扎比", cityKey: "rome-auh",
+    centerLat: 41.9, centerLng: 12.5, zoom: 11,
+    items: [
+      {time: "06:30", zone: "CEST", type: "meal",
+       title: "早餐 · 酒店", note: "打包或简单用。",
+       tags: [], spot: null},
+      {time: "07:00", zone: "CEST", type: "transit",
+       title: "🚖 前往 FCO 机场", note: "Leonardo Express 或出租；约 45min。",
+       tags: ["book"], spot: "fco", transit: 45},
+      {time: "08:30", zone: "CEST", type: "activity",
+       title: "✈ EY86 罗马 → 阿布扎比", note: "11:35 起飞；约 5h15m。",
+       tags: ["flight"], spot: "fco"},
+      {time: "11:35", zone: "CEST", type: "flight",
+       title: "✈ 起飞", note: "全程 5h15m；机上餐。",
+       tags: ["flight"], spot: null}
+    ],
+    stay: null,
+    transitNote: "酒店 → FCO 机场约 45min。"},
+  {day: 12, date: "2026-10-06", weekday: "周二", title: "阿布扎比 → 香港 · 回家",
+    cityLabel: "阿布扎比 → 香港", cityKey: "auh-hk",
+    centerLat: 24.5, centerLng: 54.5, zoom: 5,
+    items: [
+      {time: "08:30", zone: "GST", type: "flight",
+       title: "✈ EY870 阿布扎比 → 香港", note: "约 7h。",
+       tags: ["flight"], spot: "hk"},
+      {time: "19:30", zone: "HKT", type: "activity",
+       title: "🛬 抵达香港", note: "回家！",
+       tags: ["info"], spot: "hk"}
+    ],
+    stay: null,
+    transitNote: "全程飞行日。"}
+];
+
+// === 地点全集 (经纬度) ===
+var LOCATIONS = {
+  "milano-malpensa": {lat: 45.6306, lng: 8.7281, kind: "airport", name: "Malpensa"},
+  "milan-central": {lat: 45.4863, lng: 9.2050, kind: "train", name: "Milano Centrale"},
+  "brixen": {lat: 46.7167, lng: 11.6580, kind: "town", name: "Brixen"},
+  "seceda": {lat: 46.6333, lng: 11.6500, kind: "viewpoint", name: "Seceda"},
+  "alpe-di-siusi": {lat: 46.5400, lng: 11.6500, kind: "viewpoint", name: "Alpe di Siusi"},
+  "lago-carezza": {lat: 46.4186, lng: 11.5789, kind: "lake", name: "Lago di Carezza"},
+  "venice-mestre": {lat: 45.4863, lng: 12.2367, kind: "train", name: "Mestre"},
+  "venice-rialto": {lat: 45.4340, lng: 12.3380, kind: "town", name: "Venice"},
+  "venice-stmarks": {lat: 45.4341, lng: 12.3389, kind: "landmark", name: "San Marco"},
+  "venice-ponte": {lat: 45.4314, lng: 12.3289, kind: "bridge", name: "Accademia"},
+  "florence-smn": {lat: 43.7764, lng: 11.2486, kind: "train", name: "Firenze SMN"},
+  "uffizi": {lat: 43.7678, lng: 11.2553, kind: "museum", name: "Uffizi"},
+  "duomo": {lat: 43.7731, lng: 11.2559, kind: "church", name: "Duomo"},
+  "accademia": {lat: 43.7769, lng: 11.2589, kind: "museum", name: "Accademia"},
+  "ponte-vecchio": {lat: 43.7680, lng: 11.2531, kind: "bridge", name: "Ponte Vecchio"},
+  "michelangelo-square": {lat: 43.7629, lng: 11.2650, kind: "viewpoint", name: "Piazzale Michelangelo"},
+  "central-market": {lat: 43.7768, lng: 11.2527, kind: "market", name: "Mercato Centrale"},
+  "republic-square": {lat: 43.7731, lng: 11.2532, kind: "square", name: "Repubblica"},
+  "signoria": {lat: 43.7697, lng: 11.2564, kind: "square", name: "Signoria"},
+  "santa-croce": {lat: 43.7707, lng: 11.2625, kind: "church", name: "Santa Croce"},
+  "naples-station": {lat: 40.8530, lng: 14.2729, kind: "train", name: "Napoli Centrale"},
+  "capri-port": {lat: 40.5554, lng: 14.2397, kind: "port", name: "Marina Grande"},
+  "capri-piazzetta": {lat: 40.5509, lng: 14.2400, kind: "town", name: "Piazzetta"},
+  "anacapri": {lat: 40.5503, lng: 14.2161, kind: "town", name: "Anacapri"},
+  "augustus-garden": {lat: 40.5474, lng: 14.2397, kind: "garden", name: "Augustus Garden"},
+  "rome-termini": {lat: 41.9009, lng: 12.5019, kind: "train", name: "Roma Termini"},
+  "fco": {lat: 41.8003, lng: 12.2389, kind: "airport", name: "FCO"},
+  "vatican-museum": {lat: 41.9065, lng: 12.4536, kind: "museum", name: "Vatican"},
+  "st-peter": {lat: 41.9022, lng: 12.4539, kind: "church", name: "St. Peter's"},
+  "castel-angelo": {lat: 41.9031, lng: 12.4663, kind: "castle", name: "Castel Sant'Angelo"},
+  "navona": {lat: 41.8992, lng: 12.4731, kind: "square", name: "Navona"},
+  "trevi": {lat: 41.9009, lng: 12.4833, kind: "fountain", name: "Trevi"},
+  "spanish-steps": {lat: 41.9058, lng: 12.4823, kind: "square", name: "Spanish Steps"},
+  "pantheon": {lat: 41.8986, lng: 12.4769, kind: "ancient", name: "Pantheon"},
+  "medici-villa": {lat: 41.9078, lng: 12.4830, kind: "museum", name: "Villa Medici"},
+  "colosseum": {lat: 41.8902, lng: 12.4922, kind: "ancient", name: "Colosseum"},
+  "forum": {lat: 41.8925, lng: 12.4853, kind: "ancient", name: "Roman Forum"},
+  "palatine": {lat: 41.8893, lng: 12.4875, kind: "ancient", name: "Palatine"},
+  "bocca-verita": {lat: 41.8881, lng: 12.4811, kind: "ancient", name: "Bocca Verita"},
+  "venezia-palace": {lat: 41.8964, lng: 12.4824, kind: "square", name: "Venezia"},
+  "hk": {lat: 22.3080, lng: 113.9185, kind: "airport", name: "HKG"}
+};
+
+// === 意大利国境轮廓 (粗略) - 用于程序化地图背景 ===
+// 简化版：意大利国境的主要轮廓点（lng, lat）
+var ITALY_OUTLINE = [
+  [7.0, 44.0], [7.5, 43.7], [7.8, 43.7], [8.0, 43.9], [8.2, 44.1],
+  [8.5, 44.4], [8.7, 44.8], [9.0, 45.0], [9.5, 45.5], [10.0, 46.0],
+  [10.5, 46.5], [11.0, 46.8], [11.5, 47.0], [12.0, 47.0], [12.5, 46.8],
+  [13.0, 46.6], [13.5, 46.5], [13.8, 46.4], [14.0, 46.2], [13.5, 45.8],
+  [13.0, 45.5], [12.5, 45.4], [12.3, 45.3], [12.2, 44.8], [12.5, 44.3],
+  [13.0, 43.5], [13.7, 42.5], [14.5, 42.0], [15.5, 41.5], [16.2, 41.2],
+  [17.0, 41.0], [17.5, 40.8], [18.0, 40.7], [18.5, 40.5], [18.4, 40.0],
+  [17.5, 39.8], [17.0, 39.5], [16.5, 39.0], [15.8, 38.9], [15.5, 38.7],
+  [15.0, 38.5], [14.5, 38.0], [13.5, 37.8], [12.5, 37.7], [12.0, 37.5],
+  [11.5, 37.0], [11.0, 36.7], [10.0, 36.5], [9.5, 36.6], [9.0, 36.9],
+  [8.5, 37.5], [8.0, 38.0], [8.3, 38.5], [8.5, 39.0], [8.8, 39.5],
+  [9.0, 40.0], [9.4, 40.5], [9.8, 41.0], [10.0, 41.5], [9.5, 42.0],
+  [9.0, 42.5], [8.5, 43.0], [8.0, 43.5], [7.5, 43.8], [7.0, 44.0]
+];
+
+// 西西里岛轮廓
+var SICILY_OUTLINE = [
+  [12.0, 38.0], [12.5, 38.0], [13.0, 38.2], [13.5, 38.0], [14.5, 38.0],
+  [15.5, 37.8], [15.5, 37.0], [15.0, 36.7], [14.0, 36.7], [13.0, 36.8],
+  [12.5, 37.3], [12.0, 38.0]
+];
+
+// 撒丁岛轮廓
+var SARDINIA_OUTLINE = [
+  [8.0, 41.0], [8.5, 41.2], [9.0, 41.5], [9.5, 41.0], [9.7, 40.5],
+  [9.5, 39.5], [9.0, 39.0], [8.5, 38.8], [8.0, 39.5], [8.0, 41.0]
+];
+
+(function () {
+'use strict';
+
+// ===== 字形转换 (简->繁) 核心词典 =====
+/* ===========================================================
+   意大利旅行手册 · 翻译表
+============================================================ */
+
+var S2T_MAP = {"严":"嚴","个":"個","么":"麼","为":"為","丽":"麗","义":"義","乐":"樂","乔":"喬","云":"雲","亚":"亞","产":"產","从":"從","众":"眾","会":"會","伞":"傘","伟":"偉","传":"傳","伤":"傷","伦":"倫","伪":"偽","体":"體","余":"餘","佣":"傭","侠":"俠","侣":"侶","侦":"偵","侧":"側","侨":"僑","儿":"兒","党":"黨","兰":"蘭","关":"關","兴":"興","内":"內","冈":"岡","册":"冊","军":"軍","农":"農","净":"淨","凉":"涼","几":"幾","凤":"鳳","凭":"憑","凯":"凱","击":"擊","凿":"鑿","刘":"劉","剑":"劍","剧":"劇","务":"務","劲":"勁","劳":"勞","势":"勢","匀":"勻","区":"區","历":"歷","厉":"厲","压":"壓","厌":"厭","厢":"廂","县":"縣","参":"參","双":"雙","发":"發","变":"變","叙":"敘","叠":"疊","号":"號","员":"員","听":"聽","呜":"嗚","呢":"呢","周":"周","含":"含","吴":"吳","呐":"吶","国":"國","图":"圖","场":"場","坏":"壞","块":"塊","坚":"堅","坛":"壇","坟":"墳","坠":"墜","垦":"墾","垫":"墊","墙":"牆","壮":"壯","声":"聲","壳":"殼","壶":"壺","处":"處","备":"備","复":"複","够":"夠","梦":"夢","头":"頭","夸":"誇","奋":"奮","奖":"獎","奥":"奧","妈":"媽","委":"委","姜":"薑","姿":"姿","威":"威","孔":"孔","字":"字","孙":"孫","季":"季","孩":"孩","孵":"孵","它":"它","宅":"宅","守":"守","完":"完","宝":"寶","实":"實","宣":"宣","室":"室","宫":"宮","家":"家","容":"容","宽":"寬","宾":"賓","寂":"寂","寄":"寄","富":"富","寒":"寒","寓":"寓","寝":"寢","寞":"寞","察":"察","封":"封","射":"射","将":"將","尊":"尊","导":"導","尔":"爾","尖":"尖","局":"局","居":"居","屋":"屋","展":"展","属":"屬","岁":"歲","岛":"島","崭":"嶄","巢":"巢","币":"幣","巷":"巷","帮":"幫","带":"帶","幕":"幕","年":"年","床":"床","序":"序","底":"底","庙":"廟","废":"廢","度":"度","座":"座","庭":"庭","弃":"棄","张":"張","弹":"彈","归":"歸","当":"當","录":"錄","形":"形","影":"影","往":"往","待":"待","很":"很","律":"律","后":"後","径":"徑","徒":"徒","循":"循","微":"微","必":"必","忆":"憶","忌":"忌","忍":"忍","志":"志","忘":"忘","忙":"忙","快":"快","念":"念","怀":"懷","态":"態","怂":"慫","恍":"恍","恰":"恰","恨":"恨","恢":"恢","恒":"恒","恩":"恩","恬":"恬","息":"息","恳":"懇","恶":"惡","情":"情","惊":"驚","惧":"懼","惨":"慘","惯":"慣","想":"想","惹":"惹","愈":"愈","愉":"愉","意":"意","愚":"愚","感":"感","愧":"愧","慈":"慈","慌":"慌","慢":"慢","慧":"慧","慨":"慨","懂":"懂","懒":"懶","战":"戰","户":"戶","房":"房","所":"所","扁":"扁","扇":"扇","打":"打","托":"託","执":"執","扩":"擴","扫":"掃","抚":"撫","抛":"拋","投":"投","抗":"抗","折":"折","抢":"搶","护":"護","报":"報","拟":"擬","拥":"擁","拨":"撥","择":"擇","挡":"擋","挣":"掙","换":"換","据":"據","掷":"擲","搂":"摟","搅":"攪","搜":"搜","搬":"搬","摇":"搖","摊":"攤","撑":"撐","撒":"撒","撞":"撞","播":"播","操":"操","攀":"攀","收":"收","改":"改","攻":"攻","放":"放","政":"政","故":"故","效":"效","敌":"敵","敏":"敏","救":"救","教":"教","散":"散","敬":"敬","数":"數","敲":"敲","整":"整","斋":"齋","斑":"斑","斜":"斜","斥":"斥","施":"施","旁":"旁","旅":"旅","旋":"旋","族":"族","旗":"旗","无":"無","时":"時","昏":"昏","易":"易","晚":"晚","晋":"晉","晨":"晨","普":"普","景":"景","晴":"晴","暑":"暑","暖":"暖","暗":"暗","暮":"暮","暴":"暴","曙":"曙","曲":"曲","更":"更","曾":"曾","替":"替","最":"最","月":"月","有":"有","服":"服","望":"望","朝":"朝","期":"期","木":"木","未":"未","末":"末","本":"本","术":"術","机":"機","杀":"殺","杂":"雜","权":"權","杆":"桿","李":"李","材":"材","村":"村","条":"條","来":"來","杯":"杯","杰":"傑","松":"松","板":"板","构":"構","架":"架","树":"樹","栖":"棲","校":"校","样":"樣","核":"核","根":"根","格":"格","桃":"桃","框":"框","档":"檔","桥":"橋","梁":"樑","检":"檢","棒":"棒","棚":"棚","棕":"棕","楼":"樓","概":"概","榄":"欖","榴":"榴","榜":"榜","横":"橫","橱":"櫥","欢":"歡","欧":"歐","欲":"欲","歌":"歌","止":"止","正":"正","此":"此","步":"步","武":"武","死":"死","残":"殘","段":"段","毕":"畢","气":"氣","汇":"匯","汉":"漢","汤":"湯","没":"沒","泪":"淚","注":"注","泳":"泳","泻":"瀉","泽":"澤","洁":"潔","洒":"灑","洗":"洗","活":"活","洽":"洽","派":"派","流":"流","浅":"淺","浆":"漿","浇":"澆","浊":"濁","测":"測","济":"濟","浏":"瀏","浑":"渾","浓":"濃","浙":"浙","浩":"浩","海":"海","涂":"塗","消":"消","涨":"漲","液":"液","涵":"涵","淀":"澱","渊":"淵","渔":"漁","渡":"渡","游":"遊","湖":"湖","湾":"灣","湿":"濕","溃":"潰","满":"滿","滋":"滋","滑":"滑","滚":"滾","滤":"濾","滥":"濫","潜":"潛","潭":"潭","潮":"潮","激":"激","濒":"瀕","灭":"滅","灯":"燈","灰":"灰","灵":"靈","灶":"灶","炉":"爐","点":"點","烈":"烈","烟":"煙","烦":"煩","烧":"燒","热":"熱","焕":"煥","焰":"焰","然":"然","煎":"煎","煤":"煤","熊":"熊","熟":"熟","燃":"燃","爱":"愛","爷":"爺","牵":"牽","犹":"猶","狮":"獅","狭":"狹","狱":"獄","猎":"獵","猫":"貓","献":"獻","猪":"豬","环":"環","现":"現","玻":"玻","珊":"珊","珍":"珍","珠":"珠","球":"球","理":"理","瑞":"瑞","瓜":"瓜","瓦":"瓦","甘":"甘","甜":"甜","生":"生","用":"用","田":"田","由":"由","男":"男","界":"界","留":"留","略":"略","番":"番","异":"異","疏":"疏","疑":"疑","疗":"療","疫":"疫","疲":"疲","疼":"疼","疾":"疾","病":"病","症":"症","痊":"痊","痕":"痕","痛":"痛","痴":"癡","瘟":"瘟","癣":"癬","皇":"皇","盖":"蓋","盗":"盜","盘":"盤","盛":"盛","监":"監","盾":"盾","眠":"眠","睡":"睡","睦":"睦","瞒":"瞞","矛":"矛","码":"碼","碍":"礙","碑":"碑","碟":"碟","磁":"磁","示":"示","礼":"禮","社":"社","票":"票","禁":"禁","禽":"禽","种":"種","积":"積","称":"稱","稳":"穩","穷":"窮","签":"簽","简":"簡","管":"管","箭":"箭","篇":"篇","篮":"籃","篱":"籬","类":"類","粉":"粉","粒":"粒","糊":"糊","糟":"糟","系":"系","素":"素","索":"索","紫":"紫","繁":"繁","红":"紅","约":"約","级":"級","纪":"紀","紉":"紉","纹":"紋","纳":"納","纯":"純","纱":"紗","纸":"紙","纷":"紛","纺":"紡","累":"累","细":"細","绅":"紳","绍":"紹","终":"終","组":"組","绞":"絞","结":"結","绝":"絕","络":"絡","给":"給","丝":"絲","统":"統","绢":"絹","绑":"綁","紧":"緊","线":"線","缘":"緣","缚":"縛","县":"縣","纵":"縱","绕":"繞","绣":"繡","缠":"纏","纤":"纖","罐":"罐","网":"網","罗":"羅","罚":"罰","罢":"罷","罪":"罪","置":"置","署":"署","群":"群","羡":"羨","义":"義","习":"習","翱":"翺","翘":"翹","老":"老","考":"考","耐":"耐","耕":"耕","耗":"耗","耳":"耳","聚":"聚","聪":"聰","肃":"肅","肢":"肢","肤":"膚","肿":"腫","胁":"脅","胎":"胎","胜":"勝","胞":"胞","脂":"脂","脏":"臟","脆":"脆","脉":"脈","脊":"脊","脱":"脫","脸":"臉","腊":"臘","腋":"腋","腌":"醃","腐":"腐","腻":"膩","膀":"膀","膊":"膊","膛":"膛","膨":"膨","臂":"臂","臼":"臼","舆":"輿","舍":"舍","舒":"舒","舰":"艦","艰":"艱","芜":"蕪","芦":"蘆","苇":"葦","苏":"蘇","苗":"苗","茎":"莖","荐":"薦","获":"獲","萧":"蕭","萨":"薩","虚":"虛","虫":"蟲","虹":"虹","虾":"蝦","蚂":"螞","蚊":"蚊","蚕":"蠶","蛇":"蛇","蛋":"蛋","蛛":"蛛","蛤":"蛤","蛮":"蠻","蟹":"蟹","衫":"衫","衬":"襯","衰":"衰","袋":"袋","袖":"袖","袜":"襪","被":"被","袭":"襲","裙":"裙","裤":"褲","裳":"裳","裸":"裸","裹":"裹","褐":"褐","褪":"褪","襟":"襟","见":"見","观":"觀","触":"觸","言":"言","誉":"譽","誓":"誓","谎":"謊","谨":"謹","谭":"譚","谱":"譜","讽":"諷","设":"設","访":"訪","诀":"訣","证":"證","评":"評","试":"試","诗":"詩","诞":"誕","诡":"詭","询":"詢","诚":"誠","诬":"誣","语":"語","误":"誤","诱":"誘","说":"說","请":"請","诺":"諾","读":"讀","课":"課","调":"調","谁":"誰","谅":"諒","谈":"談","谊":"誼","谋":"謀","谓":"謂","谐":"諧","谒":"謁","谕":"諭","谙":"諳","谛":"諦","谜":"謎","谬":"謬","谪":"謫","识":"識","谱":"譜","谋":"謀","谱":"譜","谷":"谷","豆":"豆","豚":"豚","象":"象","豪":"豪","豫":"豫","豹":"豹","贝":"貝","贞":"貞","负":"負","财":"財","责":"責","败":"敗","账":"賬","货":"貨","质":"質","贬":"貶","贮":"貯","贱":"賤","贵":"貴","贺":"賀","贼":"賊","贾":"賈","贿":"賄","赁":"賃","赂":"賂","赃":"贓","资":"資","赊":"賒","赋":"賦","赌":"賭","赎":"贖","赏":"賞","赐":"賜","赔":"賠","赖":"賴","赚":"賺","赛":"賽","赞":"贊","赠":"贈","赢":"贏","赤":"赤","赵":"趙","赶":"趕","趋":"趨","跌":"跌","践":"踐","跷":"蹺","蹭":"蹭","车":"車","轨":"軌","军":"軍","轩":"軒","软":"軟","轴":"軸","载":"載","辅":"輔","軽":"輕","辉":"輝","辆":"輛","辖":"轄","辙":"辙","辟":"辟","辩":"辯","边":"邊","达":"達","迁":"遷","过":"過","迈":"邁","迎":"迎","运":"運","还":"還","这":"這","远":"遠","违":"違","连":"連","迟":"遲","迫":"迫","迹":"跡","适":"適","选":"選","逊":"遜","递":"遞","送":"送","通":"通","逢":"逢","逻":"邏","锁":"鎖","锅":"鍋","锈":"鏽","锋":"鋒","错":"錯","锐":"銳","镇":"鎮","问":"問","闰":"閏","闲":"閒","间":"間","闷":"悶","闸":"閘","闹":"鬧","闻":"聞","阀":"閥","阁":"閣","阅":"閱","队":"隊","阶":"階","阱":"阱","防":"防","阳":"陽","阴":"陰","阵":"陣","际":"際","陆":"陸","陈":"陳","险":"險","风":"風","飞":"飛","饭":"飯","马":"馬","驴":"驢","骑":"騎","骗":"騙","骚":"騷","骤":"驟","验":"驗","惊":"驚","骤":"驟","骞":"騫","鳖":"鱉","鸟":"鳥","鸡":"雞","鹅":"鵝","鸽":"鴿","鹊":"鵲","鹏":"鵬","麦":"麥","麦":"麥","麽":"麽","麽":"麽","黄":"黃","黎":"黎","黏":"黏","黑":"黑","默":"默","鼓":"鼓","鼠":"鼠","鼻":"鼻","齐":"齊","齿":"齒","龙":"龍","龟":"龜"};
+
+function s2t(s) {
+  if (!s) return s;
+  var out = '';
+  for (var i = 0; i < s.length; i++) {
+    var c = s.charAt(i);
+    out += S2T_MAP[c] || c;
+  }
+  return out;
+}
+
+// ===== 当前语言 / 主题 =====
+var currentLang = localStorage.getItem('lang') || 'zh';
+var currentTheme = localStorage.getItem('theme') || 'light';
+var ratings = {};
+var checks = {};
+try {
+  var savedR = localStorage.getItem('rating');
+  if (savedR) ratings = JSON.parse(savedR);
+  var savedC = localStorage.getItem('checks');
+  if (savedC) checks = JSON.parse(savedC);
+} catch(e) { ratings = {}; checks = {}; }
+
+// ===== 翻译函数 t() =====
+function t(key, params) {
+  var actualLang = (currentLang === 'zht') ? 'zh' : currentLang;
+  var dict = DICT[actualLang] || DICT.zh;
+  var val = dict[key];
+  if (val === undefined) return key;
+  if (currentLang === 'zht' && typeof val === 'string') {
+    val = s2t(val);
+  }
+  if (params && typeof val === 'string') {
+    for (var k in params) {
+      val = val.replace(new RegExp('\\{\\{' + k + '\\}\\}', 'g'), params[k]);
+    }
+  }
+  return val;
+}
+
+// ===== 标签翻译（按嵌套结构） =====
+function getTagLabel(tagKey) {
+  var actualLang = (currentLang === 'zht') ? 'zh' : currentLang;
+  var dict = DICT[actualLang] || DICT.zh;
+  var v = (dict.tags && dict.tags[tagKey]) || tagKey;
+  if (currentLang === 'zht') v = s2t(v);
+  return v;
+}
+
+// ===== 主题切换 =====
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  currentTheme = theme;
+  try { localStorage.setItem('theme', theme); } catch(e) {}
+  var btn = document.querySelector('.theme-toggle');
+  if (btn) btn.textContent = theme === 'dark' ? '☀' : '🌙';
+  renderHero();
+  if (typeof renderMap === 'function') renderMap();
+}
+
+function toggleTheme() {
+  applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+}
+
+// ===== 语言切换 =====
+function applyLang(lang) {
+  currentLang = lang;
+  try { localStorage.setItem('lang', lang); } catch(e) {}
+  var buttons = document.querySelectorAll('.lang-btn');
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].getAttribute('data-lang') === lang) {
+      buttons[i].classList.add('lang-active');
+    } else {
+      buttons[i].classList.remove('lang-active');
+    }
+  }
+  renderAll();
+}
+
+function setLang(lang) { applyLang(lang); }
+
+// ===== 倒计时 =====
+var DEPARTURE_DATE = new Date('2026-09-25T21:30:00+08:00'); // HKT
+function updateCountdown() {
+  var now = new Date();
+  var diff = DEPARTURE_DATE - now;
+  var el = document.getElementById('cd-count');
+  if (!el) return;
+  if (diff <= 0) {
+    el.innerHTML = '<span style="color:var(--accent-2)">✈ 已出发</span>';
+    return;
+  }
+  var d = Math.floor(diff / 86400000);
+  var h = Math.floor((diff % 86400000) / 3600000);
+  var m = Math.floor((diff % 3600000) / 60000);
+  var s = Math.floor((diff % 60000) / 1000);
+  el.innerHTML =
+    '<span class="count">' + d + '</span><span class="unit">' + t('days') + '</span>' +
+    '<span class="count">' + h + '</span><span class="unit">' + t('hours') + '</span>' +
+    '<span class="count">' + m + '</span><span class="unit">' + t('minutes') + '</span>' +
+    '<span class="count">' + s + '</span><span class="unit">' + t('seconds') + '</span>';
+}
+
+// ===== 双时钟 =====
+function updateClocks() {
+  var now = new Date();
+  // Use UTC arithmetic (independent of local timezone).
+  // Beijing time = UTC + 8
+  var bj = new Date(now.getTime() + 8 * 3600 * 1000);
+  // Italy time = UTC + 2 (CEST)
+  var it = new Date(now.getTime() + 2 * 3600 * 1000);
+
+  var pad = function(n) { return n < 10 ? '0' + n : '' + n; };
+  function fmt(d) { return pad(d.getUTCHours()) + ':' + pad(d.getUTCMinutes()) + ':' + pad(d.getUTCSeconds()); }
+  function fmtDate(d) {
+    var months = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+    return d.getUTCFullYear() + '-' + months[d.getUTCMonth()] + '-' + pad(d.getUTCDate());
+  }
+
+  var bjEl = document.getElementById('clock-bj');
+  var itEl = document.getElementById('clock-it');
+  var bjDate = document.getElementById('date-bj');
+  var itDate = document.getElementById('date-it');
+  if (bjEl) bjEl.textContent = fmt(bj);
+  if (itEl) itEl.textContent = fmt(it);
+  if (bjDate) bjDate.textContent = fmtDate(bj);
+  if (itDate) itDate.textContent = fmtDate(it);
+}
+
+// ===== 头图渲染 =====
+function renderHero() {
+  var hero = document.getElementById('hero');
+  if (!hero) return;
+  var isDark = currentTheme === 'dark';
+  var html = '';
+  html += '<svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">';
+  html += '<defs>';
+  html += '<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">';
+  if (isDark) {
+    html += '<stop offset="0%" stop-color="#0F1530"/>';
+    html += '<stop offset="60%" stop-color="#2A3A6A"/>';
+    html += '<stop offset="100%" stop-color="#0A0E22"/>';
+  } else {
+    html += '<stop offset="0%" stop-color="#FFC9A0"/>';
+    html += '<stop offset="50%" stop-color="#FFD8B4"/>';
+    html += '<stop offset="100%" stop-color="#F7B894"/>';
+  }
+  html += '</linearGradient>';
+  html += '<radialGradient id="sun" cx="0.5" cy="0.5" r="0.5">';
+  html += '<stop offset="0%" stop-color="#FFFAE6"/>';
+  html += '<stop offset="100%" stop-color="#FFFAE6" stop-opacity="0"/>';
+  html += '</radialGradient>';
+  html += '<radialGradient id="moon" cx="0.5" cy="0.5" r="0.5">';
+  html += '<stop offset="0%" stop-color="#F0F0F8"/>';
+  html += '<stop offset="100%" stop-color="#A0A0C0" stop-opacity="0.4"/>';
+  html += '</radialGradient>';
+  html += '</defs>';
+  html += '<rect width="800" height="280" fill="url(#sky)"/>';
+  if (isDark) {
+    html += '<circle cx="650" cy="80" r="40" fill="url(#moon)"/>';
+    html += '<circle cx="650" cy="80" r="22" fill="#F5F5F0"/>';
+    html += '<circle cx="100" cy="40" r="1.5" fill="#FFF" opacity="0.8"/>';
+    html += '<circle cx="220" cy="60" r="1" fill="#FFF" opacity="0.6"/>';
+    html += '<circle cx="350" cy="30" r="1.2" fill="#FFF" opacity="0.7"/>';
+    html += '<circle cx="500" cy="50" r="0.8" fill="#FFF" opacity="0.5"/>';
+    html += '<circle cx="750" cy="30" r="1" fill="#FFF" opacity="0.6"/>';
+  } else {
+    html += '<circle cx="650" cy="80" r="45" fill="url(#sun)"/>';
+    html += '<circle cx="650" cy="80" r="30" fill="#FFFAE6"/>';
+  }
+  // 云
+  if (isDark) {
+    html += '<ellipse cx="120" cy="100" rx="60" ry="20" fill="#3A4060" opacity="0.6"/>';
+    html += '<ellipse cx="500" cy="120" rx="80" ry="22" fill="#3A4060" opacity="0.5"/>';
+  } else {
+    html += '<ellipse cx="100" cy="90" rx="55" ry="18" fill="#FFFFFF" opacity="0.75"/>';
+    html += '<ellipse cx="120" cy="80" rx="40" ry="14" fill="#FFFFFF" opacity="0.7"/>';
+    html += '<ellipse cx="500" cy="110" rx="70" ry="20" fill="#FFFFFF" opacity="0.7"/>';
+    html += '<ellipse cx="540" cy="100" rx="40" ry="12" fill="#FFFFFF" opacity="0.6"/>';
+  }
+  // 山丘
+  html += '<path d="M 0 220 Q 200 180 400 200 T 800 195 L 800 280 L 0 280 Z" fill="' + (isDark ? '#2A3050' : '#D8B69A') + '"/>';
+  html += '<path d="M 0 240 Q 300 220 600 235 T 800 230 L 800 280 L 0 280 Z" fill="' + (isDark ? '#1F2540' : '#C49A78') + '"/>';
+
+  // ===== 比萨斜塔 =====
+  html += '<g transform="translate(120, 130)"><g transform="rotate(-8)">';
+  html += '<rect x="-32" y="100" width="64" height="10" fill="' + (isDark ? '#3D3520' : '#8B7355') + '"/>';
+  html += '<rect x="-25" y="-30" width="50" height="130" fill="' + (isDark ? '#5C5240' : '#D4C2A8') + '" stroke="' + (isDark ? '#7B6B50' : '#A8957A') + '" stroke-width="1"/>';
+  for (var i = 0; i < 6; i++) {
+    html += '<line x1="-25" y1="' + (-25 + i * 22) + '" x2="25" y2="' + (-25 + i * 22) + '" stroke="' + (isDark ? '#7B6B50' : '#A8957A') + '" stroke-width="0.8"/>';
+  }
+  for (var j = 0; j < 6; j++) {
+    html += '<rect x="-6" y="' + (-22 + j * 22) + '" width="12" height="14" fill="' + (isDark ? '#1F2540' : '#5A4D3A') + '" rx="2"/>';
+  }
+  html += '<rect x="-15" y="-45" width="30" height="15" fill="' + (isDark ? '#5C5240' : '#D4C2A8') + '"/>';
+  html += '<circle cx="0" cy="-50" r="6" fill="' + (isDark ? '#7B6B50' : '#A8957A') + '"/>';
+  html += '</g></g>';
+
+  // ===== 葡萄藤 + 红酒 =====
+  html += '<g transform="translate(310, 180)">';
+  html += '<rect x="-3" y="0" width="6" height="40" fill="' + (isDark ? '#2D2010' : '#6B3818') + '"/>';
+  html += '<rect x="-12" y="-2" width="24" height="14" rx="3" fill="' + (isDark ? '#3D2515' : '#8B4513') + '" stroke="' + (isDark ? '#1A0E08' : '#5A2C0C') + '" stroke-width="1"/>';
+  html += '<rect x="-9" y="-5" width="18" height="6" rx="1" fill="' + (isDark ? '#5C3820' : '#A0522D') + '"/>';
+  // 葡萄串
+  for (var gi = 0; gi < 6; gi++) {
+    var gx = (gi % 3 - 1) * 8;
+    var gy = -16 + Math.floor(gi / 3) * 8;
+    html += '<circle cx="' + gx + '" cy="' + gy + '" r="5" fill="' + (isDark ? '#3D1850' : '#6F2D7B') + '"/>';
+  }
+  // 葡萄叶
+  html += '<path d="M 0 -20 Q 15 -30 12 -15 Q 25 -20 22 -5 Q 18 -10 12 -10 Z" fill="' + (isDark ? '#1F4020' : '#4D7C4D') + '"/>';
+  html += '</g>';
+
+  // ===== 意面 + 餐叉 =====
+  html += '<g transform="translate(440, 195)">';
+  html += '<ellipse cx="0" cy="0" rx="40" ry="14" fill="' + (isDark ? '#3D3520' : '#FFFFFF') + '" stroke="' + (isDark ? '#7B6B50' : '#A8957A') + '" stroke-width="1.5"/>';
+  html += '<ellipse cx="0" cy="-2" rx="32" ry="9" fill="' + (isDark ? '#E5C490' : '#FFD8B4') + '"/>';
+  // 意面线条
+  for (var n = 0; n < 6; n++) {
+    var nxo = (n - 2.5) * 8;
+    html += '<path d="M ' + nxo + ' -5 Q ' + (nxo + 3) + ' -1 ' + nxo + ' 3" stroke="' + (isDark ? '#A08550' : '#D4A857') + '" stroke-width="1" fill="none"/>';
+  }
+  // 番茄
+  html += '<circle cx="-18" cy="-3" r="3" fill="' + (isDark ? '#A03020' : '#C8533F') + '"/>';
+  html += '<circle cx="20" cy="-2" r="3" fill="' + (isDark ? '#A03020' : '#C8533F') + '"/>';
+  // 餐叉
+  html += '<rect x="-3" y="20" width="2" height="40" fill="' + (isDark ? '#A0A0A8' : '#808088') + '"/>';
+  html += '<rect x="-7" y="20" width="2" height="14" fill="' + (isDark ? '#A0A0A8' : '#808088') + '"/>';
+  html += '<rect x="-1" y="20" width="2" height="14" fill="' + (isDark ? '#A0A0A8' : '#808088') + '"/>';
+  html += '<rect x="5" y="20" width="2" height="14" fill="' + (isDark ? '#A0A0A8' : '#808088') + '"/>';
+  html += '</g>';
+
+  // ===== 古罗马柱 =====
+  html += '<g transform="translate(560, 100)">';
+  // 柱顶
+  html += '<rect x="-22" y="-10" width="44" height="8" fill="' + (isDark ? '#5C5240' : '#D4C2A8') + '"/>';
+  html += '<rect x="-20" y="-2" width="40" height="6" fill="' + (isDark ? '#7B6B50' : '#A8957A') + '"/>';
+  // 柱身（凹槽）
+  for (var k = 0; k < 4; k++) {
+    var kx = (k - 1.5) * 10;
+    html += '<rect x="' + (kx - 4) + '" y="4" width="8" height="110" fill="' + (isDark ? '#6B5D48' : '#E0D2B6') + '"/>';
+  }
+  // 柱基
+  html += '<rect x="-24" y="114" width="48" height="10" fill="' + (isDark ? '#5C5240' : '#D4C2A8') + '"/>';
+  html += '<rect x="-28" y="124" width="56" height="10" fill="' + (isDark ? '#3D3520' : '#8B7355') + '"/>';
+  html += '</g>';
+
+  // ===== 咖啡杯 =====
+  html += '<g transform="translate(680, 200)">';
+  html += '<ellipse cx="0" cy="20" rx="22" ry="6" fill="' + (isDark ? '#3D3520' : '#8B7355') + '"/>';
+  html += '<path d="M -18 -10 L -14 16 Q -14 20 -8 20 L 8 20 Q 14 20 14 16 L 18 -10 Z" fill="' + (isDark ? '#E5E0D5' : '#FFFFFF') + '" stroke="' + (isDark ? '#7B6B50' : '#A8957A') + '" stroke-width="1"/>';
+  html += '<ellipse cx="0" cy="-10" rx="18" ry="4" fill="' + (isDark ? '#3D2515' : '#5A2C1A') + '"/>';
+  html += '<path d="M 14 -6 Q 22 -4 22 4 Q 22 12 14 12" fill="none" stroke="' + (isDark ? '#7B6B50' : '#A8957A') + '" stroke-width="1.5"/>';
+  // 蒸汽
+  html += '<path d="M -6 -16 Q -4 -22 -6 -28 Q -8 -34 -6 -40" fill="none" stroke="' + (isDark ? '#FFFFFF' : '#FFFFFF') + '" stroke-width="1.5" opacity="0.4"/>';
+  html += '<path d="M 0 -16 Q 2 -22 0 -28 Q -2 -34 0 -40" fill="none" stroke="#FFFFFF" stroke-width="1.5" opacity="0.4"/>';
+  html += '<path d="M 6 -16 Q 8 -22 6 -28 Q 4 -34 6 -40" fill="none" stroke="#FFFFFF" stroke-width="1.5" opacity="0.4"/>';
+  html += '</g>';
+
+  // ===== 两只小动物 (白天：站立 + 玩耍；夜晚：蜷睡 + ZZZ) =====
+  if (isDark) {
+    // 夜晚：蜷睡的小猫 + ZZZ
+    // 小猫 1
+    html += '<g transform="translate(250, 230)">';
+    html += '<ellipse cx="0" cy="10" rx="22" ry="10" fill="' + (isDark ? '#5C5240' : '#9C7A56') + '"/>';
+    html += '<circle cx="-15" cy="2" r="10" fill="' + (isDark ? '#5C5240' : '#9C7A56') + '"/>';
+    // 耳朵
+    html += '<path d="M -22 -4 L -18 -10 L -16 -3 Z" fill="' + (isDark ? '#5C5240' : '#9C7A56') + '"/>';
+    html += '<path d="M -12 -4 L -8 -10 L -6 -3 Z" fill="' + (isDark ? '#5C5240' : '#9C7A56') + '"/>';
+    // 眼睛（闭合）
+    html += '<path d="M -19 2 Q -17 4 -15 2" stroke="#3D2A18" stroke-width="1" fill="none"/>';
+    // 鼻子
+    html += '<circle cx="-19" cy="5" r="1" fill="#3D2A18"/>';
+    // 尾巴
+    html += '<path d="M 22 5 Q 30 -2 28 -8" stroke="' + (isDark ? '#5C5240' : '#9C7A56') + '" stroke-width="3" fill="none"/>';
+    html += '</g>';
+    // 小猫 2
+    html += '<g transform="translate(380, 235)">';
+    html += '<ellipse cx="0" cy="8" rx="18" ry="8" fill="' + (isDark ? '#7A6850' : '#B89A7C') + '"/>';
+    html += '<circle cx="-12" cy="2" r="8" fill="' + (isDark ? '#7A6850' : '#B89A7C') + '"/>';
+    html += '<path d="M -18 -3 L -14 -8 L -12 -2 Z" fill="' + (isDark ? '#7A6850' : '#B89A7C') + '"/>';
+    html += '<path d="M -10 -3 L -6 -8 L -4 -2 Z" fill="' + (isDark ? '#7A6850' : '#B89A7C') + '"/>';
+    html += '<path d="M -15 2 Q -13 4 -11 2" stroke="#3D2A18" stroke-width="1" fill="none"/>';
+    html += '<circle cx="-15" cy="4" r="1" fill="#3D2A18"/>';
+    html += '</g>';
+    // ZZZ
+    html += '<text x="270" y="200" font-size="18" font-weight="700" fill="#E0E8FF" font-family="serif">Z</text>';
+    html += '<text x="285" y="190" font-size="14" font-weight="700" fill="#E0E8FF" font-family="serif">Z</text>';
+    html += '<text x="297" y="182" font-size="10" font-weight="700" fill="#E0E8FF" font-family="serif">z</text>';
+    html += '<text x="395" y="205" font-size="14" font-weight="700" fill="#E0E8FF" font-family="serif">Z</text>';
+    html += '<text x="408" y="195" font-size="10" font-weight="700" fill="#E0E8FF" font-family="serif">z</text>';
+  } else {
+    // 白天：站立的小猫 + 小狗
+    // 小狗
+    html += '<g transform="translate(220, 220)">';
+    html += '<ellipse cx="0" cy="14" rx="20" ry="8" fill="' + (isDark ? '#5C5240' : '#A07852') + '"/>';
+    html += '<circle cx="-12" cy="6" r="9" fill="' + (isDark ? '#5C5240' : '#A07852') + '"/>';
+    html += '<ellipse cx="-19" cy="-2" rx="3" ry="6" fill="' + (isDark ? '#4A3D2A' : '#8B6840') + '" transform="rotate(-20 -19 -2)"/>';
+    html += '<ellipse cx="-9" cy="-2" rx="3" ry="6" fill="' + (isDark ? '#4A3D2A' : '#8B6840') + '" transform="rotate(20 -9 -2)"/>';
+    html += '<circle cx="-15" cy="6" r="1" fill="#3D2A18"/>';
+    html += '<ellipse cx="-15" cy="9" rx="2" ry="1" fill="#3D2A18"/>';
+    html += '<path d="M 19 12 Q 26 6 22 0" stroke="' + (isDark ? '#5C5240' : '#A07852') + '" stroke-width="3" fill="none"/>';
+    html += '</g>';
+    // 小猫
+    html += '<g transform="translate(380, 220)">';
+    html += '<ellipse cx="0" cy="12" rx="16" ry="7" fill="' + (isDark ? '#5C5240' : '#7A6850') + '"/>';
+    html += '<circle cx="-10" cy="4" r="8" fill="' + (isDark ? '#5C5240' : '#7A6850') + '"/>';
+    html += '<path d="M -15 -3 L -12 -8 L -10 -3 Z" fill="' + (isDark ? '#5C5240' : '#7A6850') + '"/>';
+    html += '<path d="M -8 -3 L -5 -8 L -3 -3 Z" fill="' + (isDark ? '#5C5240' : '#7A6850') + '"/>';
+    html += '<circle cx="-13" cy="4" r="1" fill="#3D2A18"/>';
+    html += '<circle cx="-7" cy="4" r="1" fill="#3D2A18"/>';
+    html += '<path d="M -12 7 Q -10 9 -8 7" stroke="#3D2A18" stroke-width="0.5" fill="none"/>';
+    html += '<path d="M 15 8 Q 22 4 20 -2" stroke="' + (isDark ? '#5C5240' : '#7A6850') + '" stroke-width="3" fill="none"/>';
+    html += '</g>';
+  }
+
+  // 植被 - 前景
+  html += '<path d="M 0 260 Q 60 245 100 260 Q 140 240 180 258 Q 240 248 290 260 Q 340 240 400 260 Q 460 250 520 258 Q 580 245 650 260 Q 720 250 800 258 L 800 280 L 0 280 Z" fill="' + (isDark ? '#1A2A18' : '#5A7A52') + '" opacity="0.85"/>';
+  // 灌木
+  for (var b = 0; b < 8; b++) {
+    var bx = b * 100 + 30;
+    html += '<circle cx="' + bx + '" cy="262" r="14" fill="' + (isDark ? '#1A2A18' : '#5A7A52') + '" opacity="0.7"/>';
+  }
+  html += '</svg>';
+
+  html += '<div class="hero-title">';
+  html += '<h1>' + escapeHtml(t('appName')) + '</h1>';
+  html += '<p>' + escapeHtml(t('tagline')) + '</p>';
+  html += '</div>';
+  hero.innerHTML = html;
+}
+
+function escapeHtml(s) {
+  if (!s) return '';
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// ===== Web Mercator 投影 =====
+function lngLatToXY(lng, lat, lng0, lat0, scale, offsetX, offsetY) {
+  // Web Mercator 简化版
+  var x = lng * scale + offsetX;
+  var y = -lat * scale + offsetY; // 简化：使用线性缩放
+  return [x, y];
+}
+
+// ===== 地图渲染（fit + 标点 + 路线） =====
+function fit(keys, W, H, pad, extra, cap) {
+  pad = pad || 60; cap = cap || 3;
+  var pts = [];
+  for (var i = 0; i < keys.length; i++) {
+    var k = keys[i];
+    var loc = LOCATIONS[k];
+    if (!loc) continue;
+    pts.push([loc.lat, loc.lng]);
+  }
+  if (extra) {
+    for (var j = 0; j < extra.length; j++) {
+      pts.push(extra[j]);
+    }
+  }
+  if (pts.length === 0) {
+    return {scale: 1, offX: 0, offY: 0, minLat: 0, maxLat: 0, minLng: 0, maxLng: 0};
+  }
+  var minLat = pts[0][0], maxLat = pts[0][0], minLng = pts[0][1], maxLng = pts[0][1];
+  for (var i2 = 1; i2 < pts.length; i2++) {
+    if (pts[i2][0] < minLat) minLat = pts[i2][0];
+    if (pts[i2][0] > maxLat) maxLat = pts[i2][0];
+    if (pts[i2][1] < minLng) minLng = pts[i2][1];
+    if (pts[i2][1] > maxLng) maxLng = pts[i2][1];
+  }
+  var spanLat = Math.max(maxLat - minLat, 0.5);
+  var spanLng = Math.max(maxLng - minLng, 0.5);
+  var availW = W - 2 * pad;
+  var availH = H - 2 * pad;
+  var scaleLng = availW / spanLng;
+  var scaleLat = availH / spanLat;
+  var scale = Math.min(scaleLng, scaleLat, 80 * cap); // 最大 80 px/度
+  var centerLat = (minLat + maxLat) / 2;
+  var centerLng = (minLng + maxLng) / 2;
+  var offX = W / 2 - centerLng * scale;
+  var offY = H / 2 + centerLat * scale;
+  return {scale: scale, offX: offX, offY: offY, minLat: minLat, maxLat: maxLat, minLng: minLng, maxLng: maxLng};
+}
+
+function proj(lng, lat, fitObj) {
+  // 渲染时把数据坐标投影到屏幕（使用线性近似）
+  var x = lng * fitObj.scale + fitObj.offX;
+  var y = -lat * fitObj.scale + fitObj.offY;
+  return [x, y];
+}
+
+var currentMapMode = 'overview'; // overview | day-1 | day-2 ... | all
+var currentDayIndex = 0;
+
+function renderMap() {
+  var wrap = document.getElementById('map-svg-wrap');
+  if (!wrap) return;
+  var W = wrap.clientWidth || 600;
+  var H = wrap.clientHeight || 450;
+
+  var keys = [];
+  var extra = [];
+  var centerLat = 41.9, centerLng = 12.5;
+
+  if (currentMapMode === 'overview') {
+    // 总览：只显示大地点
+    keys = ['milano-malpensa', 'brixen', 'seceda', 'alpe-di-siusi', 'venice-mestre', 'venice-rialto', 'florence-smn', 'uffizi', 'duomo', 'rome-termini', 'vatican-museum', 'st-peter', 'colosseum', 'anacapri', 'capri-port', 'augustus-garden'];
+    extra = [[46.7167, 11.6580, 'tag'], [40.5474, 14.2397, 'tag']]; // 多洛米蒂 + 卡普里
+    centerLat = 43.0; centerLng = 12.0;
+  } else if (currentMapMode === 'all') {
+    // 显示全部地点：所有 LOCATIONS
+    keys = Object.keys(LOCATIONS);
+    extra = [];
+    centerLat = 43.0; centerLng = 12.0;
+  } else if (currentMapMode.indexOf('day-') === 0) {
+    // 单日视图
+    var dayNum = parseInt(currentMapMode.split('-')[1], 10);
+    var day = ITINERARY[dayNum - 1];
+    keys = [];
+    for (var i = 0; i < day.items.length; i++) {
+      if (day.items[i].spot && keys.indexOf(day.items[i].spot) === -1) {
+        keys.push(day.items[i].spot);
+      }
+    }
+    centerLat = day.centerLat; centerLng = day.centerLng;
+  }
+
+  var fitObj = fit(keys, W, H, 60, extra, 12);
+
+  // 渲染 SVG
+  var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg">';
+  // 背景：海
+  svg += '<rect width="' + W + '" height="' + H + '" fill="var(--sea)"/>';
+
+  // 意大利国境轮廓 (简化版)
+  // 把国境坐标转为屏幕坐标
+  function ptsToPath(poly) {
+    var d = "";
+    for (var i = 0; i < poly.length; i++) {
+      var p = proj(poly[i][0], poly[i][1], fitObj);
+      d += (i === 0 ? "M " : "L ") + p[0] + " " + p[1] + " ";
+    }
+    d += "Z";
+    return d;
+  }
+  if (typeof ITALY_OUTLINE !== 'undefined') {
+    svg += '<path d="' + ptsToPath(ITALY_OUTLINE) + '" class="land-fill"/>';
+  }
+  if (typeof SICILY_OUTLINE !== 'undefined') {
+    svg += '<path d="' + ptsToPath(SICILY_OUTLINE) + '" class="land-fill land-fill-2"/>';
+  }
+  if (typeof SARDINIA_OUTLINE !== 'undefined') {
+    svg += '<path d="' + ptsToPath(SARDINIA_OUTLINE) + '" class="land-fill land-fill-2"/>';
+  }
+
+  // 绘制路线（如果是单日视图）
+  if (currentMapMode.indexOf('day-') === 0) {
+    var dayNum2 = parseInt(currentMapMode.split('-')[1], 10);
+    var day2 = ITINERARY[dayNum2 - 1];
+    var pts = [];
+    for (var ii = 0; ii < day2.items.length; ii++) {
+      if (day2.items[ii].spot) {
+        var loc = LOCATIONS[day2.items[ii].spot];
+        if (loc) pts.push([loc.lat, loc.lng]);
+      }
+    }
+    if (pts.length > 1) {
+      var pathD = "";
+      for (var pi = 0; pi < pts.length; pi++) {
+        var pp = proj(pts[pi][1], pts[pi][0], fitObj);
+        pathD += (pi === 0 ? "M " : "L ") + pp[0] + " " + pp[1] + " ";
+      }
+      svg += '<path d="' + pathD + '" class="route-line"/>';
+    }
+  }
+
+  // 绘制所有 LOCATIONS 作为标记
+  var allKeys = (currentMapMode === 'all') ? Object.keys(LOCATIONS) : keys;
+  for (var ki = 0; ki < allKeys.length; ki++) {
+    var kk = allKeys[ki];
+    var loc = LOCATIONS[kk];
+    if (!loc) continue;
+    if (isNaN(loc.lat) || isNaN(loc.lng)) continue; // 防 NaN
+    var p = proj(loc.lng, loc.lat, fitObj);
+    if (isNaN(p[0]) || isNaN(p[1])) continue;
+    var kclass = 'spot-dot kind-' + (loc.kind || 'default');
+    svg += '<g class="' + kclass + '" data-spot="' + escapeHtml(kk) + '" transform="translate(' + p[0] + ',' + p[1] + ')">';
+    svg += '<circle class="dot" r="5"/>';
+    if (currentMapMode === 'all' || currentMapMode.indexOf('day-') === 0) {
+      svg += '<text class="label" y="-8">' + escapeHtml(loc.name || '') + '</text>';
+    }
+    svg += '</g>';
+  }
+
+  svg += '</svg>';
+  wrap.innerHTML = svg;
+
+  // 绑定点击事件
+  bindMapClicks();
+}
+
+function bindMapClicks() {
+  var wrap = document.getElementById('map-svg-wrap');
+  if (!wrap) return;
+  var dots = wrap.querySelectorAll('.spot-dot');
+  for (var i = 0; i < dots.length; i++) {
+    dots[i].addEventListener('click', function(e) {
+      var spotId = this.getAttribute('data-spot');
+      showSpotCard(spotId, this);
+    });
+  }
+}
+
+function showSpotCard(spotId, anchor) {
+  var info = SPOTS_INFO[spotId];
+  if (!info) return;
+  var d = info[currentLang] || info.zh;
+  if (currentLang === 'zht') {
+    d = info.zh;
+  }
+  var loc = LOCATIONS[spotId];
+  if (!loc) return;
+
+  // 创建小卡片
+  var existing = document.querySelector('.spot-card');
+  if (existing) existing.remove();
+  var card = document.createElement('div');
+  card.className = 'spot-card';
+  var hStr = t('appName');
+  card.innerHTML = '<p class="sc-title">' + escapeHtml(d.name) + '</p>' +
+    '<p class="sc-cat">' + escapeHtml(d.cat) + '</p>' +
+    '<p style="margin-top:6px;font-size:11px;color:var(--ink-light)">' + escapeHtml(d.reason) + '</p>' +
+    '<button class="sc-btn" data-loc="' + spotId + '">' + (currentLang === 'en' ? 'Open detail →' : '查看详情 →') + '</button>' +
+    '<button class="sc-btn" style="margin-left:4px;border-color:var(--accent-2);color:var(--accent-2)" data-nav="' + loc.lat + ',' + loc.lng + '">' + (currentLang === 'en' ? 'Open Map ↗' : '导航 ↗') + '</button>';
+  // 定位
+  var wrap2 = document.getElementById('map-svg-wrap');
+  var rect = anchor.getBoundingClientRect();
+  var wrapRect = wrap2.getBoundingClientRect();
+  card.style.left = (rect.left - wrapRect.left + rect.width/2 - 130) + 'px';
+  card.style.top = (rect.top - wrapRect.top - 90) + 'px';
+  wrap2.appendChild(card);
+
+  // 绑定按钮
+  card.querySelector('.sc-btn[data-loc]').addEventListener('click', function(e) {
+    e.stopPropagation();
+    openModal(this.getAttribute('data-loc'));
+    card.remove();
+  });
+  card.querySelector('.sc-btn[data-nav]').addEventListener('click', function(e) {
+    e.stopPropagation();
+    var coords = this.getAttribute('data-nav').split(',');
+    var url = 'https://www.google.com/maps/search/?api=1&query=' + coords[0] + ',' + coords[1];
+    window.open(url, '_blank');
+  });
+
+  // 自动消失
+  setTimeout(function() { if (card.parentNode) card.remove(); }, 6000);
+}
+
+// ===== 介绍卡片弹窗 =====
+function openModal(spotId) {
+  var info = SPOTS_INFO[spotId];
+  if (!info) return;
+  var d = info[currentLang] || info.zh;
+  if (currentLang === 'zht') d = info.zh;
+  var loc = LOCATIONS[spotId];
+  if (!loc) return;
+
+  var html = '';
+  html += '<div class="modal" onclick="event.stopPropagation()">';
+  html += '<div class="modal-head">';
+  html += '<button class="modal-close" onclick="closeModal()">×</button>';
+  html += '<h3 class="modal-title">' + escapeHtml(d.name) + '</h3>';
+  html += '<p class="modal-subtitle">' + escapeHtml(d.cat) + ' · ' + loc.lat.toFixed(4) + '°, ' + loc.lng.toFixed(4) + '°</p>';
+  html += '<a class="modal-loclink" href="https://www.google.com/maps/search/?api=1&query=' + loc.lat + ',' + loc.lng + '" target="_blank">📍 ' + (currentLang === 'en' ? 'Open in Google Maps' : '在 Google 地图中打开') + '</a>';
+  html += '</div>';
+  html += '<div class="modal-body">';
+  html += '<div class="modal-section"><h4>' + (currentLang === 'en' ? 'Why visit' : '推荐理由') + '</h4><p>' + escapeHtml(d.reason) + '</p></div>';
+  html += '<div class="modal-section"><h4>' + (currentLang === 'en' ? 'Must see' : '必看点') + '</h4><ul>';
+  for (var i = 0; i < d.must.length; i++) html += '<li>' + escapeHtml(d.must[i]) + '</li>';
+  html += '</ul></div>';
+  html += '<div class="modal-section"><h4>' + (currentLang === 'en' ? 'Tips' : '体验建议') + '</h4><ul>';
+  for (var k = 0; k < d.tips.length; k++) html += '<li>' + escapeHtml(d.tips[k]) + '</li>';
+  html += '</ul></div>';
+  html += '</div>';
+  html += '</div>';
+  var bg = document.getElementById('modal-bg');
+  if (!bg) return;
+  bg.innerHTML = html;
+  bg.classList.add('show');
+}
+
+function closeModal() {
+  var bg = document.getElementById('modal-bg');
+  if (bg) bg.classList.remove('show');
+}
+
+// ===== 行程时间轴渲染 =====
+function renderItinerary() {
+  var cont = document.getElementById('itinerary-list');
+  if (!cont) return;
+  var html = '';
+  for (var i = 0; i < ITINERARY.length; i++) {
+    var d = ITINERARY[i];
+    html += '<div class="day-card" data-day="' + d.day + '">';
+    html += '<div class="day-head" data-toggle="' + d.day + '">';
+    html += '<div class="day-num">D' + d.day + '</div>';
+    html += '<div class="day-info">';
+    html += '<p class="day-title">' + escapeHtml(t('dayOfN', {n: d.day})) + ' · ' + escapeHtml(d.title) + '</p>';
+    html += '<p class="day-meta"><span>' + escapeHtml(d.date) + '</span><span>·</span><span>' + escapeHtml(d.weekday) + '</span><span>·</span><span>' + escapeHtml(d.cityLabel) + '</span></p>';
+    html += '</div>';
+    html += '<div class="day-progress" data-progress="' + d.day + '">0<span class="total">/' + d.items.length + '</span></div>';
+    html += '<div class="day-toggle">▼</div>';
+    html += '</div>';
+    html += '<div class="day-body">';
+    // 住宿
+    if (d.stay && STAY_INFO[d.stay]) {
+      var stay = STAY_INFO[d.stay][currentLang] || STAY_INFO[d.stay].zh;
+      if (currentLang === 'zht') stay = STAY_INFO[d.stay].zh;
+      html += '<div class="day-stay">🏨 <strong>' + t('stayHotel') + '：</strong>' + escapeHtml(stay.name) + ' · ' + escapeHtml(stay.nights) + '</div>';
+    }
+    // 当天小地图
+    html += '<div class="day-map" id="day-map-' + d.day + '"></div>';
+    // 行程项
+    for (var j = 0; j < d.items.length; j++) {
+      var it = d.items[j];
+      html += '<div class="item" data-day="' + d.day + '" data-idx="' + j + '">';
+      html += '<div class="item-time">' + escapeHtml(it.time || '') + '<span class="zone">' + escapeHtml(it.zone || '') + '</span></div>';
+      html += '<div class="item-body">';
+      var titleHtml = escapeHtml(it.title || '');
+      if (it.spot && SPOTS_INFO[it.spot]) {
+        var sd = SPOTS_INFO[it.spot][currentLang] || SPOTS_INFO[it.spot].zh;
+        if (currentLang === 'zht') sd = SPOTS_INFO[it.spot].zh;
+        titleHtml = '<span class="spot-link" data-spot="' + escapeHtml(it.spot) + '" style="cursor:pointer;color:var(--accent)">' + escapeHtml(it.title || '') + '</span>';
+      }
+      html += '<span class="item-title">' + titleHtml + '</span>';
+      html += '<span class="item-rating">';
+      html += '<button class="rating-btn" data-day="' + d.day + '" data-idx="' + j + '" data-gender="m" title="男评分">♂</button>';
+      html += '<button class="rating-btn" data-day="' + d.day + '" data-idx="' + j + '" data-gender="f" title="女评分">♀</button>';
+      html += '<button class="check-btn" data-day="' + d.day + '" data-idx="' + j + '">' + escapeHtml(t('checkIn')) + '</button>';
+      html += '</span>';
+      if (it.note) html += '<p class="item-note">' + escapeHtml(it.note) + '</p>';
+      if (it.tags && it.tags.length) {
+        html += '<div class="item-tags">';
+        for (var t2 = 0; t2 < it.tags.length; t2++) {
+          var tag = it.tags[t2];
+          html += '<span class="tag tag-' + escapeHtml(tag) + '">' + escapeHtml(getTagLabel(tag)) + '</span>';
+        }
+        html += '</div>';
+      }
+      if (it.transit) {
+        html += '<div class="transit-capsule">' + escapeHtml(t('transit', {n: it.transit})) + '</div>';
+      }
+      html += '</div></div>';
+    }
+    // transit note
+    if (d.transitNote) {
+      html += '<div class="day-stay" style="border-color:var(--accent-3);color:var(--ink-soft)">🚆 ' + escapeHtml(d.transitNote) + '</div>';
+    }
+    html += '</div></div>';
+  }
+  cont.innerHTML = html;
+
+  // 绑定折叠
+  var heads = cont.querySelectorAll('.day-head');
+  for (var hi = 0; hi < heads.length; hi++) {
+    (function(head) {
+      head.addEventListener('click', function() {
+        var card = head.parentNode;
+        card.classList.toggle('open');
+        // 渲染当天小地图
+        if (card.classList.contains('open')) {
+          var dayNum = parseInt(head.getAttribute('data-toggle'), 10);
+          renderDayMap(dayNum);
+        }
+      });
+    })(heads[hi]);
+  }
+
+  // 恢复评分/打卡状态
+  refreshAllProgress();
+  refreshChecks();
+}
+
+function renderDayMap(dayNum) {
+  var day = ITINERARY[dayNum - 1];
+  if (!day) return;
+  var wrap = document.getElementById('day-map-' + dayNum);
+  if (!wrap) return;
+  var W = wrap.clientWidth || 600;
+  var H = 90;
+  var keys = [];
+  for (var i = 0; i < day.items.length; i++) {
+    if (day.items[i].spot && keys.indexOf(day.items[i].spot) === -1) {
+      keys.push(day.items[i].spot);
+    }
+  }
+  if (keys.length === 0) { wrap.innerHTML = ''; return; }
+  var fitObj = fit(keys, W, H, 25, [], 6);
+  function proj2(lng, lat) {
+    return proj(lng, lat, fitObj);
+  }
+  var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '">';
+  svg += '<rect width="' + W + '" height="' + H + '" fill="var(--sea)"/>';
+  // 路线
+  var pts = [];
+  for (var j = 0; j < day.items.length; j++) {
+    if (day.items[j].spot) {
+      var loc = LOCATIONS[day.items[j].spot];
+      if (loc) pts.push([loc.lat, loc.lng]);
+    }
+  }
+  if (pts.length > 1) {
+    var pd = '';
+    for (var p = 0; p < pts.length; p++) {
+      var pp = proj2(pts[p][1], pts[p][0]);
+      pd += (p === 0 ? 'M ' : 'L ') + pp[0] + ' ' + pp[1] + ' ';
+    }
+    svg += '<path d="' + pd + '" class="route-line" stroke-dasharray="3 3" stroke-width="1.5"/>';
+  }
+  // 点
+  for (var k = 0; k < keys.length; k++) {
+    var kk = keys[k];
+    var loc = LOCATIONS[kk];
+    if (!loc) continue;
+    if (isNaN(loc.lat) || isNaN(loc.lng)) continue;
+    var p = proj2(loc.lng, loc.lat);
+    if (isNaN(p[0]) || isNaN(p[1])) continue;
+    var kclass = 'spot-dot kind-' + (loc.kind || 'default');
+    svg += '<g class="' + kclass + '" data-spot="' + escapeHtml(kk) + '" transform="translate(' + p[0] + ',' + p[1] + ')">';
+    svg += '<circle class="dot" r="3.5"/>';
+    svg += '</g>';
+  }
+  svg += '</svg>';
+  wrap.innerHTML = svg;
+  var dots = wrap.querySelectorAll('.spot-dot');
+  for (var di = 0; di < dots.length; di++) {
+    dots[di].addEventListener('click', function(e) {
+      var spotId = this.getAttribute('data-spot');
+      openModal(spotId);
+    });
+  }
+}
+
+// ===== 评分 / 打卡 状态管理 =====
+function getRating(day, idx) {
+  return ratings[day + '_' + idx] || [0, 0];
+}
+function setRating(day, idx, gender, val) {
+  var key = day + '_' + idx;
+  var r = ratings[key] || [0, 0];
+  r[gender === 'm' ? 0 : 1] = val;
+  ratings[key] = r;
+  try { localStorage.setItem('rating', JSON.stringify(ratings)); } catch(e) {}
+}
+
+function getCheck(day, idx) {
+  return !!checks[day + '_' + idx];
+}
+function setCheck(day, idx, val) {
+  var key = day + '_' + idx;
+  if (val) {
+    checks[key] = true;
+  } else {
+    delete checks[key];
+  }
+  try { localStorage.setItem('checks', JSON.stringify(checks)); } catch(e) {}
+}
+
+function refreshAllProgress() {
+  for (var d = 1; d <= ITINERARY.length; d++) {
+    refreshDayProgress(d);
+  }
+}
+function refreshDayProgress(dayNum) {
+  var day = ITINERARY[dayNum - 1];
+  if (!day) return;
+  var total = day.items.length;
+  var done = 0;
+  for (var i = 0; i < total; i++) {
+    if (getCheck(dayNum, i)) done++;
+  }
+  var el = document.querySelector('[data-progress="' + dayNum + '"]');
+  if (el) {
+    el.innerHTML = done + '<span class="total">/' + total + '</span>';
+  }
+}
+function refreshChecks() {
+  var items = document.querySelectorAll('.item');
+  for (var i = 0; i < items.length; i++) {
+    var day = parseInt(items[i].getAttribute('data-day'), 10);
+    var idx = parseInt(items[i].getAttribute('data-idx'), 10);
+    if (getCheck(day, idx)) items[i].classList.add('checked');
+    else items[i].classList.remove('checked');
+    var btn = items[i].querySelector('.check-btn');
+    if (btn) {
+      if (getCheck(day, idx)) {
+        btn.classList.add('checked');
+        btn.textContent = t('checked');
+      } else {
+        btn.classList.remove('checked');
+        btn.textContent = t('checkIn');
+      }
+    }
+    var r = getRating(day, idx);
+    var mBtn = items[i].querySelector('.rating-btn[data-gender="m"]');
+    var fBtn = items[i].querySelector('.rating-btn[data-gender="f"]');
+    if (mBtn) { if (r[0]) mBtn.classList.add('active'); else mBtn.classList.remove('active'); }
+    if (fBtn) { if (r[1]) fBtn.classList.add('active'); else fBtn.classList.remove('active'); }
+  }
+}
+
+// ===== 交通 / 住宿 / 待办 / 贴士 渲染 =====
+function renderSections() {
+  // 住宿
+  var stayCont = document.getElementById('stay-list');
+  if (stayCont) {
+    var sHtml = '<div class="card-grid cols-2">';
+    var keys = Object.keys(STAY_INFO);
+    for (var i = 0; i < keys.length; i++) {
+      var k = keys[i];
+      var d = STAY_INFO[k][currentLang] || STAY_INFO[k].zh;
+      if (currentLang === 'zht') d = STAY_INFO[k].zh;
+      sHtml += '<div class="info-card">';
+      sHtml += '<div class="ic-head"><div class="ic-icon">🏨</div><div><p class="ic-title">' + escapeHtml(d.name) + '</p><p class="ic-sub">' + escapeHtml(d.city) + '</p></div></div>';
+      sHtml += '<div class="ic-row"><span class="k">' + t('orderNo') + '</span><span>' + escapeHtml(d.order) + '</span></div>';
+      sHtml += '<div class="ic-row"><span class="k">Nights</span><span>' + escapeHtml(d.nights) + '</span></div>';
+      sHtml += '<div class="ic-row"><span class="k">Price</span><span>' + escapeHtml(d.price) + '</span></div>';
+      sHtml += '<div class="ic-note">' + escapeHtml(d.note) + '</div>';
+      sHtml += '</div>';
+    }
+    sHtml += '</div>';
+    stayCont.innerHTML = sHtml;
+  }
+
+  // 票据
+  var tkCont = document.getElementById('ticket-list');
+  if (tkCont) {
+    var tHtml = '<div class="card-grid cols-2">';
+    var tkeys = Object.keys(TICKETS);
+    for (var j = 0; j < tkeys.length; j++) {
+      var tk = tkeys[j];
+      var td = TICKETS[tk][currentLang] || TICKETS[tk].zh;
+      if (currentLang === 'zht') td = TICKETS[tk].zh;
+      var typeIcon = td.type === 'flight' ? '✈' : td.type === 'train' ? '🚆' : td.type === 'ferry' ? '⛴' : '🚗';
+      tHtml += '<div class="info-card type-' + escapeHtml(td.type) + '">';
+      tHtml += '<div class="ic-head"><div class="ic-icon">' + typeIcon + '</div><div><p class="ic-title">' + escapeHtml(td.label) + '</p><p class="ic-sub">' + escapeHtml(tk) + '</p></div></div>';
+      tHtml += '<div class="ic-row"><span class="k">' + t('ticketLabel') + '</span><span>' + escapeHtml(td.no) + '</span></div>';
+      tHtml += '<div class="ic-row"><span class="k">Date</span><span>' + escapeHtml(td.date) + ' ' + escapeHtml(td.time) + '</span></div>';
+      tHtml += '<div class="ic-row"><span class="k">' + escapeHtml(td.from) + '→' + escapeHtml(td.to) + '</span><span></span></div>';
+      tHtml += '<div class="ic-row"><span class="k">Price</span><span>' + escapeHtml(td.price) + '</span></div>';
+      tHtml += '<div class="ic-note">' + escapeHtml(td.note) + '</div>';
+      tHtml += '</div>';
+    }
+    tHtml += '</div>';
+    tkCont.innerHTML = tHtml;
+  }
+
+  // 待办
+  var todoCont = document.getElementById('todo-list');
+  if (todoCont) {
+    var list = TODO_LIST[currentLang] || TODO_LIST.zh;
+    var tdlHtml = '<ul style="list-style:none;padding:0;margin:0">';
+    for (var ti = 0; ti < list.length; ti++) {
+      tdlHtml += '<li class="list-item"><div class="bullet"></div><div>' + escapeHtml(list[ti]) + '</div></li>';
+    }
+    tdlHtml += '</ul>';
+    todoCont.innerHTML = tdlHtml;
+  }
+
+  // 贴士
+  var tipsCont = document.getElementById('tips-list');
+  if (tipsCont) {
+    var tipsList = TIPS_LIST[currentLang] || TIPS_LIST.zh;
+    var tipsHtml = '<ul style="list-style:none;padding:0;margin:0">';
+    for (var tp = 0; tp < tipsList.length; tp++) {
+      tipsHtml += '<li class="list-item"><div class="bullet"></div><div>' + escapeHtml(tipsList[tp]) + '</div></li>';
+    }
+    tipsHtml += '</ul>';
+    tipsCont.innerHTML = tipsHtml;
+  }
+}
+
+// ===== 12 天地图缩放按钮 =====
+function renderDayButtons() {
+  var wrap = document.getElementById('day-buttons');
+  if (!wrap) return;
+  var html = '';
+  for (var i = 0; i < ITINERARY.length; i++) {
+    var day = ITINERARY[i];
+    var dn = i + 1;
+    var label = t('dayLabel', { n: dn });
+    html += '<button class="day-btn" data-day="' + dn + '">' + label + ' · ' + escapeHtml(day.title || '') + '</button>';
+  }
+  wrap.innerHTML = html;
+}
+
+// ===== 主渲染 =====
+function renderAll() {
+  renderHero();
+  updateCountdown();
+  updateClocks();
+  renderMap();
+  renderDayButtons();
+  renderItinerary();
+  renderSections();
+  refreshAllProgress();
+  refreshChecks();
+
+  // 更新地图按钮
+  document.getElementById('map-title').textContent = t('overviewMap');
+
+  // 更新 footer
+  var f = document.querySelector('footer');
+  if (f) f.textContent = t('footerNote');
+}
+
+// ===== 事件委托 =====
+document.addEventListener('click', function(e) {
+  var t2 = e.target;
+
+  // 语言按钮
+  if (t2.classList && t2.classList.contains('lang-btn')) {
+    setLang(t2.getAttribute('data-lang'));
+    return;
+  }
+  // 主题切换
+  if (t2.classList && t2.classList.contains('theme-toggle')) {
+    toggleTheme();
+    return;
+  }
+  // 地图模式
+  if (t2.classList && t2.classList.contains('map-mode-btn')) {
+    var mode = t2.getAttribute('data-mode');
+    if (mode === 'all') currentMapMode = 'all';
+    else if (mode === 'overview') currentMapMode = 'overview';
+    else if (mode === 'back') currentMapMode = 'overview';
+    renderMap();
+    // 更新按钮
+    var mbtns = document.querySelectorAll('.map-mode-btn');
+    for (var i = 0; i < mbtns.length; i++) mbtns[i].classList.remove('active');
+    t2.classList.add('active');
+    return;
+  }
+  // day 按钮
+  if (t2.classList && t2.classList.contains('day-btn')) {
+    currentMapMode = 'day-' + t2.getAttribute('data-day');
+    renderMap();
+    return;
+  }
+  // 打卡按钮
+  if (t2.classList && t2.classList.contains('check-btn')) {
+    var day = parseInt(t2.getAttribute('data-day'), 10);
+    var idx = parseInt(t2.getAttribute('data-idx'), 10);
+    var newVal = !getCheck(day, idx);
+    setCheck(day, idx, newVal);
+    var item = t2.closest('.item');
+    if (item) {
+      if (newVal) item.classList.add('checked');
+      else item.classList.remove('checked');
+    }
+    if (newVal) { t2.textContent = t('checked'); t2.classList.add('checked'); }
+    else { t2.textContent = t('checkIn'); t2.classList.remove('checked'); }
+    refreshDayProgress(day);
+    return;
+  }
+  // 评分按钮
+  if (t2.classList && t2.classList.contains('rating-btn')) {
+    var day2 = parseInt(t2.getAttribute('data-day'), 10);
+    var idx2 = parseInt(t2.getAttribute('data-idx'), 10);
+    var g = t2.getAttribute('data-gender');
+    var r = getRating(day2, idx2);
+    var cur = (g === 'm') ? r[0] : r[1];
+    var newR = cur ? 0 : 1;
+    setRating(day2, idx2, g, newR);
+    if (newR) t2.classList.add('active');
+    else t2.classList.remove('active');
+    return;
+  }
+  // 介绍链接
+  if (t2.classList && t2.classList.contains('spot-link')) {
+    openModal(t2.getAttribute('data-spot'));
+    return;
+  }
+  // 关闭弹窗
+  if (t2.classList && t2.classList.contains('modal-close')) {
+    closeModal();
+    return;
+  }
+});
+
+// 点击 modal-bg 关闭
+document.addEventListener('click', function(e) {
+  if (e.target.id === 'modal-bg') closeModal();
+});
+
+// ===== 初始化 =====
+window.addEventListener('load', function() {
+  applyTheme(currentTheme);
+  // 初始化时不调用 applyLang（会触发 renderAll），直接渲染
+  renderAll();
+  // 设置倒计时和时钟定时器
+  setInterval(function() { updateCountdown(); updateClocks(); }, 1000);
+});
+
+// 暴露到全局供测试使用
+window._test = {
+  t: t,
+  s2t: s2t,
+  applyLang: applyLang,
+  applyTheme: applyTheme,
+  renderAll: renderAll,
+  LOCATIONS: LOCATIONS,
+  ITINERARY: ITINERARY,
+  DICT: DICT
+};
+
+})();
+
+</script>
+</body>
+</html>

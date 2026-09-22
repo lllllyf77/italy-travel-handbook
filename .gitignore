@@ -1,0 +1,17 @@
+# Python build artifacts
+__pycache__/
+*.pyc
+
+# Deployment output (rebuildable from build_html.py)
+dist/
+
+# Debug / probe scripts
+probe.js
+fix_data.py
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
