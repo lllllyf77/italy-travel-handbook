@@ -8,7 +8,7 @@
 - 顶部插画（白天 / 夜晚双态）
 - 倒计时 + 意大利时间 / 北京时间双时钟
 - SVG 行程地图（12 天、41 个地点）
-- 12 天时间轴（每日可折叠、可打卡、可评分）
+- 12 天时间轴（每日可折叠、可打卡、可 1-5 星评分）
 - 行李清单（12 分类 + 上机 8 分组，可打卡）
 - 出行前待办 / 旅行贴士
 - 简体中文 / 繁体中文 / English 一键切换
@@ -24,12 +24,14 @@
 | `index-v1.html` | v1 快照（回滚用） |
 | `index-v2.html` | v2 快照（新增行李清单） |
 | `index-v3.html` | v3 快照（清单重构 + 点击区域优化） |
+| `index-v4.html` | v4 快照（下线交通票据 / 住宿） |
+| `index-v5.html` | v5 快照（评分改为 1-5 星，去掉男/女） |
 | `data.js` | 所有数据对象（DICT / ITINERARY / LOCATIONS / SPOTS_INFO / TICKETS / STAY_INFO / TODO_LIST / TIPS_LIST / PACKING_LIST） |
 | `style.css` | 样式表（CSS 变量 + 双主题） |
 | `s2t.js` | 简→繁字形映射字典 |
 | `build_data.py` | 从 Python 字典生成 `data.js` |
 | `build_html.py` | 拼装 `index.html` 的构建脚本 |
-| `check.js` | Node + jsdom 自检脚本（38 项断言） |
+| `check.js` | Node + jsdom 自检脚本（44 项断言） |
 
 ## 重新生成 index.html
 

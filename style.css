@@ -432,34 +432,29 @@ body { min-height: 100vh; overflow-x: hidden; }
 .item-rating {
   display: inline-flex;
   align-items: center;
+  flex-wrap: nowrap;
   margin-left: 6px;
+  margin-right: 2px;
   vertical-align: middle;
-  gap: 3px;
-  font-size: 11px;
-  font-variant-numeric: tabular-nums;
+  gap: 1px;
   white-space: nowrap;
 }
 .rating-btn {
+  appearance: none;
   cursor: pointer;
-  border: 1px solid var(--line);
-  background: var(--surface);
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  transition: all 0.15s;
+  border: none;
+  background: transparent;
+  padding: 0 1px;
+  line-height: 1;
+  font-size: 13px;
+  color: var(--line-2);
+  transition: color .15s, transform .12s;
   user-select: none;
-  padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
-.rating-btn:hover { background: var(--surface-2); }
-.rating-btn.active {
-  background: var(--accent-3);
-  border-color: var(--accent-3);
-  color: #fff;
-}
+.rating-btn:hover { color: var(--accent-3); transform: scale(1.15); }
+.rating-btn:active { transform: scale(0.92); }
+.rating-btn.active { color: var(--accent-3); }
 .check-btn {
   appearance: none;
   border: 1px solid var(--line);

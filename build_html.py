@@ -647,8 +647,9 @@ function renderItinerary() {
       }
       html += '<span class="item-title">' + titleHtml + '</span>';
       html += '<span class="item-rating">';
-      html += '<button class="rating-btn" data-day="' + d.day + '" data-idx="' + j + '" data-gender="m" title="男评分">♂</button>';
-      html += '<button class="rating-btn" data-day="' + d.day + '" data-idx="' + j + '" data-gender="f" title="女评分">♀</button>';
+      for (var si = 1; si <= 5; si++) {
+        html += '<button type="button" class="rating-btn" data-day="' + d.day + '" data-idx="' + j + '" data-val="' + si + '" title="' + escapeHtml(t('rateTitle', {n: si})) + '">★</button>';
+      }
       html += '<button class="check-btn" data-day="' + d.day + '" data-idx="' + j + '">' + escapeHtml(t('checkIn')) + '</button>';
       html += '</span>';
       if (it.note) html += '<p class="item-note">' + escapeHtml(it.note) + '</p>';
@@ -755,14 +756,16 @@ function renderDayMap(dayNum) {
 }
 
 // ===== 评分 / 打卡 状态管理 =====
+// 评分为 1-5 星整数，0 表示未评分（不再区分男/女）
 function getRating(day, idx) {
-  return ratings[day + '_' + idx] || [0, 0];
+  var v = ratings[day + '_' + idx];
+  if (Array.isArray(v)) return (v[0] || v[1] || 0); // 兼容旧版 [男,女] 数组数据
+  return (typeof v === 'number' && v > 0) ? v : 0;
 }
-function setRating(day, idx, gender, val) {
+function setRating(day, idx, val) {
   var key = day + '_' + idx;
-  var r = ratings[key] || [0, 0];
-  r[gender === 'm' ? 0 : 1] = val;
-  ratings[key] = r;
+  if (val > 0) ratings[key] = val;
+  else delete ratings[key];
   try { localStorage.setItem('rating', JSON.stringify(ratings)); } catch(e) {}
 }
 
@@ -831,11 +834,13 @@ function refreshChecks() {
         btn.textContent = t('checkIn');
       }
     }
-    var r = getRating(day, idx);
-    var mBtn = items[i].querySelector('.rating-btn[data-gender="m"]');
-    var fBtn = items[i].querySelector('.rating-btn[data-gender="f"]');
-    if (mBtn) { if (r[0]) mBtn.classList.add('active'); else mBtn.classList.remove('active'); }
-    if (fBtn) { if (r[1]) fBtn.classList.add('active'); else fBtn.classList.remove('active'); }
+    var rv = getRating(day, idx);
+    var stars = items[i].querySelectorAll('.rating-btn');
+    for (var sb = 0; sb < stars.length; sb++) {
+      var sv = parseInt(stars[sb].getAttribute('data-val'), 10);
+      if (sv <= rv) stars[sb].classList.add('active');
+      else stars[sb].classList.remove('active');
+    }
   }
 }
 
@@ -1055,17 +1060,20 @@ document.addEventListener('click', function(e) {
     refreshDayProgress(day);
     return;
   }
-  // 评分按钮
+  // 评分按钮（1-5 星）
   if (t2.classList && t2.classList.contains('rating-btn')) {
     var day2 = parseInt(t2.getAttribute('data-day'), 10);
     var idx2 = parseInt(t2.getAttribute('data-idx'), 10);
-    var g = t2.getAttribute('data-gender');
-    var r = getRating(day2, idx2);
-    var cur = (g === 'm') ? r[0] : r[1];
-    var newR = cur ? 0 : 1;
-    setRating(day2, idx2, g, newR);
-    if (newR) t2.classList.add('active');
-    else t2.classList.remove('active');
+    var val2 = parseInt(t2.getAttribute('data-val'), 10);
+    var curR = getRating(day2, idx2);
+    setRating(day2, idx2, curR === val2 ? 0 : val2);
+    var stars2 = t2.parentNode.querySelectorAll('.rating-btn');
+    var newR2 = getRating(day2, idx2);
+    for (var s2 = 0; s2 < stars2.length; s2++) {
+      var sv2 = parseInt(stars2[s2].getAttribute('data-val'), 10);
+      if (sv2 <= newR2) stars2[s2].classList.add('active');
+      else stars2[s2].classList.remove('active');
+    }
     return;
   }
   // 介绍链接
@@ -1203,7 +1211,7 @@ __STYLE_CSS__
   <!-- 行程时间轴 -->
   <div class="section">
     <h2 class="section-title">📅 12 天行程</h2>
-    <p class="section-subtitle">点击日期展开/折叠 · 点 ^_^ 打卡 · 评分 ♂♀ · 标点介绍</p>
+    <p class="section-subtitle">点击日期展开/折叠 · 点 ^_^ 打卡 · 点星星评分（1-5 星）· 标点介绍</p>
     <div id="itinerary-list"></div>
   </div>
 

@@ -117,6 +117,29 @@ function runChecks() {
     record('Tips rendered', sel('#tips-list li, #tips-list .list-item') >= 1);
     record('Footer rendered', !!doc.querySelector('footer'));
 
+    // ===== 7-star) Rating is 1-5 stars, no male/female split =====
+    record('No gender rating buttons remain', sel('.rating-btn[data-gender]') === 0,
+      'gender-btn=' + sel('.rating-btn[data-gender]'));
+    const firstItem = doc.querySelector('.item .item-rating');
+    const starBtns = firstItem ? firstItem.querySelectorAll('.rating-btn[data-val]') : [];
+    record('Each item has 5 star buttons', starBtns.length === 5, 'stars=' + starBtns.length);
+    const starVals = Array.prototype.map.call(starBtns, b => b.getAttribute('data-val')).join(',');
+    record('Star values are 1..5', starVals === '1,2,3,4,5', 'vals=' + starVals);
+    record('Rating and check button on same row', !!firstItem && !!firstItem.querySelector('.check-btn'),
+      firstItem ? firstItem.className : 'no item-rating');
+    // click 4th star -> rating 4 -> 4 stars active
+    if (starBtns.length === 5) {
+      starBtns[3].dispatchEvent(new win.MouseEvent('click', { bubbles: true }));
+      const activeCount = firstItem.querySelectorAll('.rating-btn.active').length;
+      record('Clicking 4th star activates 4 stars', activeCount === 4, 'active=' + activeCount);
+      // click again -> cleared
+      starBtns[3].dispatchEvent(new win.MouseEvent('click', { bubbles: true }));
+      const activeAfter = firstItem.querySelectorAll('.rating-btn.active').length;
+      record('Clicking same star again clears rating', activeAfter === 0, 'active=' + activeAfter);
+    } else {
+      record('Star click interaction', false, 'no star buttons');
+    }
+
     // ===== 7a) Section order: itinerary -> packing -> todo -> tips =====
     try {
       const root = doc.getElementById('packing-section') ? doc.getElementById('packing-section').closest('.container, body') : doc.body;
