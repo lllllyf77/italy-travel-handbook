@@ -905,11 +905,18 @@ footer {
     <div id="itinerary-list"></div>
   </div>
 
-  <!-- 行李清单 -->
-  <div class="section" id="packing-section">
-    <h2 class="section-title" id="packing-section-title">🧳 行李清单</h2>
-    <p class="section-subtitle" id="packing-section-sub">12 大分类 · 随身/托运/上机分开 · 点击打卡</p>
-    <div id="packing-list" class="packing-section"></div>
+  <!-- 交通票据 -->
+  <div class="section">
+    <h2 class="section-title">✈️ 交通票据</h2>
+    <p class="section-subtitle">航班 / 火车 / 轮渡 / 包车 全部订单</p>
+    <div id="ticket-list"></div>
+  </div>
+
+  <!-- 住宿 -->
+  <div class="section">
+    <h2 class="section-title">🏨 住宿</h2>
+    <p class="section-subtitle">5 家民宿与酒店 · 含订单号与备注</p>
+    <div id="stay-list"></div>
   </div>
 
   <!-- 待办 -->
@@ -924,6 +931,13 @@ footer {
     <h2 class="section-title">💡 旅行贴士</h2>
     <p class="section-subtitle">时区 / 着装 / 餐饮 / 紧急电话</p>
     <div id="tips-list" class="list-section"></div>
+  </div>
+
+  <!-- 行李清单 -->
+  <div class="section" id="packing-section">
+    <h2 class="section-title" id="packing-section-title">🧳 行李清单</h2>
+    <p class="section-subtitle" id="packing-section-sub">12 大分类 · 随身/托运/上机分开 · 点击打卡</p>
+    <div id="packing-list" class="packing-section"></div>
   </div>
 </div>
 
@@ -2972,11 +2986,52 @@ function refreshChecks() {
   }
 }
 
-// ===== 待办 / 贴士 渲染 =====
-// 注：交通票据 / 住宿 两个独立模块已按需求下线。
-//     TICKETS / STAY_INFO 数据仍保留在 data.js，需要恢复时重新加上对应
-//     <div class="section"> 容器即可（旧渲染逻辑见 git 历史）。
+// ===== 交通 / 住宿 / 待办 / 贴士 渲染 =====
 function renderSections() {
+  // 住宿
+  var stayCont = document.getElementById('stay-list');
+  if (stayCont) {
+    var sHtml = '<div class="card-grid cols-2">';
+    var keys = Object.keys(STAY_INFO);
+    for (var i = 0; i < keys.length; i++) {
+      var k = keys[i];
+      var d = STAY_INFO[k][currentLang] || STAY_INFO[k].zh;
+      if (currentLang === 'zht') d = STAY_INFO[k].zh;
+      sHtml += '<div class="info-card">';
+      sHtml += '<div class="ic-head"><div class="ic-icon">🏨</div><div><p class="ic-title">' + escapeHtml(d.name) + '</p><p class="ic-sub">' + escapeHtml(d.city) + '</p></div></div>';
+      sHtml += '<div class="ic-row"><span class="k">' + t('orderNo') + '</span><span>' + escapeHtml(d.order) + '</span></div>';
+      sHtml += '<div class="ic-row"><span class="k">Nights</span><span>' + escapeHtml(d.nights) + '</span></div>';
+      sHtml += '<div class="ic-row"><span class="k">Price</span><span>' + escapeHtml(d.price) + '</span></div>';
+      sHtml += '<div class="ic-note">' + escapeHtml(d.note) + '</div>';
+      sHtml += '</div>';
+    }
+    sHtml += '</div>';
+    stayCont.innerHTML = sHtml;
+  }
+
+  // 票据
+  var tkCont = document.getElementById('ticket-list');
+  if (tkCont) {
+    var tHtml = '<div class="card-grid cols-2">';
+    var tkeys = Object.keys(TICKETS);
+    for (var j = 0; j < tkeys.length; j++) {
+      var tk = tkeys[j];
+      var td = TICKETS[tk][currentLang] || TICKETS[tk].zh;
+      if (currentLang === 'zht') td = TICKETS[tk].zh;
+      var typeIcon = td.type === 'flight' ? '✈' : td.type === 'train' ? '🚆' : td.type === 'ferry' ? '⛴' : '🚗';
+      tHtml += '<div class="info-card type-' + escapeHtml(td.type) + '">';
+      tHtml += '<div class="ic-head"><div class="ic-icon">' + typeIcon + '</div><div><p class="ic-title">' + escapeHtml(td.label) + '</p><p class="ic-sub">' + escapeHtml(tk) + '</p></div></div>';
+      tHtml += '<div class="ic-row"><span class="k">' + t('ticketLabel') + '</span><span>' + escapeHtml(td.no) + '</span></div>';
+      tHtml += '<div class="ic-row"><span class="k">Date</span><span>' + escapeHtml(td.date) + ' ' + escapeHtml(td.time) + '</span></div>';
+      tHtml += '<div class="ic-row"><span class="k">' + escapeHtml(td.from) + '→' + escapeHtml(td.to) + '</span><span></span></div>';
+      tHtml += '<div class="ic-row"><span class="k">Price</span><span>' + escapeHtml(td.price) + '</span></div>';
+      tHtml += '<div class="ic-note">' + escapeHtml(td.note) + '</div>';
+      tHtml += '</div>';
+    }
+    tHtml += '</div>';
+    tkCont.innerHTML = tHtml;
+  }
+
   // 待办
   var todoCont = document.getElementById('todo-list');
   if (todoCont) {

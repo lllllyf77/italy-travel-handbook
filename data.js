@@ -31,7 +31,10 @@ var DICT = {
     ticketLabel: "交通票据", orderNo: "订单号",
     todoTitle: "出行前待办",
     tipsTitle: "旅行贴士",
-    footerNote: "本手册仅供私人旅行参考；时刻均为当地时间。"
+    packingTitle: "🧳 行李清单",
+    packingSubtitle: "12 大分类 + 上机分组 · 点击整行标题可展开/收起",
+    footerNote: "本手册仅供私人旅行参考；时刻均为当地时间。",
+    packedTotal: "已打包 {{done}} / {{total}}",
   },
   zht: "zh-tw",
   en: {
@@ -61,7 +64,10 @@ var DICT = {
     ticketLabel: "Tickets & Orders", orderNo: "Order #",
     todoTitle: "Pre-trip Checklist",
     tipsTitle: "Travel Tips",
-    footerNote: "For personal travel reference only. All times are local."
+    packingTitle: "🧳 Packing List",
+    packingSubtitle: "12 categories + in-flight groups · Click header to expand/collapse",
+    footerNote: "For personal travel reference only. All times are local.",
+    packedTotal: "Packed {{done}} / {{total}}"
   }
 };
 
@@ -451,6 +457,236 @@ var TIPS_LIST = {
     "Cash still king in small trattorias — keep €200–300 in cash.",
     "Taxis/private driver: luggage not extra. Restaurants: tip 5–10%.",
     "Italy emergency: 112 (police), 118 (medical), 115 (fire)."
+  ]
+};
+
+// === 行李清单 ===
+var PACKING_LIST = {
+  zh: [
+    {category: "随身物品", items: [
+      "身份证",
+      "护照",
+      "visa 卡",
+      "现金（欧元 + 小面额）",
+      "流量卡"
+    ]},
+    {category: "防盗物品", items: [
+      "八字扣",
+      "防盗扣",
+      "防盗弹簧绳",
+      "行李防盗绳",
+      "手机防盗绳",
+      "防盗内裤",
+      "AirTag"
+    ]},
+    {category: "箱包收纳", items: [
+      "草编包",
+      "双肩背包",
+      "斜挎棕色包"
+    ]},
+    {category: "电子产品", items: [
+      "转换插头 × 2",
+      "充电线",
+      "耳机",
+      "充电宝"
+    ]},
+    {category: "生活用品", items: [
+      "折叠烧水壶",
+      "拖鞋",
+      "毛巾",
+      "一次性内裤",
+      "一次性袜子",
+      "湿纸巾",
+      "抽纸",
+      "纸巾",
+      "卫生巾",
+      "雨伞",
+      "小风扇"
+    ]},
+    {category: "洗护用品", items: [
+      "牙刷 + 牙膏",
+      "面膜",
+      "卸妆膏",
+      "洗发水",
+      "护发精油",
+      "沐浴露",
+      "梳子",
+      "保湿霜"
+    ]},
+    {category: "零食", items: [
+      "泡面"
+    ]},
+    {category: "药物", items: [
+      "布洛芬",
+      "感冒药"
+    ]},
+    {category: "衣物", items: [
+      "风衣",
+      "冲锋衣",
+      "羽绒服",
+      "皮衣",
+      "黑色皮鞋",
+      "运动鞋",
+      "白色皮鞋",
+      "吊带",
+      "工字背心",
+      "内衣",
+      "袜子",
+      "运动裤",
+      "光腿神器",
+      "长袖睡衣",
+      "短袖睡衣"
+    ]},
+    {category: "化妆品", items: [
+      "卷发棒",
+      "假睫毛",
+      "美瞳",
+      "粉饼",
+      "防晒",
+      "卸妆膏"
+    ]},
+    {category: "装饰品", items: [
+      "耳环",
+      "腰链",
+      "墨镜",
+      "鸭舌帽",
+      "香水",
+      "大肠发圈"
+    ]},
+    {category: "摄影设备", items: [
+      "相机",
+      "镜头",
+      "CCD",
+      "胶片机",
+      "胶卷",
+      "拍立得",
+      "拍立得相纸",
+      "备用电池",
+      "读卡器"
+    ]},
+    {category: "飞机上随身携带", subcategories: [
+      {name: "随身物品", items: ["身份证", "护照", "visa 卡", "现金", "流量卡"]},
+      {name: "防盗物品", items: ["八字扣", "防盗扣", "防盗弹簧绳", "手机防盗绳"]},
+      {name: "箱包收纳", items: ["草编包", "双肩背包"]},
+      {name: "洗漱用品", items: ["牙刷 + 牙膏", "面膜", "抽纸", "保湿霜"]},
+      {name: "衣物", items: ["冲锋衣", "一次性拖鞋"]},
+      {name: "经济舱好物", items: ["头枕", "眼罩", "腰靠", "座垫", "压力袜", "加湿口罩", "耳塞"]},
+      {name: "贵重物品", items: ["相机", "镜头", "CCD", "胶片机", "胶卷", "拍立得相纸", "备用电池"]},
+      {name: "��他", items: ["零食", "雨伞"]}
+    ]}
+  ],
+  en: [
+    {category: "Documents", items: [
+      "ID card",
+      "Passport",
+      "Visa card",
+      "Cash (EUR + small notes)",
+      "Data SIM"
+    ]},
+    {category: "Anti-theft", items: [
+      "Carabiner clip",
+      "Anti-theft lock",
+      "Retractable security cable",
+      "Luggage security strap",
+      "Phone lanyard",
+      "Anti-theft underwear",
+      "AirTag"
+    ]},
+    {category: "Bags & Organizers", items: [
+      "Straw tote bag",
+      "Backpack",
+      "Brown crossbody bag"
+    ]},
+    {category: "Electronics", items: [
+      "Plug adapter × 2",
+      "Charging cable",
+      "Earphones",
+      "Power bank"
+    ]},
+    {category: "Daily necessities", items: [
+      "Foldable kettle",
+      "Slippers",
+      "Towel",
+      "Disposable underwear",
+      "Disposable socks",
+      "Wet wipes",
+      "Tissue box",
+      "Pocket tissues",
+      "Sanitary pads",
+      "Umbrella",
+      "Mini fan"
+    ]},
+    {category: "Toiletries", items: [
+      "Toothbrush + toothpaste",
+      "Face mask",
+      "Makeup remover",
+      "Shampoo",
+      "Hair oil",
+      "Body wash",
+      "Comb",
+      "Moisturizer"
+    ]},
+    {category: "Snacks", items: [
+      "Instant noodles"
+    ]},
+    {category: "Medicine", items: [
+      "Ibuprofen",
+      "Cold medicine"
+    ]},
+    {category: "Clothing", items: [
+      "Trench coat",
+      "Windbreaker",
+      "Down jacket",
+      "Leather jacket",
+      "Black leather shoes",
+      "Sneakers",
+      "White leather shoes",
+      "Spaghetti strap top",
+      "Tank top",
+      "Bra",
+      "Socks",
+      "Sport pants",
+      "Nude-effect tights",
+      "Long-sleeve pajama",
+      "Short-sleeve pajama"
+    ]},
+    {category: "Makeup", items: [
+      "Curling iron",
+      "False eyelashes",
+      "Colored contacts",
+      "Compact powder",
+      "Sunscreen",
+      "Makeup remover"
+    ]},
+    {category: "Accessories", items: [
+      "Earrings",
+      "Waist chain",
+      "Sunglasses",
+      "Cap",
+      "Perfume",
+      "Large hair tie"
+    ]},
+    {category: "Camera gear", items: [
+      "Camera",
+      "Lens",
+      "CCD camera",
+      "Film camera",
+      "Film rolls",
+      "Instax camera",
+      "Instax film",
+      "Spare battery",
+      "Card reader"
+    ]},
+    {category: "Carry-on only", subcategories: [
+      {name: "Documents", items: ["ID card", "Passport", "Visa card", "Cash", "Data SIM"]},
+      {name: "Anti-theft", items: ["Carabiner clip", "Anti-theft lock", "Retractable security cable", "Phone lanyard"]},
+      {name: "Bags", items: ["Straw tote bag", "Backpack"]},
+      {name: "Toiletries", items: ["Toothbrush + toothpaste", "Face mask", "Tissue box", "Moisturizer"]},
+      {name: "Clothing", items: ["Windbreaker", "Disposable slippers"]},
+      {name: "Economy class comfort", items: ["Neck pillow", "Eye mask", "Lumbar cushion", "Seat cushion", "Compression socks", "Humidifier mask", "Earplugs"]},
+      {name: "Valuables", items: ["Camera", "Lens", "CCD camera", "Film camera", "Film rolls", "Instax film", "Spare battery"]},
+      {name: "Others", items: ["Snacks", "Umbrella"]}
+    ]}
   ]
 };
 

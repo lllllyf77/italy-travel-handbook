@@ -779,6 +779,23 @@ function setCheck(day, idx, val) {
   try { localStorage.setItem('checks', JSON.stringify(checks)); } catch(e) {}
 }
 
+// ===== 行李清单打卡状态 =====
+var packChecks = {};
+try {
+  var savedP = localStorage.getItem('packChecks');
+  if (savedP) packChecks = JSON.parse(savedP);
+} catch(e) { packChecks = {}; }
+
+function getPackingCheck(catIdx, itemIdx) {
+  return !!(packChecks[catIdx + '_' + itemIdx]);
+}
+function setPackingCheck(catIdx, itemIdx, val) {
+  var key = catIdx + '_' + itemIdx;
+  if (val) packChecks[key] = true;
+  else delete packChecks[key];
+  try { localStorage.setItem('packChecks', JSON.stringify(packChecks)); } catch(e) {}
+}
+
 function refreshAllProgress() {
   for (var d = 1; d <= ITINERARY.length; d++) {
     refreshDayProgress(d);
@@ -822,52 +839,11 @@ function refreshChecks() {
   }
 }
 
-// ===== 交通 / 住宿 / 待办 / 贴士 渲染 =====
+// ===== 待办 / 贴士 渲染 =====
+// 注：交通票据 / 住宿 两个独立模块已按需求下线。
+//     TICKETS / STAY_INFO 数据仍保留在 data.js，需要恢复时重新加上对应
+//     <div class="section"> 容器即可（旧渲染逻辑见 git 历史）。
 function renderSections() {
-  // 住宿
-  var stayCont = document.getElementById('stay-list');
-  if (stayCont) {
-    var sHtml = '<div class="card-grid cols-2">';
-    var keys = Object.keys(STAY_INFO);
-    for (var i = 0; i < keys.length; i++) {
-      var k = keys[i];
-      var d = STAY_INFO[k][currentLang] || STAY_INFO[k].zh;
-      if (currentLang === 'zht') d = STAY_INFO[k].zh;
-      sHtml += '<div class="info-card">';
-      sHtml += '<div class="ic-head"><div class="ic-icon">🏨</div><div><p class="ic-title">' + escapeHtml(d.name) + '</p><p class="ic-sub">' + escapeHtml(d.city) + '</p></div></div>';
-      sHtml += '<div class="ic-row"><span class="k">' + t('orderNo') + '</span><span>' + escapeHtml(d.order) + '</span></div>';
-      sHtml += '<div class="ic-row"><span class="k">Nights</span><span>' + escapeHtml(d.nights) + '</span></div>';
-      sHtml += '<div class="ic-row"><span class="k">Price</span><span>' + escapeHtml(d.price) + '</span></div>';
-      sHtml += '<div class="ic-note">' + escapeHtml(d.note) + '</div>';
-      sHtml += '</div>';
-    }
-    sHtml += '</div>';
-    stayCont.innerHTML = sHtml;
-  }
-
-  // 票据
-  var tkCont = document.getElementById('ticket-list');
-  if (tkCont) {
-    var tHtml = '<div class="card-grid cols-2">';
-    var tkeys = Object.keys(TICKETS);
-    for (var j = 0; j < tkeys.length; j++) {
-      var tk = tkeys[j];
-      var td = TICKETS[tk][currentLang] || TICKETS[tk].zh;
-      if (currentLang === 'zht') td = TICKETS[tk].zh;
-      var typeIcon = td.type === 'flight' ? '✈' : td.type === 'train' ? '🚆' : td.type === 'ferry' ? '⛴' : '🚗';
-      tHtml += '<div class="info-card type-' + escapeHtml(td.type) + '">';
-      tHtml += '<div class="ic-head"><div class="ic-icon">' + typeIcon + '</div><div><p class="ic-title">' + escapeHtml(td.label) + '</p><p class="ic-sub">' + escapeHtml(tk) + '</p></div></div>';
-      tHtml += '<div class="ic-row"><span class="k">' + t('ticketLabel') + '</span><span>' + escapeHtml(td.no) + '</span></div>';
-      tHtml += '<div class="ic-row"><span class="k">Date</span><span>' + escapeHtml(td.date) + ' ' + escapeHtml(td.time) + '</span></div>';
-      tHtml += '<div class="ic-row"><span class="k">' + escapeHtml(td.from) + '→' + escapeHtml(td.to) + '</span><span></span></div>';
-      tHtml += '<div class="ic-row"><span class="k">Price</span><span>' + escapeHtml(td.price) + '</span></div>';
-      tHtml += '<div class="ic-note">' + escapeHtml(td.note) + '</div>';
-      tHtml += '</div>';
-    }
-    tHtml += '</div>';
-    tkCont.innerHTML = tHtml;
-  }
-
   // 待办
   var todoCont = document.getElementById('todo-list');
   if (todoCont) {
@@ -891,6 +867,108 @@ function renderSections() {
     tipsHtml += '</ul>';
     tipsCont.innerHTML = tipsHtml;
   }
+
+  // 行李清单
+  renderPackingList();
+}
+
+// ===== 行李清单渲染 =====
+function renderPackingList() {
+  var cont = document.getElementById('packing-list');
+  if (!cont) return;
+  var secTitle = document.getElementById('packing-section-title');
+  var secSub = document.getElementById('packing-section-sub');
+  if (secTitle) secTitle.textContent = t('packingTitle');
+  if (secSub) secSub.textContent = t('packingSubtitle');
+
+  var list = PACKING_LIST[currentLang] || PACKING_LIST.zh;
+  var html = '<div class="packing-wrap">';
+  var total = 0;
+  var done = 0;
+
+  // Flatten helper: 返回该分类下的全部 item，附 subIdx（若有）
+  function flatten(cat) {
+    if (cat.subcategories) {
+      var out = [];
+      for (var s = 0; s < cat.subcategories.length; s++) {
+        var sub = cat.subcategories[s];
+        for (var k = 0; k < sub.items.length; k++) {
+          out.push({ text: sub.items[k], subName: sub.name });
+        }
+      }
+      return out;
+    }
+    var out2 = [];
+    for (var k2 = 0; k2 < cat.items.length; k2++) {
+      out2.push({ text: cat.items[k2], subName: null });
+    }
+    return out2;
+  }
+
+  for (var ci = 0; ci < list.length; ci++) {
+    var cat = list[ci];
+    var flat = flatten(cat);
+    var catDone = 0;
+
+    var itemsHtml = '';
+    if (cat.subcategories) {
+      // 有子分组：按分组渲染
+      var itemIdx = 0;
+      for (var s = 0; s < cat.subcategories.length; s++) {
+        var sub = cat.subcategories[s];
+        itemsHtml += '<div class="pack-sub-head">' + escapeHtml(sub.name) + '</div>';
+        for (var k = 0; k < sub.items.length; k++) {
+          total++;
+          var chk = getPackingCheck(ci, itemIdx);
+          if (chk) { done++; catDone++; }
+          itemsHtml += '<div class="pack-item' + (chk ? ' checked' : '') + '" data-cat="' + ci + '" data-item="' + itemIdx + '">';
+          itemsHtml += '<button class="pack-check" data-cat="' + ci + '" data-item="' + itemIdx + '">' + (chk ? '✓' : '○') + '</button>';
+          itemsHtml += '<span class="pack-text">' + escapeHtml(sub.items[k]) + '</span>';
+          itemsHtml += '</div>';
+          itemIdx++;
+        }
+      }
+    } else {
+      // 普通分类
+      for (var k2 = 0; k2 < flat.length; k2++) {
+        total++;
+        var chk2 = getPackingCheck(ci, k2);
+        if (chk2) { done++; catDone++; }
+        itemsHtml += '<div class="pack-item' + (chk2 ? ' checked' : '') + '" data-cat="' + ci + '" data-item="' + k2 + '">';
+        itemsHtml += '<button class="pack-check" data-cat="' + ci + '" data-item="' + k2 + '">' + (chk2 ? '✓' : '○') + '</button>';
+        itemsHtml += '<span class="pack-text">' + escapeHtml(flat[k2].text) + '</span>';
+        itemsHtml += '</div>';
+      }
+    }
+
+    html += '<div class="pack-card" data-cat="' + ci + '">';
+    html += '<div class="pack-head" data-toggle="' + ci + '">';
+    html += '<span class="pack-title">' + escapeHtml(cat.category) + '</span>';
+    html += '<span class="pack-progress">' + catDone + '/' + flat.length + '</span>';
+    html += '<span class="pack-caret">▼</span>';
+    html += '</div>';
+    html += '<div class="pack-body" id="pack-body-' + ci + '">' + itemsHtml + '</div>';
+    html += '</div>';
+  }
+  html += '</div>';
+  html += '<div class="pack-total">' + t('packedTotal', { done: done, total: total }) + '</div>';
+  cont.innerHTML = html;
+}
+
+// ===== 刷新行李清单状态 =====
+function refreshPackingChecks() {
+  var items = document.querySelectorAll('.pack-item');
+  for (var i = 0; i < items.length; i++) {
+    var ci = parseInt(items[i].getAttribute('data-cat'), 10);
+    var ii = parseInt(items[i].getAttribute('data-item'), 10);
+    var checked = getPackingCheck(ci, ii);
+    var btn = items[i].querySelector('.pack-check');
+    if (btn) btn.textContent = checked ? '✓' : '○';
+    if (checked) items[i].classList.add('checked');
+    else items[i].classList.remove('checked');
+  }
+  // refresh progress numbers
+  renderPackingList();
 }
 
 // ===== 12 天地图缩放按钮 =====
@@ -918,6 +996,7 @@ function renderAll() {
   renderSections();
   refreshAllProgress();
   refreshChecks();
+  refreshPackingChecks();
 
   // 更新地图按钮
   document.getElementById('map-title').textContent = t('overviewMap');
@@ -992,6 +1071,26 @@ document.addEventListener('click', function(e) {
   // 介绍链接
   if (t2.classList && t2.classList.contains('spot-link')) {
     openModal(t2.getAttribute('data-spot'));
+    return;
+  }
+  // 行李清单打卡
+  if (t2.classList && t2.classList.contains('pack-check')) {
+    var pc = parseInt(t2.getAttribute('data-cat'), 10);
+    var pi = parseInt(t2.getAttribute('data-item'), 10);
+    var newP = !getPackingCheck(pc, pi);
+    setPackingCheck(pc, pi, newP);
+    refreshPackingChecks();
+    return;
+  }
+  // 行李清单分类折叠 - 整个 header 行都可点击
+  var packHead = t2.classList && t2.classList.contains('pack-head') ? t2
+                 : (t2.closest ? t2.closest('.pack-head') : null);
+  if (packHead) {
+    var body = document.getElementById('pack-body-' + packHead.getAttribute('data-toggle'));
+    if (body) {
+      body.classList.toggle('collapsed');
+      packHead.classList.toggle('collapsed');
+    }
     return;
   }
   // 关闭弹窗
@@ -1108,18 +1207,11 @@ __STYLE_CSS__
     <div id="itinerary-list"></div>
   </div>
 
-  <!-- 交通票据 -->
-  <div class="section">
-    <h2 class="section-title">✈️ 交通票据</h2>
-    <p class="section-subtitle">航班 / 火车 / 轮渡 / 包车 全部订单</p>
-    <div id="ticket-list"></div>
-  </div>
-
-  <!-- 住宿 -->
-  <div class="section">
-    <h2 class="section-title">🏨 住宿</h2>
-    <p class="section-subtitle">5 家民宿与酒店 · 含订单号与备注</p>
-    <div id="stay-list"></div>
+  <!-- 行李清单 -->
+  <div class="section" id="packing-section">
+    <h2 class="section-title" id="packing-section-title">🧳 行李清单</h2>
+    <p class="section-subtitle" id="packing-section-sub">12 大分类 · 随身/托运/上机分开 · 点击打卡</p>
+    <div id="packing-list" class="packing-section"></div>
   </div>
 
   <!-- 待办 -->

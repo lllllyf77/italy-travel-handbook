@@ -729,28 +729,24 @@ body { min-height: 100vh; overflow-x: hidden; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 14px;
+  padding: 10px 12px;
   background: var(--bg-2);
   cursor: pointer;
   user-select: none;
   border-bottom: 1px solid var(--line);
-  transition: background .15s;
 }
-.pack-head:hover { background: var(--bg-3, var(--bg)); }
-.pack-head:active { background: var(--line); }
 .pack-head.collapsed { border-bottom: none; }
 .pack-title {
   font-weight: 700;
   font-size: 13px;
   color: var(--ink);
   flex: 1;
-  padding: 2px 0;
 }
 .pack-progress {
   font-size: 11px;
   color: var(--ink-light);
   background: var(--bg);
-  padding: 3px 10px;
+  padding: 2px 8px;
   border-radius: 10px;
   margin-right: 8px;
 }
@@ -758,7 +754,6 @@ body { min-height: 100vh; overflow-x: hidden; }
   font-size: 11px;
   color: var(--ink-light);
   transition: transform .2s;
-  padding: 4px 6px;
 }
 .pack-head.collapsed .pack-caret { transform: rotate(-90deg); }
 .pack-body {
@@ -767,17 +762,6 @@ body { min-height: 100vh; overflow-x: hidden; }
   gap: 6px;
 }
 .pack-body.collapsed { display: none; }
-.pack-sub-head {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: .5px;
-  padding: 6px 4px 2px;
-  margin-top: 6px;
-  border-bottom: 1px dashed var(--line);
-}
-.pack-sub-head:first-child { margin-top: 0; }
 .pack-item {
   display: flex;
   align-items: flex-start;
@@ -905,11 +889,18 @@ footer {
     <div id="itinerary-list"></div>
   </div>
 
-  <!-- 行李清单 -->
-  <div class="section" id="packing-section">
-    <h2 class="section-title" id="packing-section-title">🧳 行李清单</h2>
-    <p class="section-subtitle" id="packing-section-sub">12 大分类 · 随身/托运/上机分开 · 点击打卡</p>
-    <div id="packing-list" class="packing-section"></div>
+  <!-- 交通票据 -->
+  <div class="section">
+    <h2 class="section-title">✈️ 交通票据</h2>
+    <p class="section-subtitle">航班 / 火车 / 轮渡 / 包车 全部订单</p>
+    <div id="ticket-list"></div>
+  </div>
+
+  <!-- 住宿 -->
+  <div class="section">
+    <h2 class="section-title">🏨 住宿</h2>
+    <p class="section-subtitle">5 家民宿与酒店 · 含订单号与备注</p>
+    <div id="stay-list"></div>
   </div>
 
   <!-- 待办 -->
@@ -924,6 +915,13 @@ footer {
     <h2 class="section-title">💡 旅行贴士</h2>
     <p class="section-subtitle">时区 / 着装 / 餐饮 / 紧急电话</p>
     <div id="tips-list" class="list-section"></div>
+  </div>
+
+  <!-- 行李清单 -->
+  <div class="section" id="packing-section">
+    <h2 class="section-title" id="packing-section-title">🧳 行李清单</h2>
+    <p class="section-subtitle" id="packing-section-sub">12 大分类 · 随身/托运/上机分开 · 点击打卡</p>
+    <div id="packing-list" class="packing-section"></div>
   </div>
 </div>
 
@@ -967,9 +965,8 @@ var DICT = {
     todoTitle: "出行前待办",
     tipsTitle: "旅行贴士",
     packingTitle: "🧳 行李清单",
-    packingSubtitle: "12 大分类 + 上机分组 · 点击整行标题可展开/收起",
-    footerNote: "本手册仅供私人旅行参考；时刻均为当地时间。",
-    packedTotal: "已打包 {{done}} / {{total}}",
+    packingSubtitle: "12 大分类 · 随身/托运/上机分开 · 点击打卡",
+    footerNote: "本手册仅供私人旅行参考；时刻均为当地时间。"
   },
   zht: "zh-tw",
   en: {
@@ -1000,9 +997,8 @@ var DICT = {
     todoTitle: "Pre-trip Checklist",
     tipsTitle: "Travel Tips",
     packingTitle: "🧳 Packing List",
-    packingSubtitle: "12 categories + in-flight groups · Click header to expand/collapse",
-    footerNote: "For personal travel reference only. All times are local.",
-    packedTotal: "Packed {{done}} / {{total}}"
+    packingSubtitle: "12 categories · Checked / carry-on / in-flight · Tap to check",
+    footerNote: "For personal travel reference only. All times are local."
   }
 };
 
@@ -1399,228 +1395,108 @@ var TIPS_LIST = {
 var PACKING_LIST = {
   zh: [
     {category: "随身物品", items: [
-      "身份证",
-      "护照",
-      "visa 卡",
-      "现金（欧元 + 小面额）",
-      "流量卡"
+      "身份证", "护照", "信用卡（两张，其中一张备用）",
+      "现金（200欧+100瑞士法郎；小面额5/10/20）", "欧洲流量卡（含取卡针）"
     ]},
     {category: "防盗物品", items: [
-      "八字扣",
-      "防盗扣",
-      "防盗弹簧绳",
-      "行李防盗绳",
-      "手机防盗绳",
-      "防盗内裤",
-      "AirTag"
+      "斜挎小包", "防盗腰包", "八字扣（背包拉链）", "行李箱防盗绳",
+      "行李密码锁", "防盗刷卡包", "手机防盗绳（挂脖/手腕）"
     ]},
     {category: "箱包收纳", items: [
-      "草编包",
-      "双肩背包",
-      "斜挎棕色包"
+      "行李箱*2（28寸托运+26寸托运）", "双肩包*2（带上飞机）", "帆布包*2（出去玩背）",
+      "收纳袋（物品分类）", "零钱包（放现金）"
     ]},
     {category: "电子产品", items: [
-      "转换插头 × 2",
-      "充电线",
-      "耳机",
-      "充电宝"
+      "欧标转换插头（意标L型）", "瑞士转换插头", "插排", "相机+充电器",
+      "平板+充电器", "手机+充电器", "手表+充电器", "耳机（有线/无线）", "充电宝"
     ]},
     {category: "生活用品", items: [
-      "折叠烧水壶",
-      "拖鞋",
-      "毛巾",
-      "一次性内裤",
-      "一次性袜子",
-      "湿纸巾",
-      "抽纸",
-      "纸巾",
-      "卫生巾",
-      "雨伞",
-      "小风扇"
+      "折叠烧水壶", "便携水杯", "充气U型枕头+腰垫", "一次性拖鞋（飞机上用）",
+      "眼罩/蒸汽眼罩", "折叠拖鞋（部分酒店无一次性拖鞋）", "一次性浴巾",
+      "一次性毛巾", "一次性内裤", "一次性马桶垫", "洗脸巾", "口罩",
+      "大包抽纸", "小包纸巾", "湿巾", "卫生巾", "雨伞", "指甲刀", "可折叠衣架"
     ]},
     {category: "洗护用品", items: [
-      "牙刷 + 牙膏",
-      "面膜",
-      "卸妆膏",
-      "洗发水",
-      "护发精油",
-      "沐浴露",
-      "梳子",
-      "保湿霜"
+      "牙刷+牙膏（欧洲多数酒店不提供）", "面膜", "洗护品", "护肤品", "化妆品", "梳子"
     ]},
     {category: "零食", items: [
-      "泡面"
+      "泡面", "辣条", "饼干", "薯片"
     ]},
     {category: "药物", items: [
-      "布洛芬",
-      "感冒药"
+      "创可贴", "布洛芬", "藿香正气丸", "感冒药", "肠胃药", "风油精"
     ]},
     {category: "衣物", items: [
-      "风衣",
-      "冲锋衣",
-      "羽绒服",
-      "皮衣",
-      "黑色皮鞋",
-      "运动鞋",
-      "白色皮鞋",
-      "吊带",
-      "工字背心",
-      "内衣",
-      "袜子",
-      "运动裤",
-      "光腿神器",
-      "长袖睡衣",
-      "短袖睡衣"
-    ]},
-    {category: "化妆品", items: [
-      "卷发棒",
-      "假睫毛",
-      "美瞳",
-      "粉饼",
-      "防晒",
-      "卸妆膏"
+      "棉服夹克*1", "毛呢风衣*2", "羽绒服*2",
+      "长裤*4", "长裙*2",
+      "毛衣*2", "打底毛衫*4", "秋衣秋裤*2", "打底背心*1", "打底裤*1",
+      "袜子（厚*3，薄*3）", "内衣", "内裤",
+      "雪地靴*1", "运动鞋*1",
+      "睡衣套装*1"
     ]},
     {category: "装饰品", items: [
-      "耳环",
-      "腰链",
-      "墨镜",
-      "鸭舌帽",
-      "香水",
-      "大肠发圈"
+      "墨镜*2", "手套*1", "围巾*1", "毛线帽*1", "头饰（皮筋、抓夹等）", "首饰（项链、耳环等）"
     ]},
     {category: "摄影设备", items: [
-      "相机",
-      "镜头",
-      "CCD",
-      "胶片机",
-      "胶卷",
-      "拍立得",
-      "拍立得相纸",
-      "备用电池",
-      "读卡器"
+      "相机机身", "镜头（广角+变焦）", "三脚架/八爪鱼", "备用电池*2", "储存卡",
+      "读卡器", "快门线/遥控器", "反光板（人像）", "相机清洁套装"
     ]},
-    {category: "飞机上随身携带", subcategories: [
-      {name: "随身物品", items: ["身份证", "护照", "visa 卡", "现金", "流量卡"]},
-      {name: "防盗物品", items: ["八字扣", "防盗扣", "防盗弹簧绳", "手机防盗绳"]},
-      {name: "箱包收纳", items: ["草编包", "双肩背包"]},
-      {name: "洗漱用品", items: ["牙刷 + 牙膏", "面膜", "抽纸", "保湿霜"]},
-      {name: "衣物", items: ["冲锋衣", "一次性拖鞋"]},
-      {name: "经济舱好物", items: ["头枕", "眼罩", "腰靠", "座垫", "压力袜", "加湿口罩", "耳塞"]},
-      {name: "贵重物品", items: ["相机", "镜头", "CCD", "胶片机", "胶卷", "拍立得相纸", "备用电池"]},
-      {name: "��他", items: ["零食", "雨伞"]}
+    {category: "上飞机随身携带", items: [
+      "随身证件包", "登机双肩包/斜挎包", "洗漱包（100ml以内）", "充气头枕",
+      "腰靠", "座垫", "眼罩", "耳塞", "一次性拖鞋", "厚袜子",
+      "相机（含电池）", "充电宝（≤100Wh）", "耳机", "手机", "充电器", "iPad/书"
     ]}
   ],
   en: [
     {category: "Documents", items: [
-      "ID card",
-      "Passport",
-      "Visa card",
-      "Cash (EUR + small notes)",
-      "Data SIM"
+      "ID card", "Passport", "Credit cards (x2, one backup)",
+      "Cash (€200 + CHF100; small notes 5/10/20)", "European data SIM (with ejector pin)"
     ]},
     {category: "Anti-theft", items: [
-      "Carabiner clip",
-      "Anti-theft lock",
-      "Retractable security cable",
-      "Luggage security strap",
-      "Phone lanyard",
-      "Anti-theft underwear",
-      "AirTag"
+      "Crossbody bag", "Anti-theft waist pouch", "Carabiner / zipper lock", "Suitcase security cable",
+      "TSA luggage lock", "RFID blocking card holder", "Phone lanyard (neck or wrist)"
     ]},
     {category: "Bags & Organizers", items: [
-      "Straw tote bag",
-      "Backpack",
-      "Brown crossbody bag"
+      "Suitcases x2 (28\" checked + 26\" checked)", "Backpacks x2 (carry-on)", "Tote bags x2 (day trips)",
+      "Packing cubes", "Coin purse"
     ]},
     {category: "Electronics", items: [
-      "Plug adapter × 2",
-      "Charging cable",
-      "Earphones",
-      "Power bank"
+      "EU Type L adapter", "Swiss adapter", "Power strip", "Camera + charger",
+      "Tablet + charger", "Phone + charger", "Watch + charger", "Earphones (wired/wireless)", "Power bank"
     ]},
     {category: "Daily necessities", items: [
-      "Foldable kettle",
-      "Slippers",
-      "Towel",
-      "Disposable underwear",
-      "Disposable socks",
-      "Wet wipes",
-      "Tissue box",
-      "Pocket tissues",
-      "Sanitary pads",
-      "Umbrella",
-      "Mini fan"
+      "Foldable kettle", "Travel cup", "Inflatable neck pillow + lumbar cushion", "Disposable slippers (flight)",
+      "Eye mask / steam eye mask", "Foldable slippers (some hotels don't provide)", "Disposable bath towel",
+      "Disposable face towel", "Disposable underwear", "Disposable toilet seat covers", "Cotton face pads", "Face masks",
+      "Tissue box", "Pocket tissues", "Wet wipes", "Sanitary pads", "Umbrella", "Nail clipper", "Foldable hanger"
     ]},
     {category: "Toiletries", items: [
-      "Toothbrush + toothpaste",
-      "Face mask",
-      "Makeup remover",
-      "Shampoo",
-      "Hair oil",
-      "Body wash",
-      "Comb",
-      "Moisturizer"
+      "Toothbrush + toothpaste (most European hotels don't provide)", "Face masks", "Shampoo & body wash", "Skincare", "Makeup", "Comb"
     ]},
     {category: "Snacks", items: [
-      "Instant noodles"
+      "Instant noodles", "Spicy strips", "Biscuits", "Potato chips"
     ]},
     {category: "Medicine", items: [
-      "Ibuprofen",
-      "Cold medicine"
+      "Band-aids", "Ibuprofen", "Huo Xiang Zheng Qi pills", "Cold medicine", "Stomach medicine", "Medicated oil"
     ]},
     {category: "Clothing", items: [
-      "Trench coat",
-      "Windbreaker",
-      "Down jacket",
-      "Leather jacket",
-      "Black leather shoes",
-      "Sneakers",
-      "White leather shoes",
-      "Spaghetti strap top",
-      "Tank top",
-      "Bra",
-      "Socks",
-      "Sport pants",
-      "Nude-effect tights",
-      "Long-sleeve pajama",
-      "Short-sleeve pajama"
-    ]},
-    {category: "Makeup", items: [
-      "Curling iron",
-      "False eyelashes",
-      "Colored contacts",
-      "Compact powder",
-      "Sunscreen",
-      "Makeup remover"
+      "Padded jacket x1", "Wool trench coat x2", "Down jacket x2",
+      "Long pants x4", "Long skirts x2",
+      "Sweaters x2", "Base-layer tops x4", "Long johns x2", "Tank top x1", "Leggings x1",
+      "Socks (thick x3, thin x3)", "Bras", "Underwear",
+      "Snow boots x1", "Sneakers x1",
+      "Pajama set x1"
     ]},
     {category: "Accessories", items: [
-      "Earrings",
-      "Waist chain",
-      "Sunglasses",
-      "Cap",
-      "Perfume",
-      "Large hair tie"
+      "Sunglasses x2", "Gloves x1", "Scarf x1", "Knit hat x1", "Hair accessories (ties, clips)", "Jewelry (necklaces, earrings)"
     ]},
     {category: "Camera gear", items: [
-      "Camera",
-      "Lens",
-      "CCD camera",
-      "Film camera",
-      "Film rolls",
-      "Instax camera",
-      "Instax film",
-      "Spare battery",
-      "Card reader"
+      "Camera body", "Lenses (wide + zoom)", "Tripod / octopus grip", "Spare batteries x2", "Memory cards",
+      "Card reader", "Remote shutter", "Reflector (portraits)", "Camera cleaning kit"
     ]},
-    {category: "Carry-on only", subcategories: [
-      {name: "Documents", items: ["ID card", "Passport", "Visa card", "Cash", "Data SIM"]},
-      {name: "Anti-theft", items: ["Carabiner clip", "Anti-theft lock", "Retractable security cable", "Phone lanyard"]},
-      {name: "Bags", items: ["Straw tote bag", "Backpack"]},
-      {name: "Toiletries", items: ["Toothbrush + toothpaste", "Face mask", "Tissue box", "Moisturizer"]},
-      {name: "Clothing", items: ["Windbreaker", "Disposable slippers"]},
-      {name: "Economy class comfort", items: ["Neck pillow", "Eye mask", "Lumbar cushion", "Seat cushion", "Compression socks", "Humidifier mask", "Earplugs"]},
-      {name: "Valuables", items: ["Camera", "Lens", "CCD camera", "Film camera", "Film rolls", "Instax film", "Spare battery"]},
-      {name: "Others", items: ["Snacks", "Umbrella"]}
+    {category: "Carry-on only", items: [
+      "Document pouch", "Carry-on backpack / crossbody", "Toiletry bag (≤100ml)", "Inflatable neck pillow",
+      "Lumbar cushion", "Seat cushion", "Eye mask", "Earplugs", "Disposable slippers", "Warm socks",
+      "Camera (with battery)", "Power bank (≤100Wh)", "Earphones", "Phone", "Charger", "iPad / book"
     ]}
   ]
 };
@@ -2972,11 +2848,52 @@ function refreshChecks() {
   }
 }
 
-// ===== 待办 / 贴士 渲染 =====
-// 注：交通票据 / 住宿 两个独立模块已按需求下线。
-//     TICKETS / STAY_INFO 数据仍保留在 data.js，需要恢复时重新加上对应
-//     <div class="section"> 容器即可（旧渲染逻辑见 git 历史）。
+// ===== 交通 / 住宿 / 待办 / 贴士 渲染 =====
 function renderSections() {
+  // 住宿
+  var stayCont = document.getElementById('stay-list');
+  if (stayCont) {
+    var sHtml = '<div class="card-grid cols-2">';
+    var keys = Object.keys(STAY_INFO);
+    for (var i = 0; i < keys.length; i++) {
+      var k = keys[i];
+      var d = STAY_INFO[k][currentLang] || STAY_INFO[k].zh;
+      if (currentLang === 'zht') d = STAY_INFO[k].zh;
+      sHtml += '<div class="info-card">';
+      sHtml += '<div class="ic-head"><div class="ic-icon">🏨</div><div><p class="ic-title">' + escapeHtml(d.name) + '</p><p class="ic-sub">' + escapeHtml(d.city) + '</p></div></div>';
+      sHtml += '<div class="ic-row"><span class="k">' + t('orderNo') + '</span><span>' + escapeHtml(d.order) + '</span></div>';
+      sHtml += '<div class="ic-row"><span class="k">Nights</span><span>' + escapeHtml(d.nights) + '</span></div>';
+      sHtml += '<div class="ic-row"><span class="k">Price</span><span>' + escapeHtml(d.price) + '</span></div>';
+      sHtml += '<div class="ic-note">' + escapeHtml(d.note) + '</div>';
+      sHtml += '</div>';
+    }
+    sHtml += '</div>';
+    stayCont.innerHTML = sHtml;
+  }
+
+  // 票据
+  var tkCont = document.getElementById('ticket-list');
+  if (tkCont) {
+    var tHtml = '<div class="card-grid cols-2">';
+    var tkeys = Object.keys(TICKETS);
+    for (var j = 0; j < tkeys.length; j++) {
+      var tk = tkeys[j];
+      var td = TICKETS[tk][currentLang] || TICKETS[tk].zh;
+      if (currentLang === 'zht') td = TICKETS[tk].zh;
+      var typeIcon = td.type === 'flight' ? '✈' : td.type === 'train' ? '🚆' : td.type === 'ferry' ? '⛴' : '🚗';
+      tHtml += '<div class="info-card type-' + escapeHtml(td.type) + '">';
+      tHtml += '<div class="ic-head"><div class="ic-icon">' + typeIcon + '</div><div><p class="ic-title">' + escapeHtml(td.label) + '</p><p class="ic-sub">' + escapeHtml(tk) + '</p></div></div>';
+      tHtml += '<div class="ic-row"><span class="k">' + t('ticketLabel') + '</span><span>' + escapeHtml(td.no) + '</span></div>';
+      tHtml += '<div class="ic-row"><span class="k">Date</span><span>' + escapeHtml(td.date) + ' ' + escapeHtml(td.time) + '</span></div>';
+      tHtml += '<div class="ic-row"><span class="k">' + escapeHtml(td.from) + '→' + escapeHtml(td.to) + '</span><span></span></div>';
+      tHtml += '<div class="ic-row"><span class="k">Price</span><span>' + escapeHtml(td.price) + '</span></div>';
+      tHtml += '<div class="ic-note">' + escapeHtml(td.note) + '</div>';
+      tHtml += '</div>';
+    }
+    tHtml += '</div>';
+    tkCont.innerHTML = tHtml;
+  }
+
   // 待办
   var todoCont = document.getElementById('todo-list');
   if (todoCont) {
@@ -3018,73 +2935,30 @@ function renderPackingList() {
   var html = '<div class="packing-wrap">';
   var total = 0;
   var done = 0;
-
-  // Flatten helper: 返回该分类下的全部 item，附 subIdx（若有）
-  function flatten(cat) {
-    if (cat.subcategories) {
-      var out = [];
-      for (var s = 0; s < cat.subcategories.length; s++) {
-        var sub = cat.subcategories[s];
-        for (var k = 0; k < sub.items.length; k++) {
-          out.push({ text: sub.items[k], subName: sub.name });
-        }
-      }
-      return out;
-    }
-    var out2 = [];
-    for (var k2 = 0; k2 < cat.items.length; k2++) {
-      out2.push({ text: cat.items[k2], subName: null });
-    }
-    return out2;
-  }
-
   for (var ci = 0; ci < list.length; ci++) {
     var cat = list[ci];
-    var flat = flatten(cat);
     var catDone = 0;
-
     var itemsHtml = '';
-    if (cat.subcategories) {
-      // 有子分组：按分组渲染
-      var itemIdx = 0;
-      for (var s = 0; s < cat.subcategories.length; s++) {
-        var sub = cat.subcategories[s];
-        itemsHtml += '<div class="pack-sub-head">' + escapeHtml(sub.name) + '</div>';
-        for (var k = 0; k < sub.items.length; k++) {
-          total++;
-          var chk = getPackingCheck(ci, itemIdx);
-          if (chk) { done++; catDone++; }
-          itemsHtml += '<div class="pack-item' + (chk ? ' checked' : '') + '" data-cat="' + ci + '" data-item="' + itemIdx + '">';
-          itemsHtml += '<button class="pack-check" data-cat="' + ci + '" data-item="' + itemIdx + '">' + (chk ? '✓' : '○') + '</button>';
-          itemsHtml += '<span class="pack-text">' + escapeHtml(sub.items[k]) + '</span>';
-          itemsHtml += '</div>';
-          itemIdx++;
-        }
-      }
-    } else {
-      // 普通分类
-      for (var k2 = 0; k2 < flat.length; k2++) {
-        total++;
-        var chk2 = getPackingCheck(ci, k2);
-        if (chk2) { done++; catDone++; }
-        itemsHtml += '<div class="pack-item' + (chk2 ? ' checked' : '') + '" data-cat="' + ci + '" data-item="' + k2 + '">';
-        itemsHtml += '<button class="pack-check" data-cat="' + ci + '" data-item="' + k2 + '">' + (chk2 ? '✓' : '○') + '</button>';
-        itemsHtml += '<span class="pack-text">' + escapeHtml(flat[k2].text) + '</span>';
-        itemsHtml += '</div>';
-      }
+    for (var ii = 0; ii < cat.items.length; ii++) {
+      total++;
+      var checked = getPackingCheck(ci, ii);
+      if (checked) { done++; catDone++; }
+      itemsHtml += '<div class="pack-item' + (checked ? ' checked' : '') + '" data-cat="' + ci + '" data-item="' + ii + '">';
+      itemsHtml += '<button class="pack-check" data-cat="' + ci + '" data-item="' + ii + '">' + (checked ? '✓' : '○') + '</button>';
+      itemsHtml += '<span class="pack-text">' + escapeHtml(cat.items[ii]) + '</span>';
+      itemsHtml += '</div>';
     }
-
     html += '<div class="pack-card" data-cat="' + ci + '">';
     html += '<div class="pack-head" data-toggle="' + ci + '">';
     html += '<span class="pack-title">' + escapeHtml(cat.category) + '</span>';
-    html += '<span class="pack-progress">' + catDone + '/' + flat.length + '</span>';
+    html += '<span class="pack-progress">' + catDone + '/' + cat.items.length + '</span>';
     html += '<span class="pack-caret">▼</span>';
     html += '</div>';
     html += '<div class="pack-body" id="pack-body-' + ci + '">' + itemsHtml + '</div>';
     html += '</div>';
   }
   html += '</div>';
-  html += '<div class="pack-total">' + t('packedTotal', { done: done, total: total }) + '</div>';
+  html += '<div class="pack-total">已打包 ' + done + ' / ' + total + '</div>';
   cont.innerHTML = html;
 }
 
@@ -3215,14 +3089,12 @@ document.addEventListener('click', function(e) {
     refreshPackingChecks();
     return;
   }
-  // 行李清单分类折叠 - 整个 header 行都可点击
-  var packHead = t2.classList && t2.classList.contains('pack-head') ? t2
-                 : (t2.closest ? t2.closest('.pack-head') : null);
-  if (packHead) {
-    var body = document.getElementById('pack-body-' + packHead.getAttribute('data-toggle'));
+  // 行李清单分类折叠
+  if (t2.classList && t2.classList.contains('pack-head')) {
+    var body = document.getElementById('pack-body-' + t2.getAttribute('data-toggle'));
     if (body) {
       body.classList.toggle('collapsed');
-      packHead.classList.toggle('collapsed');
+      t2.classList.toggle('collapsed');
     }
     return;
   }

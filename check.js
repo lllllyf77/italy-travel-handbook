@@ -111,11 +111,33 @@ function runChecks() {
     record('Map SVG rendered', doc.querySelectorAll('#map-svg-wrap svg').length > 0);
     record('Itinerary list rendered', sel('#itinerary-list .day-card, #itinerary-list .day, .day-card') > 0);
     record('Day buttons rendered', sel('#day-buttons button.day-btn') >= 1);
-    record('Tickets rendered', sel('#ticket-list .info-card') >= 1);
-    record('Stay rendered', sel('#stay-list .info-card') >= 1);
+    record('Tickets section removed', sel('#ticket-list') === 0);
+    record('Stay section removed', sel('#stay-list') === 0);
     record('Todo rendered', sel('#todo-list li, #todo-list .list-item') >= 1);
     record('Tips rendered', sel('#tips-list li, #tips-list .list-item') >= 1);
     record('Footer rendered', !!doc.querySelector('footer'));
+
+    // ===== 7a) Section order: itinerary -> packing -> todo -> tips =====
+    try {
+      const root = doc.getElementById('packing-section') ? doc.getElementById('packing-section').closest('.container, body') : doc.body;
+      const ids = Array.prototype.slice.call(root.querySelectorAll('.section'))
+        .map(s => {
+          if (s.querySelector('#itinerary-list')) return 'itinerary';
+          if (s.id === 'packing-section') return 'packing';
+          if (s.querySelector('#todo-list')) return 'todo';
+          if (s.querySelector('#tips-list')) return 'tips';
+          if (s.querySelector('#map-svg-wrap')) return 'map';
+          return 'other';
+        }).filter(x => x !== 'other');
+      const iIdx = ids.indexOf('itinerary'), pIdx = ids.indexOf('packing');
+      const tIdx = ids.indexOf('todo'), tpIdx = ids.indexOf('tips');
+      record('Packing is right after itinerary', pIdx === iIdx + 1,
+        ids.join(' > '));
+      record('Packing is before todo', pIdx > -1 && tIdx > -1 && pIdx < tIdx, ids.join(' > '));
+      record('Todo is before tips', tIdx > -1 && tpIdx > -1 && tIdx < tpIdx, ids.join(' > '));
+    } catch (e) {
+      record('Section order check', false, e.message);
+    }
 
     // ===== 7b) Countdown + dual clocks populated =====
     const cdEl = doc.getElementById('cd-count');
@@ -128,6 +150,34 @@ function runChecks() {
     const bjText = clockBj ? clockBj.textContent.trim() : '';
     record('Italy clock populated', /^\d{2}:\d{2}:\d{2}$/.test(itText), 'it=' + itText);
     record('Beijing clock populated', /^\d{2}:\d{2}:\d{2}$/.test(bjText), 'bj=' + bjText);
+
+    // ===== 7c) Packing list rendered =====
+    record('Packing list rendered', sel('#packing-list .pack-card') >= 12,
+      'cards=' + sel('#packing-list .pack-card'));
+    record('Packing list has items', sel('.pack-item') >= 80,
+      'items=' + sel('.pack-item'));
+
+    // ===== 7d) Packing sub-headers exist (in-flight carry-on is grouped) =====
+    const subHeads = sel('.pack-sub-head');
+    record('Packing sub-headers rendered (carry-on groups)', subHeads >= 5,
+      'subHeads=' + subHeads);
+
+    // ===== 7e) Pack head click area: clicking title text toggles collapse =====
+    try {
+      const firstHead = doc.querySelector('#packing-list .pack-head');
+      const firstBody = doc.querySelector('#packing-list .pack-body');
+      const wasCollapsed1 = firstBody.classList.contains('collapsed');
+      // click on the title span (a child of .pack-head)
+      const titleSpan = firstHead.querySelector('.pack-title');
+      titleSpan.dispatchEvent(new win.MouseEvent('click', { bubbles: true }));
+      const isCollapsed2 = firstBody.classList.contains('collapsed');
+      record('Pack head click toggles via title child', wasCollapsed1 !== isCollapsed2,
+        'before=' + wasCollapsed1 + ' after=' + isCollapsed2);
+      // restore
+      titleSpan.dispatchEvent(new win.MouseEvent('click', { bubbles: true }));
+    } catch (e) {
+      record('Pack head click via child element', false, e.message);
+    }
 
     // ===== 8) Language switching: zh -> en produces different text =====
     if (langBtnEn && langBtnZh) {
